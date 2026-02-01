@@ -390,3 +390,25 @@ export function CloseIcon({ className = '', size = 24 }: IconProps) {
         </svg>
     );
 }
+
+// Problem icons (crossed out versions)
+export function TreeSlashIcon({ className = '', size = 24 }: IconProps) {
+    return (
+        <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 22v-7" />
+            <path d="M12 3L4 13h4l-2 6h12l-2-6h4L12 3z" />
+            <line x1="4" y1="4" x2="20" y2="20" />
+        </svg>
+    );
+}
+
+export function CarXmarkIcon({ className = '', size = 24 }: IconProps) {
+    return (
+        <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 10l-2-5H8L6 10l-2.5 1.1C2.7 11.3 2 12.1 2 13v3c0 .6.4 1 1 1h2" />
+            <circle cx="7" cy="17" r="2" />
+            <circle cx="17" cy="17" r="2" />
+            <line x1="4" y1="4" x2="20" y2="20" />
+        </svg>
+    );
+}
