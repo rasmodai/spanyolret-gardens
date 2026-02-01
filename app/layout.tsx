@@ -23,6 +23,19 @@ export default function RootLayout({
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+                {/* Preload hero video for faster playback */}
+                <link
+                    rel="preload"
+                    href="/assets/renders/Hero Spanyloret.mp4"
+                    as="video"
+                    type="video/mp4"
+                />
+                {/* Preload poster image */}
+                <link
+                    rel="preload"
+                    href="/assets/renders/Garden at Midday.webp"
+                    as="image"
+                />
             </head>
             <body className="antialiased">
                 {children}

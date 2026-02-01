@@ -26,8 +26,9 @@ export default function Hero() {
                     loop
                     muted
                     playsInline
-                    className="absolute inset-0 w-full h-full object-cover scale-[1.03] origin-center" // Slight scale to hide watermark
-                    poster="/assets/renders/aerial_site_accurate.webp"
+                    preload="auto"
+                    className="absolute inset-0 w-full h-full object-cover scale-[1.03] origin-center"
+                    poster="/assets/renders/Garden at Midday.webp"
                 >
                     <source src="/assets/renders/Hero Spanyloret.mp4" type="video/mp4" />
                 </video>
