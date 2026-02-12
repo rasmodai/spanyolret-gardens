@@ -86,13 +86,23 @@ export default function Hero() {
                     </h1>
 
                     {/* Subheadline */}
-                    <p className="text-lg md:text-xl lg:text-2xl text-white/80 mb-10 max-w-3xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
+                    <p className="text-lg md:text-xl lg:text-2xl text-white/80 mb-6 max-w-3xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
                         Premium 5-room townhouses in Spanyolrét with private gardens up to 317m²,
                         underfloor heating, and dedicated parking.
                     </p>
 
+                    {/* Starting Price */}
+                    <div className="mb-10 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+                        <span className="inline-block bg-white/10 backdrop-blur-md px-6 py-3 rounded-2xl border border-secondary/30 shadow-lg">
+                            <span className="text-white/60 text-sm uppercase tracking-wider">Starting from</span>
+                            <span className="block text-3xl md:text-4xl font-bold bg-gradient-to-r from-secondary via-green-400 to-secondary bg-clip-text text-transparent">
+                                220 Million HUF
+                            </span>
+                        </span>
+                    </div>
+
                     {/* CTAs - Premium buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16 animate-slide-up" style={{ animationDelay: '0.35s' }}>
                         <button
                             onClick={scrollToForm}
                             className="group relative px-8 py-4 bg-gradient-to-r from-secondary to-green-500 text-white font-semibold rounded-xl overflow-hidden shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all duration-300 hover:-translate-y-0.5"
@@ -109,7 +119,7 @@ export default function Hero() {
                     </div>
 
                     {/* Trust Badges - Premium glass cards */}
-                    <div className="flex flex-wrap justify-center gap-4 md:gap-6 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+                    <div className="flex flex-wrap justify-center gap-4 md:gap-6 animate-slide-up" style={{ animationDelay: '0.45s' }}>
                         {[
                             { value: '6', label: 'Exclusive Units' },
                             { value: '117m²', label: 'Living Space' },

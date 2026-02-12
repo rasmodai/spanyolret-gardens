@@ -76,8 +76,8 @@ export const propertyStatsHu = [
     { value: '6', label: 'Exkluzív sorház', icon: 'home' },
     { value: '117 m²', label: 'Belső élettér', icon: 'expand' },
     { value: '102-317 m²', label: 'Saját kertek', icon: 'tree' },
+    { value: '220M Ft', label: 'Induló ár', icon: 'money' },
     { value: '5', label: 'Szoba lakásonként', icon: 'door' },
-    { value: '2', label: 'Fürdőszoba', icon: 'bath' },
     { value: '2026. ősz', label: 'Kulcsrakész átadás', icon: 'calendar-check' }
 ];
 
@@ -447,6 +447,8 @@ export const uiTextsHu = {
         headline: 'A családod saját kertje',
         headlineHighlight: 'vár rátok Budapesten',
         subheadline: 'Prémium 5 szobás sorházak a Spanyolréten, akár 317 m² saját kerttel, padlófűtéssel és saját parkolóval.',
+        priceLabel: 'Már',
+        priceValue: '220 millió Ft-tól',
         ctaPrimary: 'Időpont egyeztetés',
         ctaSecondary: 'Alaprajzok megtekintése',
         stats: [
@@ -479,7 +481,7 @@ export const uiTextsHu = {
     floorPlans: {
         badge: 'ALAPRAJZOK',
         title: 'Válaszd ki a tökéletes lakást',
-        subtitle: '6 egyedi otthon, azonos prémium minőség. Hasonlítsd össze és találd meg az ideálist.',
+        subtitle: '6 egyedi otthon, azonos prémium minőség. Már 220 millió Ft-tól.',
         sitePlan: '📍 Helyszínrajz',
         buildingA: '🏠 A épület',
         buildingB: '🏠 B épület',

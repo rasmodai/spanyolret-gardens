@@ -200,8 +200,8 @@ export const propertyStats = [
     { value: '6', label: 'Exclusive Townhouses', icon: 'home' },
     { value: '117m²', label: 'Internal Living Space', icon: 'expand' },
     { value: '102-317m²', label: 'Private Gardens', icon: 'tree' },
+    { value: '220M HUF', label: 'Starting Price', icon: 'money' },
     { value: '5', label: 'Rooms per Unit', icon: 'door' },
-    { value: '2', label: 'Full Bathrooms', icon: 'bath' },
     { value: 'Sept 2026', label: 'Turnkey Delivery', icon: 'calendar-check' }
 ];
 

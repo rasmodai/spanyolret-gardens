@@ -89,7 +89,7 @@ export default function FloorPlans() {
                         Choose Your Perfect Unit
                     </h2>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        6 unique homes, one exceptional standard. Compare layouts and find your ideal match.
+                        6 unique homes, one exceptional standard. Starting from 220 million HUF.
                     </p>
                 </div>
 
