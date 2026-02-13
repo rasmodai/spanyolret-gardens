@@ -1,7 +1,9 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+    return new Resend(process.env.RESEND_API_KEY);
+}
 
 interface LeadFormBody {
     firstName: string;
@@ -92,7 +94,7 @@ export async function POST(request: Request) {
             </div>
         `;
 
-        const { error } = await resend.emails.send({
+        const { error } = await getResend().emails.send({
             from: 'Spanyolret Gardens <noreply@studiosynphos.com>',
             to: ['brenda@studiosynphos.com', 'remi@studiosynphos.com'],
             subject,
