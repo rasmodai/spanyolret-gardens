@@ -87,11 +87,24 @@ export default function LeadForm() {
 
         setIsSubmitting(true);
 
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        try {
+            const res = await fetch('/api/lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...formData,
+                    lang: 'en',
+                }),
+            });
 
-        setIsSubmitting(false);
-        setIsSuccess(true);
+            if (!res.ok) throw new Error('Submission failed');
+
+            setIsSuccess(true);
+        } catch {
+            setErrors({ firstName: 'Something went wrong. Please try again.' });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleChange = (field: keyof FormData, value: string | boolean) => {
@@ -117,9 +130,11 @@ export default function LeadForm() {
                         </p>
                         <div className="bg-white/10 rounded-xl p-6">
                             <p className="text-white/70 mb-4">In the meantime, download our brochure:</p>
-                            <Button variant="accent" size="lg">
-                                Download the Brochure
-                            </Button>
+                            <a href="/Spanyolret-gardens.pdf" download>
+                                <Button variant="accent" size="lg">
+                                    Download the Brochure
+                                </Button>
+                            </a>
                         </div>
                     </div>
                 </div>

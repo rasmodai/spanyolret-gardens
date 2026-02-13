@@ -21,6 +21,8 @@ interface FormData {
 export default function LeadFormHu() {
     const t = uiTextsHu.leadForm;
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState('');
     const [formData, setFormData] = useState<FormData>({
         firstName: '',
         lastName: '',
@@ -32,10 +34,29 @@ export default function LeadFormHu() {
         marketingConsent: false
     });
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
-        setIsSubmitted(true);
+        setIsSubmitting(true);
+        setSubmitError('');
+
+        try {
+            const res = await fetch('/api/lead', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...formData,
+                    lang: 'hu',
+                }),
+            });
+
+            if (!res.ok) throw new Error('Submission failed');
+
+            setIsSubmitted(true);
+        } catch {
+            setSubmitError('Hiba tortent. Kerjuk, probald ujra.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleChange = (field: keyof FormData, value: string | boolean) => {
@@ -167,9 +188,13 @@ export default function LeadFormHu() {
                                 onChange={(e) => handleChange('marketingConsent', e.target.checked)}
                             />
 
+                            {submitError && (
+                                <p className="text-red-600 text-sm text-center">{submitError}</p>
+                            )}
+
                             <div className="pt-4">
-                                <Button type="submit" variant="primary" className="w-full md:w-auto">
-                                    {t.submit}
+                                <Button type="submit" variant="primary" className="w-full md:w-auto" disabled={isSubmitting}>
+                                    {isSubmitting ? 'Kuldese...' : t.submit}
                                 </Button>
                             </div>
 
