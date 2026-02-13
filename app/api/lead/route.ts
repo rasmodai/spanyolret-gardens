@@ -94,7 +94,7 @@ export async function POST(request: Request) {
 
         const { error } = await resend.emails.send({
             from: 'Spanyolret Gardens <noreply@studiosynphos.com>',
-            to: 'remi@studiosynphos.com',
+            to: ['brenda@studiosynphos.com', 'remi@studiosynphos.com'],
             subject,
             html,
         });
