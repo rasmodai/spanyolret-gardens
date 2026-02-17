@@ -40,6 +40,7 @@ export default function LeadForm() {
     const [errors, setErrors] = useState<FormErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [submitError, setSubmitError] = useState('');
 
     const timelineOptions = [
         { value: 'immediately', label: 'As soon as possible' },
@@ -86,6 +87,7 @@ export default function LeadForm() {
         if (!validateForm()) return;
 
         setIsSubmitting(true);
+        setSubmitError('');
 
         try {
             const res = await fetch('/api/lead', {
@@ -101,7 +103,7 @@ export default function LeadForm() {
 
             setIsSuccess(true);
         } catch {
-            setErrors({ firstName: 'Something went wrong. Please try again.' });
+            setSubmitError('Something went wrong. Please try again.');
         } finally {
             setIsSubmitting(false);
         }
@@ -284,6 +286,10 @@ export default function LeadForm() {
                                         error={errors.privacyConsent}
                                     />
                                 </div>
+
+                                {submitError && (
+                                    <p className="text-red-500 text-sm text-center">{submitError}</p>
+                                )}
 
                                 <Button
                                     type="submit"

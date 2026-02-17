@@ -6,9 +6,10 @@ import { motion, useInView } from 'framer-motion';
 interface FloatingBadgeProps {
     availableUnits?: number;
     totalUnits?: number;
+    locale?: 'en' | 'hu';
 }
 
-export default function FloatingBadge({ availableUnits = 4, totalUnits = 6 }: FloatingBadgeProps) {
+export default function FloatingBadge({ availableUnits = 4, totalUnits = 6, locale = 'en' }: FloatingBadgeProps) {
     const [isVisible, setIsVisible] = useState(false);
     const [isPulsing, setIsPulsing] = useState(true);
 
@@ -57,11 +58,15 @@ export default function FloatingBadge({ availableUnits = 4, totalUnits = 6 }: Fl
                     {/* Text content */}
                     <div className="text-left">
                         <div className="text-xs text-white/60 font-medium uppercase tracking-wider">
-                            Limited Availability
+                            {locale === 'hu' ? 'Korlátozott elérhetőség' : 'Limited Availability'}
                         </div>
                         <div className="flex items-baseline gap-1">
                             <span className="text-xl font-bold text-white">{availableUnits}</span>
-                            <span className="text-sm text-white/70">of {totalUnits} units remaining</span>
+                            <span className="text-sm text-white/70">
+                                {locale === 'hu'
+                                    ? `/ ${totalUnits} lakás még elérhető`
+                                    : `of ${totalUnits} units remaining`}
+                            </span>
                         </div>
                     </div>
 

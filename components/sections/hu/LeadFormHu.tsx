@@ -16,6 +16,15 @@ interface FormData {
     timeline: string;
     message: string;
     marketingConsent: boolean;
+    privacyConsent: boolean;
+}
+
+interface FormErrors {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    privacyConsent?: string;
 }
 
 export default function LeadFormHu() {
@@ -23,6 +32,7 @@ export default function LeadFormHu() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState('');
+    const [errors, setErrors] = useState<FormErrors>({});
     const [formData, setFormData] = useState<FormData>({
         firstName: '',
         lastName: '',
@@ -31,11 +41,40 @@ export default function LeadFormHu() {
         preferredContact: 'email',
         timeline: '',
         message: '',
-        marketingConsent: false
+        marketingConsent: false,
+        privacyConsent: false
     });
+
+    const validateForm = (): boolean => {
+        const newErrors: FormErrors = {};
+
+        if (!formData.firstName.trim()) {
+            newErrors.firstName = 'A keresztnév megadása kötelező';
+        }
+        if (!formData.lastName.trim()) {
+            newErrors.lastName = 'A vezetéknév megadása kötelező';
+        }
+        if (!formData.email.trim()) {
+            newErrors.email = 'Az e-mail cím megadása kötelező';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = 'Kérjük, adj meg egy érvényes e-mail címet';
+        }
+        if (!formData.phone.trim()) {
+            newErrors.phone = 'A telefonszám megadása kötelező';
+        }
+        if (!formData.privacyConsent) {
+            newErrors.privacyConsent = 'Az adatvédelmi nyilatkozat elfogadása kötelező';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
+        if (!validateForm()) return;
+
         setIsSubmitting(true);
         setSubmitError('');
 
@@ -53,7 +92,7 @@ export default function LeadFormHu() {
 
             setIsSubmitted(true);
         } catch {
-            setSubmitError('Hiba tortent. Kerjuk, probald ujra.');
+            setSubmitError('Hiba történt. Kérjük, próbáld újra.');
         } finally {
             setIsSubmitting(false);
         }
@@ -61,6 +100,9 @@ export default function LeadFormHu() {
 
     const handleChange = (field: keyof FormData, value: string | boolean) => {
         setFormData(prev => ({ ...prev, [field]: value }));
+        if (errors[field as keyof FormErrors]) {
+            setErrors(prev => ({ ...prev, [field]: undefined }));
+        }
     };
 
     if (isSubmitted) {
@@ -120,12 +162,14 @@ export default function LeadFormHu() {
                                     value={formData.firstName}
                                     onChange={(e) => handleChange('firstName', e.target.value)}
                                     required
+                                    error={errors.firstName}
                                 />
                                 <Input
                                     label={t.lastName}
                                     value={formData.lastName}
                                     onChange={(e) => handleChange('lastName', e.target.value)}
                                     required
+                                    error={errors.lastName}
                                 />
                             </div>
 
@@ -136,12 +180,16 @@ export default function LeadFormHu() {
                                     value={formData.email}
                                     onChange={(e) => handleChange('email', e.target.value)}
                                     required
+                                    error={errors.email}
                                 />
                                 <Input
                                     label={t.phone}
                                     type="tel"
                                     value={formData.phone}
                                     onChange={(e) => handleChange('phone', e.target.value)}
+                                    required
+                                    error={errors.phone}
+                                    placeholder="+36 XX XXX XXXX"
                                 />
                             </div>
 
@@ -150,6 +198,7 @@ export default function LeadFormHu() {
                                     label={t.preferredContact}
                                     value={formData.preferredContact}
                                     onChange={(e) => handleChange('preferredContact', e.target.value)}
+                                    placeholder="Válassz az opciók közül"
                                     options={[
                                         { value: 'email', label: t.contactEmail },
                                         { value: 'phone', label: t.contactPhone },
@@ -160,6 +209,7 @@ export default function LeadFormHu() {
                                     label={t.timeline}
                                     value={formData.timeline}
                                     onChange={(e) => handleChange('timeline', e.target.value)}
+                                    placeholder="Válassz az opciók közül"
                                     options={[
                                         { value: 'asap', label: t.timelineAsap },
                                         { value: '6months', label: t.timeline6months },
@@ -182,11 +232,19 @@ export default function LeadFormHu() {
                                 />
                             </div>
 
-                            <Checkbox
-                                label={t.consent}
-                                checked={formData.marketingConsent}
-                                onChange={(e) => handleChange('marketingConsent', e.target.checked)}
-                            />
+                            <div className="space-y-3">
+                                <Checkbox
+                                    label={t.consent}
+                                    checked={formData.marketingConsent}
+                                    onChange={(e) => handleChange('marketingConsent', e.target.checked)}
+                                />
+                                <Checkbox
+                                    label="Elfogadom az adatvédelmi nyilatkozatot és hozzájárulok, hogy megkeressenek az érdeklődésemmel kapcsolatban *"
+                                    checked={formData.privacyConsent}
+                                    onChange={(e) => handleChange('privacyConsent', e.target.checked)}
+                                    error={errors.privacyConsent}
+                                />
+                            </div>
 
                             {submitError && (
                                 <p className="text-red-600 text-sm text-center">{submitError}</p>
@@ -194,7 +252,7 @@ export default function LeadFormHu() {
 
                             <div className="pt-4">
                                 <Button type="submit" variant="primary" className="w-full md:w-auto" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Kuldese...' : t.submit}
+                                    {isSubmitting ? 'Küldés...' : t.submit}
                                 </Button>
                             </div>
 

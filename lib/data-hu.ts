@@ -444,9 +444,9 @@ export const faqsHu = [
 export const uiTextsHu = {
     hero: {
         badge: 'Foglalás nyitva • Csak 6 lakás',
-        headline: 'A családod saját kertje',
-        headlineHighlight: 'vár rátok Budapesten',
-        subheadline: 'Prémium 5 szobás sorházak a Spanyolréten, akár 317 m² saját kerttel, padlófűtéssel és saját parkolóval.',
+        headline: 'Családod saját kertje',
+        headlineHighlight: 'vár rád Budapesten',
+        subheadline: 'Prémium társasházak Spanyolréten, akár 317 m² saját kerttel, padlófűtéssel és saját parkolóval.',
         priceLabel: 'Már',
         priceValue: '220 millió Ft-tól',
         ctaPrimary: 'Időpont egyeztetés',

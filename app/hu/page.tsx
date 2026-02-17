@@ -20,7 +20,7 @@ export default function HomeHu() {
     return (
         <main>
             <NavbarHu />
-            <FloatingBadge availableUnits={4} totalUnits={6} />
+            <FloatingBadge availableUnits={4} totalUnits={6} locale="hu" />
             <HeroHu />
             <TrustBarHu />
             <SectionDivider variant="gradient" />

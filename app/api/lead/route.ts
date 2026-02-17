@@ -19,6 +19,14 @@ interface LeadFormBody {
     lang?: 'en' | 'hu';
 }
 
+function escapeHtml(str: string): string {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
 export async function POST(request: Request) {
     try {
         const body: LeadFormBody = await request.json();
@@ -31,9 +39,18 @@ export async function POST(request: Request) {
         }
 
         const isHungarian = body.lang === 'hu';
+        const firstName = escapeHtml(body.firstName);
+        const lastName = escapeHtml(body.lastName);
+        const email = escapeHtml(body.email);
+        const phone = body.phone ? escapeHtml(body.phone) : '';
+        const timeline = body.timeline ? escapeHtml(body.timeline) : '';
+        const preferredUnit = body.preferredUnit ? escapeHtml(body.preferredUnit) : '';
+        const preferredContact = body.preferredContact ? escapeHtml(body.preferredContact) : '';
+        const message = body.message ? escapeHtml(body.message) : '';
+
         const subject = isHungarian
-            ? `Spanyolret Gardens - Uj erdeklodo: ${body.firstName} ${body.lastName}`
-            : `Spanyolret Gardens - New Lead: ${body.firstName} ${body.lastName}`;
+            ? `Spanyolret Gardens - Uj erdeklodo: ${firstName} ${lastName}`
+            : `Spanyolret Gardens - New Lead: ${firstName} ${lastName}`;
 
         const html = `
             <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -49,36 +66,36 @@ export async function POST(request: Request) {
                     <table style="width: 100%; border-collapse: collapse;">
                         <tr>
                             <td style="padding: 8px 0; font-weight: 600; width: 140px; vertical-align: top;">Name</td>
-                            <td style="padding: 8px 0;">${body.firstName} ${body.lastName}</td>
+                            <td style="padding: 8px 0;">${firstName} ${lastName}</td>
                         </tr>
                         <tr>
                             <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Email</td>
-                            <td style="padding: 8px 0;"><a href="mailto:${body.email}" style="color: #1a3a2a;">${body.email}</a></td>
+                            <td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #1a3a2a;">${email}</a></td>
                         </tr>
-                        ${body.phone ? `
+                        ${phone ? `
                         <tr>
                             <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Phone</td>
-                            <td style="padding: 8px 0;"><a href="tel:${body.phone}" style="color: #1a3a2a;">${body.phone}</a></td>
+                            <td style="padding: 8px 0;"><a href="tel:${phone}" style="color: #1a3a2a;">${phone}</a></td>
                         </tr>` : ''}
-                        ${body.timeline ? `
+                        ${timeline ? `
                         <tr>
                             <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Timeline</td>
-                            <td style="padding: 8px 0;">${body.timeline}</td>
+                            <td style="padding: 8px 0;">${timeline}</td>
                         </tr>` : ''}
-                        ${body.preferredUnit ? `
+                        ${preferredUnit ? `
                         <tr>
                             <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Preferred Unit</td>
-                            <td style="padding: 8px 0;">${body.preferredUnit}</td>
+                            <td style="padding: 8px 0;">${preferredUnit}</td>
                         </tr>` : ''}
-                        ${body.preferredContact ? `
+                        ${preferredContact ? `
                         <tr>
                             <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Preferred Contact</td>
-                            <td style="padding: 8px 0;">${body.preferredContact}</td>
+                            <td style="padding: 8px 0;">${preferredContact}</td>
                         </tr>` : ''}
-                        ${body.message ? `
+                        ${message ? `
                         <tr>
                             <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Message</td>
-                            <td style="padding: 8px 0;">${body.message}</td>
+                            <td style="padding: 8px 0;">${message}</td>
                         </tr>` : ''}
                         <tr>
                             <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Marketing Consent</td>
