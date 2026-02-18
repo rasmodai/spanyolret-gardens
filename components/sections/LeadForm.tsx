@@ -101,6 +101,11 @@ export default function LeadForm() {
 
             if (!res.ok) throw new Error('Submission failed');
 
+            // Fire Meta Pixel Lead event
+            if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+                window.fbq('track', 'Lead');
+            }
+
             setIsSuccess(true);
         } catch {
             setSubmitError('Something went wrong. Please try again.');

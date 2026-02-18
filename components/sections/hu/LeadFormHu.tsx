@@ -90,6 +90,11 @@ export default function LeadFormHu() {
 
             if (!res.ok) throw new Error('Submission failed');
 
+            // Fire Meta Pixel Lead event
+            if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+                window.fbq('track', 'Lead');
+            }
+
             setIsSubmitted(true);
         } catch {
             setSubmitError('Hiba történt. Kérjük, próbáld újra.');
