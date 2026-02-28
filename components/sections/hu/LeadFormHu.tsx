@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useRef, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Input, { Select, Checkbox } from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
-import { CheckCircleIcon } from '@/components/ui/Icons';
 import { uiTextsHu } from '@/lib/data-hu';
+import { track, identify, setUserProperties, timeEvent } from '@/lib/mixpanel';
 
 interface FormData {
     firstName: string;
@@ -28,11 +29,13 @@ interface FormErrors {
 }
 
 export default function LeadFormHu() {
+    const router = useRouter();
     const t = uiTextsHu.leadForm;
-    const [isSubmitted, setIsSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState('');
     const [errors, setErrors] = useState<FormErrors>({});
+    const formStarted = useRef(false);
+    const fieldsInteracted = useRef(new Set<string>());
     const [formData, setFormData] = useState<FormData>({
         firstName: '',
         lastName: '',
@@ -67,11 +70,26 @@ export default function LeadFormHu() {
         }
 
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+        const errorFields = Object.keys(newErrors);
+        if (errorFields.length > 0) {
+            track('Form Validation Failed', {
+                form: 'lead',
+                language: 'hu',
+                error_fields: errorFields,
+                error_count: errorFields.length,
+            });
+        }
+        return errorFields.length === 0;
     };
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        track('Form Submit Attempted', {
+            form: 'lead',
+            language: 'hu',
+            fields_filled: Object.entries(formData).filter(([, v]) => v !== '' && v !== false).map(([k]) => k),
+            fields_interacted: Array.from(fieldsInteracted.current),
+        });
 
         if (!validateForm()) return;
 
@@ -79,24 +97,60 @@ export default function LeadFormHu() {
         setSubmitError('');
 
         try {
+            const eventId = crypto.randomUUID();
+            const getCookie = (name: string) =>
+                document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`))?.[1] || '';
+
             const res = await fetch('/api/lead', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...formData,
                     lang: 'hu',
+                    eventId,
+                    sourceUrl: window.location.href,
+                    fbp: getCookie('_fbp'),
+                    fbc: getCookie('_fbc'),
                 }),
             });
 
             if (!res.ok) throw new Error('Submission failed');
 
-            // Fire Meta Pixel Lead event
+            // Fire Meta Pixel Lead event (deduplicated with server via eventId)
             if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
-                window.fbq('track', 'Lead');
+                window.fbq('track', 'Lead', {}, { eventID: eventId });
             }
 
-            setIsSubmitted(true);
+            // Track successful submission in Mixpanel
+            identify(formData.email);
+            setUserProperties({
+                $first_name: formData.firstName,
+                $last_name: formData.lastName,
+                $email: formData.email,
+                $phone: formData.phone,
+                language: 'hu',
+                timeline: formData.timeline,
+                preferred_contact: formData.preferredContact,
+                marketing_consent: formData.marketingConsent,
+            });
+            track('Form Completed', {
+                form: 'lead',
+                language: 'hu',
+                timeline: formData.timeline,
+                preferred_contact: formData.preferredContact,
+                marketing_consent: formData.marketingConsent,
+                has_message: formData.message.trim().length > 0,
+            });
+            track('Lead Submitted', {
+                form: 'lead',
+                language: 'hu',
+                timeline: formData.timeline,
+                preferred_contact: formData.preferredContact,
+            });
+
+            router.push('/hu/koszonjuk');
         } catch {
+            track('Form Submit Failed', { form: 'lead', language: 'hu' });
             setSubmitError('Hiba történt. Kérjük, próbáld újra.');
         } finally {
             setIsSubmitting(false);
@@ -108,31 +162,16 @@ export default function LeadFormHu() {
         if (errors[field as keyof FormErrors]) {
             setErrors(prev => ({ ...prev, [field]: undefined }));
         }
+        if (!formStarted.current) {
+            formStarted.current = true;
+            timeEvent('Form Completed');
+            track('Form Started', { form: 'lead', language: 'hu' });
+        }
+        if (!fieldsInteracted.current.has(field)) {
+            fieldsInteracted.current.add(field);
+            track('Form Field Interacted', { form: 'lead', field, language: 'hu' });
+        }
     };
-
-    if (isSubmitted) {
-        return (
-            <section id="lead-form" className="section-padding bg-gradient-to-b from-facade to-white">
-                <div className="section-container">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="max-w-xl mx-auto text-center py-16"
-                    >
-                        <div className="w-20 h-20 bg-gradient-to-br from-secondary to-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <CheckCircleIcon size={40} className="text-white" />
-                        </div>
-                        <h2 className="text-3xl font-display font-bold text-anthracite mb-4">
-                            {t.thankYou}
-                        </h2>
-                        <p className="text-gray-600 text-lg">
-                            {t.thankYouMessage}
-                        </p>
-                    </motion.div>
-                </div>
-            </section>
-        );
-    }
 
     return (
         <section id="lead-form" className="section-padding bg-gradient-to-b from-facade to-white relative overflow-hidden">

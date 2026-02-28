@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useRef, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Input, { Select, Checkbox } from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
-import { CheckCircleIcon } from '@/components/ui/Icons';
+import { track, identify, setUserProperties, timeEvent } from '@/lib/mixpanel';
 
 interface FormData {
     firstName: string;
@@ -26,6 +27,7 @@ interface FormErrors {
 }
 
 export default function LeadForm() {
+    const router = useRouter();
     const [formData, setFormData] = useState<FormData>({
         firstName: '',
         lastName: '',
@@ -39,8 +41,9 @@ export default function LeadForm() {
 
     const [errors, setErrors] = useState<FormErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
     const [submitError, setSubmitError] = useState('');
+    const formStarted = useRef(false);
+    const fieldsInteracted = useRef(new Set<string>());
 
     const timelineOptions = [
         { value: 'immediately', label: 'As soon as possible' },
@@ -78,11 +81,26 @@ export default function LeadForm() {
         }
 
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+        const errorFields = Object.keys(newErrors);
+        if (errorFields.length > 0) {
+            track('Form Validation Failed', {
+                form: 'lead',
+                language: 'en',
+                error_fields: errorFields,
+                error_count: errorFields.length,
+            });
+        }
+        return errorFields.length === 0;
     };
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        track('Form Submit Attempted', {
+            form: 'lead',
+            language: 'en',
+            fields_filled: Object.entries(formData).filter(([, v]) => v !== '' && v !== false).map(([k]) => k),
+            fields_interacted: Array.from(fieldsInteracted.current),
+        });
 
         if (!validateForm()) return;
 
@@ -90,24 +108,59 @@ export default function LeadForm() {
         setSubmitError('');
 
         try {
+            const eventId = crypto.randomUUID();
+            const getCookie = (name: string) =>
+                document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`))?.[1] || '';
+
             const res = await fetch('/api/lead', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...formData,
                     lang: 'en',
+                    eventId,
+                    sourceUrl: window.location.href,
+                    fbp: getCookie('_fbp'),
+                    fbc: getCookie('_fbc'),
                 }),
             });
 
             if (!res.ok) throw new Error('Submission failed');
 
-            // Fire Meta Pixel Lead event
+            // Fire Meta Pixel Lead event (deduplicated with server via eventId)
             if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
-                window.fbq('track', 'Lead');
+                window.fbq('track', 'Lead', {}, { eventID: eventId });
             }
 
-            setIsSuccess(true);
+            // Track successful submission in Mixpanel
+            identify(formData.email);
+            setUserProperties({
+                $first_name: formData.firstName,
+                $last_name: formData.lastName,
+                $email: formData.email,
+                $phone: formData.phone,
+                language: 'en',
+                timeline: formData.timeline,
+                preferred_unit: formData.preferredUnit,
+                marketing_consent: formData.marketingConsent,
+            });
+            track('Form Completed', {
+                form: 'lead',
+                language: 'en',
+                timeline: formData.timeline,
+                preferred_unit: formData.preferredUnit,
+                marketing_consent: formData.marketingConsent,
+            });
+            track('Lead Submitted', {
+                form: 'lead',
+                language: 'en',
+                timeline: formData.timeline,
+                preferred_unit: formData.preferredUnit,
+            });
+
+            router.push('/thank-you');
         } catch {
+            track('Form Submit Failed', { form: 'lead', language: 'en' });
             setSubmitError('Something went wrong. Please try again.');
         } finally {
             setIsSubmitting(false);
@@ -119,35 +172,18 @@ export default function LeadForm() {
         if (errors[field as keyof FormErrors]) {
             setErrors(prev => ({ ...prev, [field]: undefined }));
         }
+        // Track first interaction with the form
+        if (!formStarted.current) {
+            formStarted.current = true;
+            timeEvent('Form Completed');
+            track('Form Started', { form: 'lead', language: 'en' });
+        }
+        // Track each field interaction once
+        if (!fieldsInteracted.current.has(field)) {
+            fieldsInteracted.current.add(field);
+            track('Form Field Interacted', { form: 'lead', field, language: 'en' });
+        }
     };
-
-    if (isSuccess) {
-        return (
-            <section id="lead-form" className="section-padding bg-primary text-white">
-                <div className="section-container">
-                    <div className="max-w-xl mx-auto text-center">
-                        <div className="w-20 h-20 mx-auto mb-6 bg-secondary rounded-full flex items-center justify-center">
-                            <CheckCircleIcon size={40} />
-                        </div>
-                        <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
-                            Thank You!
-                        </h2>
-                        <p className="text-xl text-white/80 mb-8">
-                            We'll contact you within 24 hours to schedule your consultation.
-                        </p>
-                        <div className="bg-white/10 rounded-xl p-6">
-                            <p className="text-white/70 mb-4">In the meantime, download our brochure:</p>
-                            <a href="/Spanyolret-gardens.pdf" download>
-                                <Button variant="accent" size="lg">
-                                    Download the Brochure
-                                </Button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        );
-    }
 
     return (
         <section id="lead-form" className="section-padding bg-primary relative overflow-hidden">
