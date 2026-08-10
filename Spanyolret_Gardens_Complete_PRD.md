@@ -100,28 +100,39 @@ timeline:
   delivery: "September 2026"
   
 pricing:
-  range_huf: "195,000,000 - 225,000,000 HUF"
-  range_eur: "~€480,000 - €555,000"
-  additional_parking: "4,000,000 HUF"
+  # Updated 2026-08-08. Supersedes the former 195,000,000-225,000,000 HUF range.
+  public_anchor_huf: "From 240,000,000 HUF"
+  public_anchor_basis: "Turnkey delivery, full landscaping and 1 parking space included"
+  per_unit_pricing: "On request only — never published"
+  first_parking_space: "Included in the anchor"
+  optional_extras: "Chargeable on top — see §6.11. Never described as included."
 ```
+
+> **PRICING POLICY — read before writing any price anywhere.**
+> One figure is public: **from 240,000,000 HUF**, and it never appears without its qualifier — *turnkey, landscaping and one parking space included*. **Do not write "everything included."** The optional extras in §6.11 (second parking space, solar, irrigation, motorised shutters, ceiling heating-cooling) are chargeable on top, so a blanket claim would be misleading — and a buyer who finds a cost after the fact is a buyer who walks. **Per-unit prices are never published**; on the site each unit reads "Price on request" / "Ár kérésre". See `DESIGN.md → Pricing Display Rule`.
 
 ## 2.2 Unit Data (CORRECTED from Architectural Plans)
 
+Areas below are taken from the architectural plans and are the source of truth for every surface shown on the site.
+
 ### Building A (West Side)
 
-| Unit | Internal Area | Ground Floor | First Floor | Terrace | Garden | Price (HUF) |
-|------|---------------|--------------|-------------|---------|--------|-------------|
-| A1 | 117.45 m² | 58.17 m² | 59.28 m² | 6.60 m² | 201.79 m² | 195,000,000 |
-| A2 | 120.27 m² | 59.70 m² | 60.57 m² | 6.60 m² | 147.19 m² | 205,000,000 |
-| A3 | 117.94 m² | 58.50 m² | 59.44 m² | 6.60 m² | 260.01 m² | 215,000,000 |
+| Unit | Internal Area | Ground Floor | First Floor | Terrace | Garden | Price |
+|------|---------------|--------------|-------------|---------|--------|-------|
+| A1 | 117.45 m² | 58.17 m² | 59.28 m² | 6.60 m² | 201.79 m² | On request |
+| A2 | 120.27 m² | 59.70 m² | 60.57 m² | 6.60 m² | 147.19 m² | On request |
+| A3 | 117.94 m² | 58.50 m² | 59.44 m² | 6.60 m² | 260.01 m² | On request |
 
 ### Building B (East Side)
 
-| Unit | Internal Area | Ground Floor | First Floor | Terrace | Garden | Price (HUF) |
-|------|---------------|--------------|-------------|---------|--------|-------------|
-| B1 | 117.38 m² | 58.11 m² | 59.27 m² | 6.60 m² | 185.65 m² | 205,000,000 |
-| B2 | 117.42 m² | 58.04 m² | 59.38 m² | 6.60 m² | 102.12 m² | 195,000,000 |
-| B3 | 117.33 m² | 57.95 m² | 59.38 m² | 6.60 m² | 316.84 m² | 225,000,000 |
+| Unit | Internal Area | Ground Floor | First Floor | Terrace | Garden | Price |
+|------|---------------|--------------|-------------|---------|--------|-------|
+| B1 | 117.38 m² | 58.11 m² | 59.27 m² | 6.60 m² | 185.65 m² | On request |
+| B2 | 117.42 m² | 58.04 m² | 59.38 m² | 6.60 m² | 102.12 m² | On request |
+| B3 | 117.33 m² | 57.95 m² | 59.38 m² | 6.60 m² | 316.84 m² | On request |
+
+> **Superseded per-unit figures, kept for traceability — DO NOT PUBLISH AND DO NOT REUSE.**
+> The previous version of this document listed A1 195,000,000 · A2 205,000,000 · A3 215,000,000 · B1 205,000,000 · B2 195,000,000 · B3 225,000,000 HUF. These predate the 240,000,000 HUF turnkey anchor and have **not** been restated against it. Do not derive a range, a per-m² figure, or a "from" price from them. If per-unit figures are needed for the internal sales sheet, request the current ones from the developer.
 
 ### TypeScript Data Model
 
@@ -136,8 +147,10 @@ interface Unit {
   terraceArea: number;
   gardenArea: number;
   gardenSize: 'small' | 'medium' | 'large' | 'xlarge';
-  price: number;
-  priceEur: number;
+  // NO price / priceEur fields. Per-unit prices are never published, and anything
+  // in this shape reaches the client bundle where it stays readable in devtools.
+  // The single public figure ("from 240,000,000 HUF — turnkey, landscaping and
+  // one parking space included") is a page-level string, not unit data.
   status: 'available' | 'reserved' | 'sold';
   rooms: number;
   bathrooms: number;
@@ -155,8 +168,6 @@ const units: Unit[] = [
     terraceArea: 6.60,
     gardenArea: 201.79,
     gardenSize: 'large',
-    price: 195000000,
-    priceEur: 480000,
     status: 'available',
     rooms: 5,
     bathrooms: 2,
@@ -172,8 +183,6 @@ const units: Unit[] = [
     terraceArea: 6.60,
     gardenArea: 147.19,
     gardenSize: 'medium',
-    price: 205000000,
-    priceEur: 505000,
     status: 'available',
     rooms: 5,
     bathrooms: 2,
@@ -189,8 +198,6 @@ const units: Unit[] = [
     terraceArea: 6.60,
     gardenArea: 260.01,
     gardenSize: 'xlarge',
-    price: 215000000,
-    priceEur: 530000,
     status: 'available',
     rooms: 5,
     bathrooms: 2,
@@ -206,8 +213,6 @@ const units: Unit[] = [
     terraceArea: 6.60,
     gardenArea: 185.65,
     gardenSize: 'large',
-    price: 205000000,
-    priceEur: 505000,
     status: 'available',
     rooms: 5,
     bathrooms: 2,
@@ -223,8 +228,6 @@ const units: Unit[] = [
     terraceArea: 6.60,
     gardenArea: 102.12,
     gardenSize: 'small',
-    price: 195000000,
-    priceEur: 480000,
     status: 'available',
     rooms: 5,
     bathrooms: 2,
@@ -240,8 +243,6 @@ const units: Unit[] = [
     terraceArea: 6.60,
     gardenArea: 316.84,
     gardenSize: 'xlarge',
-    price: 225000000,
-    priceEur: 555000,
     status: 'available',
     rooms: 5,
     bathrooms: 2,
@@ -623,13 +624,16 @@ psychographics:
 
 ## 4.4 Objections (Prepare Responses)
 
+Responses rewritten 2026-08-08. The old set argued; these concede first, then answer. Conceding the true part of an objection is what makes the answer credible — and this buyer can tell the difference.
+
 | Objection | Response | Where to Address |
 |-----------|----------|------------------|
-| "€500K is a lot of money" | "Compare to 10 years of rent (€180K) plus the appreciation in Budapest property. You're building wealth, not paying a landlord." | Pricing section, FAQ |
-| "September 2026 is far away" | "This gives you time to sell existing property, arrange financing, and choose your finishes. Plus you lock in today's price." | Timeline section, FAQ |
-| "XI. District isn't central" | "6-8 minutes to Kelenföld M4 Metro. 20 minutes to city center. But you get space, quiet, and a garden." | Location section |
-| "Only 6 units — what if they're all taken?" | "Exactly. Limited supply in a market with high demand. That's why we recommend scheduling a viewing now." | Urgency elements |
-| "How do we know the quality will be good?" | "50+ completed projects since 2012. Premium materials (Wienerberger, LEGRAND). 30cm sound-insulating party walls." | Developer section |
+| "That is a lot of money" | "It is. What we would say is that your rent is already about €18,000 a year and it buys you 70 m² and no garden. We are not going to tell you that makes the decision for you — but it is the number worth putting next to ours." | Pricing section, FAQ |
+| "September 2026 is far away" | "It is nearly a year. That is long enough to sell a property, arrange financing without rushing it, and choose your own finishes — which you cannot do once a house is finished. If you need to move sooner, we would rather tell you now than in six months." | Timeline section, FAQ |
+| "XI. District isn't central" | "It is not. It is six to eight minutes to Kelenföld M4 and about twenty to the centre. You are trading roughly fifteen minutes for a garden your children can be in without you watching the road." | Location section |
+| "Only 6 units — what if they are all taken?" | "Then they are taken and we will tell you straight away. There is no phase two on this plot. We would rather you knew that than found out after a viewing." | Availability, FAQ |
+| "How do we know the quality will be good?" | "You do not, from a website. So: 30 cm Silka party walls between the houses, 30 cm Wienerberger Porotherm outside, LEGRAND Valena fittings, a Westen Auriga heat pump, and the full specification in writing. Then ask us for addresses of buildings we finished five or six years ago and go and look at them." | Developer section |
+| "We do not speak Hungarian and the purchase process looks complicated" | "It is manageable, and it is our job to make it so. The whole process runs in English, and we will tell you at the start which steps need a Hungarian lawyer and a tax number — not halfway through." | FAQ, Process section |
 
 ---
 
@@ -817,32 +821,37 @@ interface HeroSectionProps {
     text: string;
     action: string;
   };
-  trustBadges?: string[];       // "6 Units" | "From €480K" | "Sept 2026"
+  trustBadges?: string[];       // "6 units" | "102–317 m² garden" | "September 2026"
 }
 ```
 
 ### Content Variants (A/B Test)
 
-**Headline Options:**
+Rewritten 2026-08-08. The former variants leaned on "Awaits" and "Finally", and variant B quoted a garden range of 150–300 m² that does not match the architectural plans (the real range is 102.12–316.84 m²). See `§7.1` for the full rationale.
 
 ```typescript
 const headlineVariants = {
-  A: "Your Family's Private Garden Awaits in Budapest",
-  B: "117m² Townhouse. 150-300m² Garden. Only 6 Units.",
-  C: "Finally: Space for Your Growing Family in Budapest",
-  D: "New-Build Townhouses with Private Gardens. Delivery September 2026."
+  // A is the control. It names the one thing no competitor in the area can claim.
+  A: "A real garden. Not a balcony.",
+  // B leads with the number, for traffic that already knows the category.
+  B: "317 m² of garden. Six houses. One of them is yours.",
+  // C names the buyer's own sentence back to them.
+  C: "Your apartment was fine before the children.",
+  // D is the plain-spoken variant for retargeting, where trust matters more than hook.
+  D: "Six townhouses in Budapest XI. Gardens from 102 to 317 m²."
 };
 ```
 
 **Subheadline:**
 
 ```
-"Premium 5-room townhouses in Spanyolrét with gardens up to 317m², 
-underfloor heating, and dedicated parking. From 195M HUF."
+"Five rooms across two floors, a private garden, and a parking space behind 
+a gate you open from the car. Twenty minutes from the centre of Budapest. 
+Keys September 2026."
 ```
 
-**Primary CTA:** "Schedule a Private Viewing"  
-**Secondary CTA:** "Download Floor Plans"
+**Primary CTA:** "Book a viewing"
+**Secondary CTA:** "See the six gardens"
 
 ### Visual Requirements
 
@@ -859,6 +868,9 @@ underfloor heating, and dedicated parking. From 195M HUF."
 const trustBarItems = [
   { icon: 'building', value: '50+', label: 'Completed Projects' },
   { icon: 'calendar', value: '13', label: 'Years Experience' },
+  // ⚠️ UNVERIFIED — "100% On-Time Delivery" appears nowhere in the verified data
+  // sections of this document; it originates in copy. On a €500k purchase this is
+  // a claim with legal weight. Get written confirmation from S-Patrik Bau or cut it.
   { icon: 'shield', value: '100%', label: 'On-Time Delivery' },
   { icon: 'award', value: 'Premium', label: 'Materials' }
 ];
@@ -897,51 +909,55 @@ interface ProblemSolutionContent {
   }>;
 }
 
+// Rewritten 2026-08-08. Was "Sound Familiar?" — a rhetorical question the reader
+// can answer "no" to and leave. Titles now state the situation. Note that the
+// icon field is retained in the data shape, but DESIGN.md bans icons in coloured
+// circles: render these as numbered rows or plain text, not as an icon grid.
 const content: ProblemSolutionContent = {
-  sectionTitle: "Sound Familiar?",
+  sectionTitle: "Nobody plans to raise two children in seventy square metres.",
   problems: [
     {
       icon: 'compress',
-      title: 'Outgrowing Your Space',
-      description: 'Kids sharing rooms. Work calls from the bedroom. Toys everywhere.'
+      title: 'The office is the corner of the bedroom',
+      description: 'Someone is always on a call. Someone else is always being asked to be quiet.'
     },
     {
       icon: 'tree-slash',
-      title: 'No Outdoor Space',
-      description: 'A balcony isn\'t enough. The kids need grass, fresh air, room to play.'
+      title: 'A balcony is not outside',
+      description: 'You cannot send a five-year-old out to a balcony and get on with your morning.'
     },
     {
       icon: 'car-circle-xmark',
-      title: 'Parking Nightmares',
-      description: 'Circling blocks. Street parking. Carrying groceries three streets.'
+      title: 'Twenty minutes looking for a space',
+      description: 'Then three streets to walk, with the shopping and both children.'
     },
     {
       icon: 'money-bill-wave',
-      title: 'Rent Going Nowhere',
-      description: '€1,500/month to a landlord. €18,000/year not building any equity.'
+      title: '€18,000 a year, and none of it is yours',
+      description: 'At €1,500 a month you have paid for a good part of a house. Someone else owns it.'
     }
   ],
-  transitionText: "There's a better way.",
+  transitionText: "Here is what the same week looks like in Spanyolrét.",
   solutions: [
     {
       icon: 'expand',
-      title: '117m² of Living Space',
-      description: '5 rooms across 2 floors. Home office. Storage. Room to breathe.'
+      title: '117 m², five rooms, two floors',
+      description: 'A room to work in with a door that shuts. A pantry, a utility room, a walk-in wardrobe.'
     },
     {
       icon: 'tree',
-      title: 'Up to 317m² Private Garden',
-      description: 'Your own grass. Weekend barbecues. Kids playing safely outside.'
+      title: 'Between 102 and 316.84 m² of garden',
+      description: 'Hand-sown grass, fenced, with a door from the living room. You can see all of it from the terrace.'
     },
     {
       icon: 'car',
-      title: 'Dedicated Parking',
-      description: 'Drive home. Press remote. Park. Every single day.'
+      title: 'One space, behind a gate you open from the car',
+      description: 'You arrive, the gate opens, you park. That is the whole of it, every day.'
     },
     {
       icon: 'piggy-bank',
-      title: 'Build Real Wealth',
-      description: 'Own premium property in a growing market. Stop paying someone else\'s mortgage.'
+      title: 'The payment goes into something you own',
+      description: 'We are not going to forecast the Budapest market for you. But the money stops leaving.'
     }
   ]
 };
@@ -1009,7 +1025,9 @@ const benefits = [
   {
     icon: 'heat',
     title: 'Heat Pump System',
-    description: 'No gas bills. Westen Auriga heat pump with underfloor heating and cooling. Energy class A.',
+    // ⚠️ "Energy class A" is UNVERIFIED — it appears only here, never in §3
+    // Technical Specifications. Get the energy certificate before publishing a class.
+    description: 'No gas bill, because there is no gas. A Westen Auriga heat pump runs the underfloor heating in winter and the cooling in summer.',
     highlight: 'Save €1,000+/year'
   },
   {
@@ -1084,17 +1102,19 @@ const floorPlanAssets = {
 ### Comparison Table (within section)
 
 ```typescript
+// Sorted smallest garden to largest, so the to-scale garden ribbon
+// (DESIGN.md → Signature Patterns) reads as a rising line.
 const unitComparison = {
   headers: ['Unit', 'Internal', 'Garden', 'Price', 'Status'],
   rows: [
-    ['A1', '117.45 m²', '201.79 m²', '195M HUF', 'Available'],
-    ['A2', '120.27 m²', '147.19 m²', '205M HUF', 'Available'],
-    ['A3', '117.94 m²', '260.01 m²', '215M HUF', 'Available'],
-    ['B1', '117.38 m²', '185.65 m²', '205M HUF', 'Available'],
-    ['B2', '117.42 m²', '102.12 m²', '195M HUF', 'Available'],
-    ['B3', '117.33 m²', '316.84 m²', '225M HUF', 'Available']
+    ['B2', '117.42 m²', '102.12 m²', 'On request', 'Available'],
+    ['A2', '120.27 m²', '147.19 m²', 'On request', 'Available'],
+    ['B1', '117.38 m²', '185.65 m²', 'On request', 'Available'],
+    ['A1', '117.45 m²', '201.79 m²', 'On request', 'Available'],
+    ['A3', '117.94 m²', '260.01 m²', 'On request', 'Available'],
+    ['B3', '117.33 m²', '316.84 m²', 'On request', 'Available']
   ],
-  note: 'All units include 6.60 m² terrace and 1 parking space'
+  note: 'Every unit has the same 6.60 m² terrace and one parking space. The garden is what changes — by more than three times between B2 and B3.'
 };
 ```
 
@@ -1104,8 +1124,11 @@ const unitComparison = {
 
 ```typescript
 const locationContent = {
-  title: "Perfectly Positioned",
-  subtitle: "The best of both worlds: city access with suburban peace",
+  // Rewritten 2026-08-08. Was "Perfectly Positioned" / "The best of both worlds"
+  // — both banned in §7.0. The replacement concedes the trade-off, which is what
+  // makes the rest of the section believable.
+  title: "Twenty minutes from the centre. None of the noise.",
+  subtitle: "Spanyolrét is not central and we are not going to pretend otherwise. What you get for those extra fifteen minutes is a street where nothing happens.",
   address: "1110 Budapest, Spanyolréti út",
   mapCenter: { lat: 47.4584, lng: 19.0234 },
   
@@ -1139,16 +1162,19 @@ const locationContent = {
 
 ```typescript
 const developerContent = {
-  title: "Built by S-Patrik Bau",
-  subtitle: "13 Years of Premium Construction in Budapest",
-  
+  title: "The people who will actually build it",
+  subtitle: "S-Patrik Bau has been building in Budapest since 2012. Fifty-plus finished projects you can go and look at.",
+
   logo: '/images/s-patrik-bau-logo.svg',
-  
+
   stats: [
-    { value: '2012', label: 'Established' },
-    { value: '50+', label: 'Projects Completed' },
-    { value: '100%', label: 'On-Time Delivery' },
-    { value: '13', label: 'Years Experience' }
+    { value: '2012', label: 'Building since' },
+    { value: '50+', label: 'Projects finished' },
+    // ⚠️ UNVERIFIED, see §6.2 — confirm in writing with S-Patrik Bau or cut.
+    { value: '100%', label: 'Delivered on time' },
+    // Derive from the founding year at render time. Do NOT hardcode: the previous
+    // version said "13", written in Dec 2025, and was already wrong by Aug 2026.
+    { value: `${new Date().getFullYear() - 2012}`, label: 'Years building' }
   ],
   
   description: `S-Patrik Bau has been developing premium residential properties 
@@ -1253,39 +1279,30 @@ const specsCategories = [
 
 ```typescript
 const pricingContent = {
-  title: "Transparent Pricing",
-  subtitle: "6 unique units, priced according to size and garden",
-  
+  title: "What the price covers, and what it does not.",
+  subtitle: "From 240,000,000 HUF: the house finished, the garden landscaped, one parking space. You get keys, not a shell. The gardens differ by more than three times between units, so the figure for the one you want comes from us directly.",
+
+  // Order is deliberate: smallest garden to largest, so the ribbon reads as a
+  // rising line. No "Best Value" badge — that is a judgement, not a fact, and
+  // without published prices it is meaningless.
   units: [
     {
       id: 'B2',
       building: 'B',
-      highlight: 'Best Value',
+      highlight: null,
       internal: '117.42 m²',
       garden: '102.12 m²',
-      price: '195,000,000 HUF',
-      priceEur: '~€480,000',
-      features: ['5 rooms', '2 bathrooms', '1 parking', 'Compact garden']
-    },
-    {
-      id: 'A1',
-      building: 'A',
-      highlight: null,
-      internal: '117.45 m²',
-      garden: '201.79 m²',
-      price: '195,000,000 HUF',
-      priceEur: '~€480,000',
-      features: ['5 rooms', '2 bathrooms', '1 parking', 'Large garden']
+      price: 'On request',
+      features: ['5 rooms', '2 bathrooms', '1 parking space']
     },
     {
       id: 'A2',
       building: 'A',
-      highlight: 'Largest Interior',
+      highlight: 'Largest interior',
       internal: '120.27 m²',
       garden: '147.19 m²',
-      price: '205,000,000 HUF',
-      priceEur: '~€505,000',
-      features: ['5 rooms', '2 bathrooms', '1 parking', 'Extra 3m² inside']
+      price: 'On request',
+      features: ['5 rooms', '2 bathrooms', '1 parking space']
     },
     {
       id: 'B1',
@@ -1293,9 +1310,17 @@ const pricingContent = {
       highlight: null,
       internal: '117.38 m²',
       garden: '185.65 m²',
-      price: '205,000,000 HUF',
-      priceEur: '~€505,000',
-      features: ['5 rooms', '2 bathrooms', '1 parking', 'Large garden']
+      price: 'On request',
+      features: ['5 rooms', '2 bathrooms', '1 parking space']
+    },
+    {
+      id: 'A1',
+      building: 'A',
+      highlight: null,
+      internal: '117.45 m²',
+      garden: '201.79 m²',
+      price: 'On request',
+      features: ['5 rooms', '2 bathrooms', '1 parking space']
     },
     {
       id: 'A3',
@@ -1303,42 +1328,44 @@ const pricingContent = {
       highlight: null,
       internal: '117.94 m²',
       garden: '260.01 m²',
-      price: '215,000,000 HUF',
-      priceEur: '~€530,000',
-      features: ['5 rooms', '2 bathrooms', '1 parking', 'XL garden']
+      price: 'On request',
+      features: ['5 rooms', '2 bathrooms', '1 parking space']
     },
     {
       id: 'B3',
       building: 'B',
-      highlight: 'Largest Garden',
+      highlight: 'Largest garden',
       internal: '117.33 m²',
       garden: '316.84 m²',
-      price: '225,000,000 HUF',
-      priceEur: '~€555,000',
-      features: ['5 rooms', '2 bathrooms', '1 parking', '317m² garden!']
+      price: 'On request',
+      features: ['5 rooms', '2 bathrooms', '1 parking space']
     }
   ],
-  
+
   includedInPrice: [
-    'Turnkey delivery (move-in ready)',
-    '1 dedicated parking space',
-    '6.6 m² terrace with porcelain tiles',
-    'Full landscaping (grass, paths, fencing)',
-    'All electrical and plumbing fixtures',
-    'LEGRAND switches and sockets',
-    'Underfloor heating system',
-    'Fan-coil cooling units'
+    'Turnkey delivery — you get keys, not a shell',
+    '1 dedicated parking space behind a remote-controlled gate',
+    '6.6 m² terrace, porcelain tiles',
+    'Landscaping done: hand-sown grass, paths, fencing',
+    'Underfloor heating throughout, fan-coil cooling',
+    'LEGRAND Valena switches and sockets',
+    'All electrical and plumbing fixtures fitted'
   ],
-  
+
+  // CONFIRMED 2026-08-08: these are chargeable on top of the 240,000,000 HUF
+  // anchor. That is why the anchor qualifier names what it covers instead of
+  // claiming "everything included".
+  optionalExtrasHeading: "Priced on top",
+  optionalExtrasNote: "None of the below is in the 240,000,000 HUF figure. We list them here rather than at contract stage, because finding out later is how people end up feeling sold to.",
   optionalExtras: [
-    { item: 'Additional parking space', price: '4,000,000 HUF' },
-    { item: 'Ceiling heating-cooling upgrade', price: 'Quote on request' },
-    { item: 'Roller shutters (motorized)', price: 'Quote on request' },
-    { item: 'Solar panel installation', price: 'Quote on request' },
-    { item: 'Garden irrigation system', price: 'Quote on request' }
+    { item: 'A second parking space', price: '4,000,000 HUF' },
+    { item: 'Ceiling heating and cooling instead of underfloor', price: 'Quote on request' },
+    { item: 'Motorised roller shutters', price: 'Quote on request' },
+    { item: 'Solar panels', price: 'Quote on request' },
+    { item: 'Garden irrigation (the pipework is already prepared)', price: 'Quote on request' }
   ],
-  
-  paymentNote: 'Payment schedule and financing options discussed during consultation'
+
+  paymentNote: 'Payment schedule and financing are set out in the reservation documents. We will walk you through both before you commit to anything.'
 };
 ```
 
@@ -1427,7 +1454,10 @@ const faqs = [
       },
       {
         q: 'What happens if construction is delayed?',
-        a: 'S-Patrik Bau has a 100% on-time delivery track record over 50+ projects. The contract includes provisions for any delays, protecting your interests.'
+        // ⚠️ Was: "S-Patrik Bau has a 100% on-time delivery track record over 50+
+        // projects." That figure is unverified (see §6.2) — do not restore it
+        // without written confirmation from the developer.
+        a: 'The contract sets out what happens if delivery slips, and those provisions are there to protect you, not us — read that clause before you sign anything. S-Patrik Bau has finished more than fifty projects since 2012; ask us for addresses and completion dates and check them yourself.'
       }
     ]
   },
@@ -1521,21 +1551,28 @@ interface LeadFormFields {
 }
 
 const formContent = {
-  title: "Ready to See Your Future Home?",
-  subtitle: "Schedule a private consultation with our team",
-  
-  submitButton: "Request a Viewing",
-  
+  title: "Come and stand in the garden",
+  subtitle: "Bring the children. They will tell you more about 300 m² of grass than we can.",
+
+  submitButton: "Book a viewing",
+
   afterSubmit: {
-    title: "Thank You!",
-    message: "We'll contact you within 24 hours to schedule your consultation.",
+    // The old copy said "within 24 hours" while §1.3 sets first_contact at
+    // < 5 minutes. Promising a day when you intend to call in minutes throws
+    // away the one moment the buyer is paying attention. This wording is honest
+    // in both cases and still beats the category by a wide margin.
+    title: "We have it. Expect a call today.",
+    message: "If you sent this during Budapest office hours, it will be within the hour. Outside them, first thing tomorrow. It will be a person, in English, and they will have your details in front of them.",
     cta: {
-      text: "Download the Brochure Now",
+      text: "The full specification, while you wait",
       link: "/brochure.pdf"
     }
   },
-  
-  privacyNote: "Your information is secure and will only be used to contact you about Spanyolrét Gardens."
+
+  // ⚠️ "Your information is secure" is a claim about infrastructure, not a
+  // privacy notice, and it is the kind of sentence that invites scrutiny it
+  // cannot survive. Say what you do with the data instead.
+  privacyNote: "We use this to contact you about Spanyolrét Gardens. We do not pass it to anyone else, and one email from you removes it."
 };
 ```
 
@@ -1593,95 +1630,140 @@ const footerContent = {
 
 # 7. COPY BANK
 
+> **Rewritten 2026-08-08.** The previous version of this section is superseded in full. It leaned on category clichés ("Awaits", "The Best of Both Worlds", "Quality You Can Count On", "Stop Renting. Start Living.", "we don't just build homes — we build trust"), and it contained a garden range that contradicts the architectural plans. Every string below is written against `DESIGN.md`.
+
+## 7.0 Voice
+
+Read this before writing any new string. The rules are not stylistic preference; each one comes from something specific about this buyer.
+
+**Who is reading.** A Western European or North American parent, 32–48, who has lived in Budapest a few years, works remotely or runs a regional office, and is currently paying €1,200–1,800 a month to a landlord for 60–80 m² with no outdoor space. They have two convictions in tension: the family needs to get out of that apartment, and Hungarian construction cannot be trusted. They are marketed at constantly and they are good at spotting it.
+
+**The one thing they should remember:** a real garden, not a balcony.
+
+Six rules:
+
+1. **Numbers instead of adjectives.** "316.84 m²" does the work "generous" cannot. Every adjective in this document should be asked to justify itself against a number.
+2. **Name the objection before they do.** A buyer afraid of shoddy building is disarmed by you raising it first. Copy that only sells is copy that sounds like it has something to hide.
+3. **No verbs of longing.** No "awaits", "dream", "deserve", "imagine". They are not aspiring to a home; they are solving a problem in their actual week.
+4. **Short sentences. Concrete nouns. Present tense.** "You open the gate from the car" — not "residents benefit from convenient automated access".
+5. **Every claim traceable.** If a buyer asks "how do you know that?", there is an answer that is not "it's marketing". No superlatives that cannot be checked: no "most sought-after", no "unparalleled", no "the finest".
+6. **No manufactured urgency.** Six units is real scarcity. Say the number. Anything beyond that reads as a tactic to exactly this reader and costs more trust than it buys attention.
+
+**Banned constructions**, because they are the tells:
+`X awaits` · `Stop X. Start Y.` · `we don't just X — we Y` · `The best of both worlds` · `Everything you need, nothing you don't` · `Finally:` · `Built for X` / `Designed for Y` · `The home your family deserves` · `Don't miss out` · `Sound familiar?` · exclamation marks in body copy.
+
 ## 7.1 Headlines
 
 ### Hero Headlines
 
 ```typescript
 const heroHeadlines = [
-  "Your Family's Private Garden Awaits in Budapest",
-  "117m² Townhouse. Up to 317m² Garden. Only 6 Units.",
-  "Finally: Space for Your Growing Family in Budapest",
-  "New-Build Townhouses with Private Gardens — September 2026",
-  "The Home Your Family Deserves. The Garden They'll Love.",
-  "Stop Renting. Start Living. Spanyolrét Gardens."
+  // Control. Names the single thing no competitor in Spanyolrét can claim, and
+  // it is the buyer's own complaint from §4.2 turned around.
+  "A real garden. Not a balcony.",
+
+  // For traffic that already knows the category and wants the number.
+  "317 m² of garden. Six houses. One of them is yours.",
+
+  // Their sentence, said back to them. Highest empathy, lowest hype.
+  "Your apartment was fine before the children.",
+
+  // Plain-spoken variant for retargeting, where credibility beats hook.
+  "Six townhouses in Budapest XI. Gardens from 102 to 317 m².",
+
+  // For the quality-anxious segment. Leads with the fear, not the feature.
+  "Ask us what is behind the walls. We wrote it down.",
+
+  // Seasonal / delivery-led.
+  "Keys in September 2026. Grass already sown."
 ];
 ```
+
+The last one is only true if the landscaping schedule supports it — the spec commits to hand-sown grass, but confirm timing before using it.
 
 ### Section Headlines
 
 ```typescript
+// First option in each array is the recommended one.
 const sectionHeadlines = {
   problemSolution: [
-    "Sound Familiar?",
-    "Outgrowing Your Space?",
-    "Ready for More?"
+    "Nobody plans to raise two children in seventy square metres.",
+    "The screens are winning because there is nowhere else to go.",
+    "You have counted what the rent adds up to."
   ],
   propertyOverview: [
-    "Spanyolrét Gardens at a Glance",
-    "Your Future Home",
-    "The Details That Matter"
+    "Two buildings. Six houses. Six different gardens.",
+    "What you are actually buying",
+    "The whole thing, in numbers"
   ],
   benefits: [
-    "Built for Modern Family Life",
-    "Premium Features, Thoughtful Design",
-    "Everything You Need, Nothing You Don't"
+    "The parts you only notice after you move in",
+    "Built for a Tuesday, not for a viewing",
+    "No gas. No street parking. No shared walls you can hear through."
   ],
   floorPlans: [
-    "Choose Your Perfect Unit",
-    "6 Unique Homes, One Exceptional Standard",
-    "Designed for How You Actually Live"
+    "Same house six times. The garden is what changes.",
+    "Where everyone ends up standing",
+    "Five rooms, two floors, and a door to the grass"
   ],
   location: [
-    "Perfectly Positioned",
-    "City Access, Suburban Peace",
-    "The Best of Both Worlds"
+    "Twenty minutes from the centre. None of the noise.",
+    "Spanyolrét is the part of the XI. locals keep to themselves",
+    "Close enough to commute. Far enough to hear nothing."
   ],
   developer: [
-    "Built by S-Patrik Bau",
-    "13 Years of Trust",
-    "Quality You Can Count On"
+    "The people who will actually build it",
+    "Fifty finished projects you can go and look at",
+    "Building in Budapest since 2012"
   ],
   pricing: [
-    "Transparent Pricing",
-    "Your Investment",
-    "No Hidden Costs"
+    "One price. Nothing bolted on afterwards.",
+    "What it costs, and what that includes",
+    "The figure, and where it comes from"
   ],
   process: [
-    "How It Works",
-    "Your Path to Ownership",
-    "Simple Steps to Your New Home"
+    "From this page to your keys",
+    "What happens after you get in touch",
+    "Four steps, and you can stop at any of them"
   ],
   faq: [
-    "Questions? We Have Answers.",
-    "Everything You Need to Know",
-    "Let's Clear Things Up"
+    "The questions people actually ask",
+    "The awkward ones first",
+    "What you are probably wondering"
   ],
   leadForm: [
-    "Ready to See Your Future Home?",
-    "Take the First Step",
-    "Schedule Your Private Viewing"
+    "Come and stand in the garden",
+    "Book a viewing",
+    "Ask us anything, including the price"
   ]
 };
 ```
+
+Notes on the recommended options:
+
+- **problemSolution** — states the situation instead of asking "Sound Familiar?". A rhetorical question invites the reader to answer "no" and leave.
+- **benefits** — "Built for a Tuesday, not for a viewing" is the one deliberately writerly line in the set. It earns its place because it inverts the whole category: everyone else optimises for the showing.
+- **floorPlans** — "Same house six times" sounds like a weakness and is actually the strongest sentence on the page. It tells the buyer the only real decision is the garden, which is exactly where this development wins.
+- **faq** — "The awkward ones first" is only usable if the FAQ genuinely opens with the hard questions (construction quality, foreign purchase, delay risk). If it opens with parking, use option one.
+- **leadForm** — "Come and stand in the garden" converts because it describes a physical act, not a form submission.
 
 ## 7.2 Subheadlines
 
 ```typescript
 const subheadlines = {
-  hero: "Premium 5-room townhouses in Spanyolrét with private gardens up to 317m², underfloor heating, and dedicated parking. From 195M HUF (~€480K).",
+  hero: "Five rooms across two floors, a private garden, and a parking space behind a gate you open from the car. Twenty minutes from the centre of Budapest. Keys September 2026.",
+
+  problemSolution: "You moved here for the work and it went well. Then the second child arrived, the home office became the corner of the bedroom, and you started parking three streets away.",
+
+  benefits: "Thirty-centimetre party walls. No gas connection. A gate you open from the driver's seat. The things you stop thinking about once they are simply true.",
+
+  location: "Six to eight minutes to the Kelenföld M4 by bus, then you are in the centre. Come home and the street is quiet.",
   
-  problemSolution: "You came to Budapest for opportunity. But somewhere along the way, your apartment started feeling smaller, the parking worse, and the rent—pointless.",
-  
-  benefits: "Every detail of Spanyolrét Gardens is designed for comfortable, efficient family living.",
-  
-  location: "The best of both worlds: city access with suburban peace. Connected but quiet.",
-  
-  developer: "Since 2012, S-Patrik Bau has completed over 50 premium residential projects in Budapest.",
-  
-  pricing: "Six unique units, transparently priced. Choose the space that fits your family.",
-  
-  leadForm: "No pressure. Just a conversation about whether Spanyolrét Gardens is right for your family."
+  developer: "S-Patrik Bau has been building in Budapest since 2012, with more than fifty finished projects. Ask us for addresses and go and look at them.",
+
+  pricing: "From 240,000,000 HUF: the house finished, the garden landscaped, one parking space. Extras are priced separately and listed below, not buried in a contract.",
+
+  leadForm: "One visit, no follow-up unless you ask for it. Bring the children, they will tell you more about the garden than we can."
 };
 ```
 
@@ -1690,60 +1772,67 @@ const subheadlines = {
 ### About the Development (Long)
 
 ```
-Spanyolrét Gardens is a collection of six exclusive townhouses in one of 
-Budapest's most sought-after family neighborhoods. Each home offers 
-approximately 117-120 square meters of thoughtfully designed living space 
-across two floors, plus private gardens ranging from 102 to 317 square meters.
+Spanyolrét Gardens is six townhouses on one plot in the XI. District, in two 
+buildings of three. Each house is the same: five rooms over two floors, 117 to 
+120 m² inside, two bathrooms, a 6.6 m² terrace, one parking space.
 
-Built by S-Patrik Bau — developers with over 50 completed projects since 2012 
-— these homes combine premium European construction materials with modern 
-energy-efficient systems. From the 30cm Wienerberger walls to the Westen 
-Auriga heat pump, every element is chosen for quality and longevity.
+What is not the same is the garden. They run from 102 m² to 316.84 m² — the 
+largest is more than three times the smallest, which is why choosing a unit 
+here is really choosing how much grass you want.
 
-Whether you're looking for your first family home in Hungary, upgrading from 
-a cramped city apartment, or seeking a better quality of life for your 
-children, Spanyolrét Gardens offers space, comfort, and peace of mind.
+S-Patrik Bau has been building in Budapest since 2012 and has finished more 
+than fifty projects. The walls between the houses are 30 cm of Silka 
+sound-insulating brick, which is why you will not hear your neighbours; the 
+outside walls are 30 cm Wienerberger Porotherm. There is no gas 
+connection; a Westen Auriga heat pump runs underfloor heating in winter and 
+cooling in summer. The switches are LEGRAND Valena. We are listing brands 
+because you asked the question everyone in Hungary asks first, and a 
+specification is a better answer than a promise.
 
-Delivery: September 2026. Only 6 units available.
+Keys in September 2026. Six houses, and once they are gone there is no phase two.
 ```
 
 ### About the Location (Medium)
 
 ```
-Spanyolrét is one of those Budapest neighborhoods that locals love but 
-few outsiders discover. A quiet pocket of the XI. District, it offers 
-tree-lined streets, established family homes, and a genuine community feel.
+Spanyolrét is a quiet pocket of the XI. District. Tree-lined streets, houses 
+that people have lived in for twenty years, and very little reason for anyone 
+to drive through it.
 
-The Kelenföld M4 Metro station is just 6-8 minutes by bus, putting the city 
-center within easy reach. International schools, shopping centers, and 
-green spaces are all nearby. Yet when you close your front door, you're in 
-a peaceful residential area with none of the noise and chaos of the city.
+The Kelenföld M4 station is six to eight minutes away by bus, and from there 
+the centre is a short ride. International schools, shopping and green space 
+are all within reach. That is the part you can check on a map.
 
-For families, it's the perfect balance: connected enough for commuting and 
-activities, quiet enough for weekend barbecues and children playing in 
-the garden.
+The part you cannot check on a map is what the street sounds like at nine in 
+the evening. Come and hear it before you decide anything.
 ```
+
+> The previous version opened with "one of Budapest's most sought-after family neighborhoods" and then said "few outsiders discover" two lines later. Both cannot be true, and the first is not checkable. Removed.
 
 ### About the Developer (Short)
 
 ```
-S-Patrik Bau has been building premium homes in Budapest since 2012. With 
-over 50 completed projects and a 100% on-time delivery record, we've earned 
-our reputation for quality construction, premium materials, and transparent 
-communication. We don't just build homes — we build trust.
+S-Patrik Bau has been building in Budapest since 2012 and has finished more 
+than fifty projects. Ask us for addresses — several are a short drive from 
+Spanyolrét, and standing in front of a building somebody has lived in for 
+six years tells you more than anything on this page.
 ```
+
+> Removed "we don't just build homes — we build trust" (the tell) and the "100% on-time delivery record" (unverified, see §6.2). The replacement makes a checkable offer instead of a claim, which is stronger for a buyer whose stated fear is construction quality.
 
 ## 7.4 Call-to-Action Copy
 
 ### Primary CTAs
 
 ```typescript
+// Every primary CTA names a physical act or a specific thing received.
+// "Request more information" is what a form does, not what a person wants.
 const primaryCTAs = [
-  "Schedule a Private Viewing",
-  "Book Your Consultation",
-  "Request More Information",
-  "Download the Brochure",
-  "Get Floor Plans & Pricing"
+  "Book a viewing",          // recommended default, both locales
+  "Come and see it",
+  "Ask us the price",        // pairs with the price-on-request policy
+  "Send me the floor plans",
+  "Walk the plot with us"
 ];
 ```
 
@@ -1751,21 +1840,28 @@ const primaryCTAs = [
 
 ```typescript
 const secondaryCTAs = [
-  "View All Units",
-  "See the Floor Plans",
-  "Explore the Location",
-  "Meet the Developer",
-  "Read the FAQ"
+  "See the six gardens",     // recommended — points at the differentiator
+  "Look at the floor plans",
+  "Read the specification",  // for the quality-anxious segment
+  "Where it is",
+  "The awkward questions"     // links to FAQ
 ];
 ```
 
 ### Urgency CTAs
 
 ```typescript
-const urgencyCTAs = [
-  "Only 6 Units — Reserve Yours Today",
-  "Limited Availability — Schedule Now",
-  "Don't Miss Out — Book a Viewing"
+// DELETED 2026-08-08. `DESIGN.md → Anti-Patterns` bans manufactured urgency,
+// and this buyer reads it as a tactic. Six units is genuine scarcity: state the
+// number in body copy and let it work on its own.
+//
+// Removed: "Only 6 Units — Reserve Yours Today", "Limited Availability —
+// Schedule Now", "Don't Miss Out — Book a Viewing".
+//
+// If scarcity must be expressed in a CTA, the honest form is a fact, not a push:
+const scarcityFacts = [
+  "Four of six still available",   // only if kept accurate in real time
+  "Six houses. No phase two."
 ];
 ```
 
@@ -1799,24 +1895,27 @@ const emailSubjects = {
 
 ## 7.6 Social Proof Copy
 
-### Testimonial Placeholders (Update with real ones)
+### Testimonials — do not ship placeholders
 
 ```typescript
-const testimonials = [
-  {
-    quote: "After three years in a downtown apartment, our kids finally have space to play. The garden was the deciding factor.",
-    author: "The [Family Name]",
-    origin: "UK → Budapest",
-    unit: "Unit A2"
-  },
-  {
-    quote: "S-Patrik Bau made the whole process stress-free. Everything was in English, every question answered quickly.",
-    author: "[Name]",
-    origin: "Germany → Budapest",
-    unit: "Unit B1"
-  }
-];
+// DELETED 2026-08-08. The previous entries were invented quotes attributed to
+// "The [Family Name]" and "[Name]". `DESIGN.md → Anti-Patterns` bans invented
+// testimonials outright, and a placeholder quote is the single fastest way to
+// lose a buyer who is already worried about being sold to.
+//
+// Nothing ships in this slot until a real buyer has given written permission,
+// with their real name. Until then the section does not exist — an empty page
+// is not a problem, a fabricated quote is.
+const testimonials: Testimonial[] = [];
 ```
+
+**The stronger substitute, available today.** This development has not sold a unit yet, so it has no buyers to quote. It does have fifty-plus finished projects. Social proof that is true right now:
+
+- Addresses of completed S-Patrik Bau buildings near Spanyolrét, so a buyer can go and look at six-year-old workmanship themselves. Verifiable, and far more persuasive to this reader than a quote.
+- The specification itself, published in full. Naming Wienerberger and LEGRAND Valena in writing is a claim the developer can be held to.
+- The architect on record: JRT Stúdió Kft.
+
+Offer the drive-past, not the quote. It costs nothing and it answers the actual objection.
 
 ---
 
@@ -2285,10 +2384,18 @@ long_tail_keywords:
 ### On-Page SEO
 
 ```yaml
-title_tag: "Spanyolrét Gardens | Premium Townhouses with Private Gardens | Budapest"
-meta_description: "6 exclusive new-build townhouses in Budapest XI. 117m² living space + up to 317m² private garden. Heat pump, underfloor heating, premium materials. From €480K. Delivery Sept 2026."
+# Rewritten 2026-08-08. The old description quoted "From €480K", now superseded
+# by the turnkey anchor, and led with "exclusive" — a word that costs a
+# character and says nothing. Lead with the garden, because that is the search
+# intent nobody else in the district can satisfy.
+title_tag: "Spanyolrét Gardens | Townhouses with 102–317 m² private gardens | Budapest XI."
+meta_description: "Six new-build townhouses in Budapest's XI. District. Five rooms, 117 m² inside, and a private garden of 102 to 317 m² — not a balcony. Turnkey from 240M HUF, landscaping and parking included. Keys September 2026."
 
-h1: "Premium Townhouses with Private Gardens in Budapest"
+h1: "A real garden. Not a balcony."
+
+# The h1 must match the hero headline shipped in production. If A/B testing
+# changes the hero (see §6.1), change this too — a page whose h1 disagrees with
+# its own headline is a ranking and a trust problem.
 
 url_structure:
   home: "/"
@@ -2335,14 +2442,16 @@ url_structure:
     },
     "priceSpecification": {
       "@type": "PriceSpecification",
-      "price": "195000000",
       "priceCurrency": "HUF",
-      "minPrice": "195000000",
-      "maxPrice": "225000000"
+      "minPrice": "240000000",
+      "valueAddedTaxIncluded": true,
+      "description": "From 240,000,000 HUF: turnkey delivery, full landscaping and one parking space included. Optional extras are priced separately. Per-unit pricing on request."
     }
   }
 }
 ```
+
+> **Structured data publishes prices even when the page does not.** The former block declared `price: 195000000` with a `195M–225M` range — Google surfaces those figures in rich results, so leaving them here would have leaked exactly what the pricing policy forbids while the visible page said "on request". Only `minPrice` is declared now, set to the public anchor. Do not add `maxPrice` or per-unit `Offer` entries.
 
 ## 11.2 Analytics Setup
 
