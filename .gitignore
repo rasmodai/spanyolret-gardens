@@ -40,3 +40,9 @@ Thumbs.db
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Credentials — never commit. google_token.pickle is a live Google OAuth token
+# and was sitting untracked but unignored, one `git add -A` from being pushed.
+google_token.pickle
+*.pickle
+service-account*.json
