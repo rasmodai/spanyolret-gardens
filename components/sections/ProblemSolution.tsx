@@ -1,89 +1,70 @@
-import {
-    CompressIcon,
-    TreeIcon,
-    CarIcon,
-    MoneyIcon,
-    ExpandIcon,
-    PiggyBankIcon
-} from '@/components/ui/Icons';
+'use client';
+
 import { problems, solutions } from '@/lib/data';
 
+/* Was: two four-column grids of icons in coloured circles — red circles for
+ * the problems, green for the solutions — joined by "There's a better way."
+ * between two decorative rules. Icon-in-circle grids are banned, the default
+ * red/green palette is not in this system, and that transition line is the
+ * exact register PRD §7.0 rules out.
+ *
+ * The content is inherently a comparison, so it is set as one: the week you
+ * have now against the same week here, paired row by row. No transition
+ * sentence needed — the layout is the argument.
+ */
 export default function ProblemSolution() {
-    const getProblemIcon = (iconName: string) => {
-        const icons: Record<string, React.ReactNode> = {
-            compress: <CompressIcon size={32} />,
-            'tree-slash': <TreeIcon size={32} />,
-            'car-xmark': <CarIcon size={32} />,
-            money: <MoneyIcon size={32} />
-        };
-        return icons[iconName] || null;
-    };
-
-    const getSolutionIcon = (iconName: string) => {
-        const icons: Record<string, React.ReactNode> = {
-            expand: <ExpandIcon size={32} />,
-            tree: <TreeIcon size={32} />,
-            car: <CarIcon size={32} />,
-            'piggy-bank': <PiggyBankIcon size={32} />
-        };
-        return icons[iconName] || null;
-    };
+    const pairs = problems.map((problem, i) => ({ problem, solution: solutions[i] }));
 
     return (
-        <section id="problem-solution" className="section-padding bg-white">
+        <section id="problem-solution" className="section-padding border-t border-line bg-paper">
             <div className="section-container">
-                {/* Section Header */}
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-anthracite mb-4">
-                        Sound Familiar?
+                <div className="eyebrow">Why people move</div>
+
+                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                    <h2 className="display-l text-ink">
+                        Nobody plans to raise two children in seventy square metres.
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        You came to Budapest for opportunity. But somewhere along the way, your apartment
-                        started feeling smaller, the parking worse, and the rent — pointless.
+                    <p className="lede self-end">
+                        You moved here for the work and it went well. Then the second child arrived, the
+                        home office became the corner of the bedroom, and you started parking three
+                        streets away.
                     </p>
                 </div>
 
-                {/* Problems */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                    {problems.map((problem, index) => (
-                        <div
-                            key={index}
-                            className="bg-red-50 border border-red-100 rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300"
-                        >
-                            <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center text-red-600">
-                                {getProblemIcon(problem.icon)}
-                            </div>
-                            <h3 className="text-lg font-bold text-anthracite mb-2">{problem.title}</h3>
-                            <p className="text-gray-600 text-sm">{problem.description}</p>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Transition */}
-                <div className="text-center py-8">
-                    <div className="inline-flex items-center gap-4">
-                        <div className="h-px w-12 bg-gray-300" />
-                        <span className="text-2xl md:text-3xl font-display font-bold text-secondary">
-                            There's a better way.
-                        </span>
-                        <div className="h-px w-12 bg-gray-300" />
+                <div className="mt-14">
+                    <div className="hidden grid-cols-2 gap-x-16 border-b border-line pb-3 md:grid">
+                        <p className="caption">Your week now</p>
+                        <p className="caption !text-lawn">The same week here</p>
                     </div>
-                </div>
 
-                {/* Solutions */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {solutions.map((solution, index) => (
-                        <div
-                            key={index}
-                            className="bg-green-50 border border-green-100 rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300"
-                        >
-                            <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                                {getSolutionIcon(solution.icon)}
+                    <dl>
+                        {pairs.map(({ problem, solution }) => (
+                            <div
+                                key={problem.title}
+                                className="grid gap-x-16 gap-y-6 border-b border-line py-7 md:grid-cols-2"
+                            >
+                                <div>
+                                    <dt className="font-display text-lg leading-snug text-ink-soft">
+                                        {problem.title}
+                                    </dt>
+                                    <dd className="mt-2 max-w-[42ch] text-[0.9375rem] leading-relaxed text-ink-soft">
+                                        {problem.description}
+                                    </dd>
+                                </div>
+
+                                {solution && (
+                                    <div className="border-l border-line pl-6 md:border-l-0 md:pl-0">
+                                        <dt className="font-display text-lg leading-snug text-ink">
+                                            {solution.title}
+                                        </dt>
+                                        <dd className="mt-2 max-w-[42ch] text-[0.9375rem] leading-relaxed text-ink-soft">
+                                            {solution.description}
+                                        </dd>
+                                    </div>
+                                )}
                             </div>
-                            <h3 className="text-lg font-bold text-anthracite mb-2">{solution.title}</h3>
-                            <p className="text-gray-600 text-sm">{solution.description}</p>
-                        </div>
-                    ))}
+                        ))}
+                    </dl>
                 </div>
             </div>
         </section>

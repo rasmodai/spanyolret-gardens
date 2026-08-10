@@ -1,83 +1,60 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { units } from '@/lib/data';
+import { scrollToElement } from '@/lib/utils';
 
 interface FloatingBadgeProps {
-    availableUnits?: number;
-    totalUnits?: number;
     locale?: 'en' | 'hu';
 }
 
-export default function FloatingBadge({ availableUnits = 4, totalUnits = 6, locale = 'en' }: FloatingBadgeProps) {
+/* Was: a navy gradient pill with a pulsing ring, backdrop blur, a hover scale
+ * and the words "Limited Availability" — manufactured urgency, banned by
+ * DESIGN.md → Anti-Patterns, and read as a sales tactic by exactly this buyer.
+ *
+ * The underlying number is genuinely true (two of the six are marked sold in
+ * lib/data.ts), so the fact stays and the theatre goes. It is derived from the
+ * data rather than passed in as a prop that defaulted to 4 and would have gone
+ * stale the moment a unit sold.
+ *
+ * It only appears once the hero has scrolled past. On a 375px viewport it was
+ * otherwise sitting on top of the hero's second CTA — and gating on scroll
+ * fixes that at the root rather than hiding the badge on small screens.
+ */
+export default function FloatingBadge({ locale = 'en' }: FloatingBadgeProps) {
     const [isVisible, setIsVisible] = useState(false);
-    const [isPulsing, setIsPulsing] = useState(true);
 
     useEffect(() => {
-        // Show badge after a short delay
-        const timer = setTimeout(() => setIsVisible(true), 2000);
-        return () => clearTimeout(timer);
+        const onScroll = () => setIsVisible(window.scrollY > window.innerHeight * 0.9);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
-    const scrollToFloorPlans = () => {
-        document.getElementById('floor-plans')?.scrollIntoView({ behavior: 'smooth' });
-        setIsPulsing(false);
-    };
+    const total = units.length;
+    const available = units.filter((u) => u.status === 'available').length;
 
-    if (!isVisible) return null;
+    if (available === 0) return null;
+
+    const label =
+        locale === 'hu'
+            ? `${available} szabad a ${total} házból`
+            : `${available} of ${total} still available`;
 
     return (
-        <motion.button
-            initial={{ opacity: 0, x: 100, scale: 0.8 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-            onClick={scrollToFloorPlans}
-            className="fixed bottom-6 right-6 z-40 group"
+        <button
+            type="button"
+            onClick={() => scrollToElement('floor-plans')}
+            aria-hidden={!isVisible}
+            tabIndex={isVisible ? 0 : -1}
+            className={`fixed bottom-0 right-0 z-40 border-l border-t border-line bg-paper px-5 py-3 text-left transition-[opacity,transform] duration-medium ease-enter hover:bg-paper-deep ${
+                isVisible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-full opacity-0'
+            }`}
         >
-            <div className="relative">
-                {/* Pulse ring animation */}
-                {isPulsing && (
-                    <div className="absolute inset-0 rounded-2xl bg-secondary/40 animate-ping" />
-                )}
-
-                {/* Main badge */}
-                <div
-                    className="relative flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border border-white/10 transition-all duration-300 group-hover:scale-105 group-hover:shadow-secondary/30"
-                    style={{
-                        background: 'linear-gradient(135deg, rgba(27, 59, 111, 0.95), rgba(10, 22, 40, 0.98))',
-                        backdropFilter: 'blur(20px)',
-                    }}
-                >
-                    {/* Icon */}
-                    <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-secondary to-green-500 shadow-lg shadow-secondary/30">
-                        <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                    </div>
-
-                    {/* Text content */}
-                    <div className="text-left">
-                        <div className="text-xs text-white/60 font-medium uppercase tracking-wider">
-                            {locale === 'hu' ? 'Korlátozott elérhetőség' : 'Limited Availability'}
-                        </div>
-                        <div className="flex items-baseline gap-1">
-                            <span className="text-xl font-bold text-white">{availableUnits}</span>
-                            <span className="text-sm text-white/70">
-                                {locale === 'hu'
-                                    ? `/ ${totalUnits} lakás még elérhető`
-                                    : `of ${totalUnits} units remaining`}
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Arrow indicator */}
-                    <div className="ml-2 text-white/40 group-hover:text-white/70 transition-colors">
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </motion.button>
+            <span className="measure text-[0.9375rem] text-ink">{label}</span>
+            <span className="caption ml-3 hidden sm:inline">
+                {locale === 'hu' ? 'Alaprajzok' : 'Floor plans'} →
+            </span>
+        </button>
     );
 }

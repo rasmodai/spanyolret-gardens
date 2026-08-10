@@ -1,70 +1,83 @@
-import { type ClassValue, clsx } from 'clsx';
+export type Locale = 'en' | 'hu';
 
 // Simple classname merger (like tailwind-merge but lighter)
 export function cn(...inputs: (string | undefined | null | false)[]): string {
     return inputs.filter(Boolean).join(' ');
 }
 
-// Format price in HUF
-export function formatPriceHUF(price: number): string {
-    return new Intl.NumberFormat('hu-HU').format(price) + ' HUF';
+/* Formatting — one convention per locale, never mixed.
+ *
+ *            English                Hungarian
+ * thousands  240,000,000            240 000 000  (non-breaking space)
+ * decimal    117.45 m²              117,45 m²
+ * currency   HUF                    Ft, postfix
+ * date       September 2026         2026. szeptember
+ *
+ * The previous helpers formatted with Intl('hu-HU') and then appended the
+ * string ' HUF', producing Hungarian grouping with an English currency code —
+ * correct in neither locale. They were also unused, so they are gone rather
+ * than fixed: an unused formatter that quietly does the wrong thing is worse
+ * than no formatter.
+ *
+ * There is deliberately NO per-unit price formatter. Per-unit prices are never
+ * published (DESIGN.md → Pricing Display Rule); the single public figure is a
+ * page-level string that lives in lib/data.ts and lib/data-hu.ts.
+ */
+
+const INTL_LOCALE: Record<Locale, string> = { en: 'en-GB', hu: 'hu-HU' };
+
+/** Area with the locale's decimal separator. Trailing ",00" / ".00" dropped. */
+export function formatArea(area: number, locale: Locale = 'en'): string {
+    const formatted = new Intl.NumberFormat(INTL_LOCALE[locale], {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+    }).format(area);
+    return `${formatted} m²`;
 }
 
-// Format price in EUR
-export function formatPriceEUR(price: number): string {
-    return '~€' + new Intl.NumberFormat('en-US').format(price);
+/** Whole-number area range, e.g. "102–317 m²". En dash, not a hyphen. */
+export function formatAreaRange(min: number, max: number, locale: Locale = 'en'): string {
+    const nf = new Intl.NumberFormat(INTL_LOCALE[locale], { maximumFractionDigits: 0 });
+    return `${nf.format(min)}–${nf.format(max)} m²`;
 }
 
-// Format price shorthand (e.g., 195M HUF)
-export function formatPriceShort(price: number): string {
-    return (price / 1000000).toFixed(0) + 'M HUF';
-}
+export type UnitStatus = 'available' | 'reserved' | 'sold';
 
-// Format area in m²
-export function formatArea(area: number): string {
-    return area.toFixed(2).replace('.00', '') + ' m²';
-}
-
-// Format area range
-export function formatAreaRange(min: number, max: number): string {
-    return `${min.toFixed(0)}-${max.toFixed(0)}m²`;
-}
-
-// Scroll to element
-export function scrollToElement(elementId: string): void {
-    const element = document.getElementById(elementId);
-    if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-}
-
-// Get garden size label
-export function getGardenSizeLabel(size: 'small' | 'medium' | 'large' | 'xlarge'): string {
-    const labels = {
-        small: 'Compact garden',
-        medium: 'Medium garden',
-        large: 'Large garden',
-        xlarge: 'XL garden'
-    };
-    return labels[size];
-}
-
-// Get status styles
-export function getStatusStyles(status: 'available' | 'reserved' | 'sold'): string {
-    const styles = {
-        available: 'bg-green-100 text-green-800',
-        reserved: 'bg-yellow-100 text-yellow-800',
-        sold: 'bg-red-100 text-red-800'
+/* Status colours come from the design tokens. The previous version returned
+ * `bg-green-100 text-green-800` and friends — Tailwind defaults that exist
+ * nowhere in DESIGN.md. */
+export function getStatusStyles(status: UnitStatus): string {
+    const styles: Record<UnitStatus, string> = {
+        available: 'text-lawn border-lawn',
+        reserved: 'text-warn border-warn',
+        sold: 'text-ink-soft border-ink-soft',
     };
     return styles[status];
 }
 
-// Get status label
-export function getStatusLabel(status: 'available' | 'reserved' | 'sold'): string {
-    const labels = {
-        available: 'Available',
-        reserved: 'Reserved',
-        sold: 'Sold'
-    };
-    return labels[status];
+/* Labels are localised. The previous version returned hardcoded English from a
+ * helper shared by both locales, so "Available" leaked onto the Hungarian page. */
+const STATUS_LABELS: Record<Locale, Record<UnitStatus, string>> = {
+    en: { available: 'Available', reserved: 'Reserved', sold: 'Sold' },
+    hu: { available: 'Szabad', reserved: 'Foglalt', sold: 'Elkelt' },
+};
+
+export function getStatusLabel(status: UnitStatus, locale: Locale = 'en'): string {
+    return STATUS_LABELS[locale][status];
+}
+
+/* Garden ribbon (DESIGN.md → Signature Patterns). Width is always derived from
+ * the data, scaled against the largest garden in the development. Never
+ * hardcode a percentage: if a unit's area changes, the bars must follow. */
+export function gardenRibbonWidth(gardenArea: number, largestGarden: number): number {
+    if (largestGarden <= 0) return 0;
+    return Math.max(0, Math.min(100, (gardenArea / largestGarden) * 100));
+}
+
+export function scrollToElement(elementId: string): void {
+    const element = document.getElementById(elementId);
+    if (element) {
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        element.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+    }
 }

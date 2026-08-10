@@ -10,11 +10,11 @@ export default function SectionDivider({ variant = 'gradient', className = '' }:
         return (
             <div className={`relative py-4 overflow-hidden ${className}`}>
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+                    <div className="w-full max-w-4xl h-px bg-paper-deep" />
                 </div>
                 {/* Center accent dot */}
                 <div className="relative flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-gradient-to-r from-accent to-oak-light shadow-lg shadow-accent/20" />
+                    <div className="w-2 h-2 rounded-full bg-paper-deep shadow-lg shadow-accent/20" />
                 </div>
             </div>
         );
@@ -24,7 +24,7 @@ export default function SectionDivider({ variant = 'gradient', className = '' }:
         return (
             <div className={`py-8 ${className}`}>
                 <div className="section-container">
-                    <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+                    <div className="h-px bg-paper-deep" />
                 </div>
             </div>
         );
@@ -35,12 +35,12 @@ export default function SectionDivider({ variant = 'gradient', className = '' }:
             <div className={`relative py-12 overflow-hidden ${className}`}>
                 {/* Decorative accent line */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-32 h-0.5 bg-gradient-to-r from-primary via-accent to-secondary rounded-full opacity-60" />
+                    <div className="w-32 h-0.5 bg-paper-deep rounded-full opacity-60" />
                 </div>
                 {/* Side lines */}
                 <div className="absolute inset-0 flex items-center">
-                    <div className="flex-1 h-px bg-gradient-to-r from-transparent to-gray-200 mr-20" />
-                    <div className="flex-1 h-px bg-gradient-to-l from-transparent to-gray-200 ml-20" />
+                    <div className="flex-1 h-px bg-paper-deep mr-20" />
+                    <div className="flex-1 h-px bg-paper-deep ml-20" />
                 </div>
             </div>
         );

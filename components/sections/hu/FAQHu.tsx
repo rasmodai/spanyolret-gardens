@@ -1,120 +1,73 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDownIcon } from '@/components/ui/Icons';
-import { faqsHu, uiTextsHu } from '@/lib/data-hu';
+import { faqsHu } from '@/lib/data-hu';
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1,
-            delayChildren: 0.1
-        }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.5,
-            ease: 'easeOut' as const
-        }
-    }
-};
-
+/* Mirror of components/sections/FAQ.tsx. */
 export default function FAQHu() {
-    const [activeCategory, setActiveCategory] = useState(faqsHu[0].category);
-    const [openQuestion, setOpenQuestion] = useState<string | null>(null);
-    const t = uiTextsHu.faq;
-
-    const currentCategory = faqsHu.find(cat => cat.category === activeCategory);
+    const [open, setOpen] = useState<string | null>(null);
 
     return (
-        <section id="faq" className="section-padding bg-white relative overflow-hidden">
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute inset-0 noise-overlay opacity-[0.01]" />
-                <div className="absolute top-20 left-20 w-80 h-80 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl animate-[breathe_10s_ease-in-out_infinite]" />
-                <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-tl from-secondary/5 to-transparent rounded-full blur-3xl animate-[breathe_12s_ease-in-out_infinite_2s]" />
-            </div>
+        <section id="faq" className="section-padding border-t border-line bg-paper">
+            <div className="section-container">
+                <div className="eyebrow">Kérdések</div>
 
-            <div className="section-container relative z-10">
-                <div className="text-center mb-12">
-                    <span className="section-badge mb-4">{t.badge}</span>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-anthracite mb-4">
-                        {t.title}
+                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                    <h2 className="display-l wrap-compound text-ink">
+                        Amit valóban meg szoktak kérdezni.
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        {t.subtitle}
+                    <p className="lede wrap-compound self-end">
+                        Ha a tiéd nincs köztük, tedd fel az alábbi űrlapon — egyenes választ kapsz, azokra
+                        is, ahol a válasz az, hogy „ezt még nem tudjuk”.
                     </p>
                 </div>
 
-                {/* Category Tabs */}
-                <div className="flex flex-wrap justify-center gap-2 mb-10">
-                    {faqsHu.map((cat) => (
-                        <button
-                            key={cat.category}
-                            onClick={() => {
-                                setActiveCategory(cat.category);
-                                setOpenQuestion(null);
-                            }}
-                            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === cat.category
-                                ? 'bg-primary text-white shadow-lg'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                }`}
-                        >
-                            {cat.category}
-                        </button>
+                <div className="mt-12 grid gap-x-16 gap-y-10 lg:grid-cols-2">
+                    {faqsHu.map((group) => (
+                        <section key={group.category} aria-labelledby={`faq-hu-${group.category}`}>
+                            <h3
+                                id={`faq-hu-${group.category}`}
+                                className="caption wrap-compound border-b border-line pb-3"
+                            >
+                                {group.category}
+                            </h3>
+
+                            <dl>
+                                {group.questions.map((item) => {
+                                    const id = `${group.category}-${item.q}`;
+                                    const isOpen = open === id;
+                                    return (
+                                        <div key={id} className="border-b border-line">
+                                            <dt>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setOpen(isOpen ? null : id)}
+                                                    aria-expanded={isOpen}
+                                                    className="flex w-full items-baseline justify-between gap-5 py-4 text-left transition-colors duration-short hover:text-lawn"
+                                                >
+                                                    <span className="wrap-compound text-[1.0625rem] leading-snug text-ink">
+                                                        {item.q}
+                                                    </span>
+                                                    <span
+                                                        aria-hidden="true"
+                                                        className="measure shrink-0 text-sm text-ink-soft"
+                                                    >
+                                                        {isOpen ? '−' : '+'}
+                                                    </span>
+                                                </button>
+                                            </dt>
+                                            {isOpen && (
+                                                <dd className="animate-rise wrap-compound max-w-[62ch] pb-5 pr-8 text-[0.9375rem] leading-relaxed text-ink-soft">
+                                                    {item.a}
+                                                </dd>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </dl>
+                        </section>
                     ))}
                 </div>
-
-                {/* Questions */}
-                <motion.div
-                    key={activeCategory}
-                    initial="hidden"
-                    animate="visible"
-                    variants={containerVariants}
-                    className="max-w-3xl mx-auto"
-                >
-                    {currentCategory?.questions.map((item, index) => (
-                        <motion.div
-                            key={index}
-                            variants={itemVariants}
-                            className="mb-4"
-                        >
-                            <button
-                                onClick={() => setOpenQuestion(openQuestion === item.q ? null : item.q)}
-                                className="w-full flex items-center justify-between p-5 bg-gray-50 hover:bg-gray-100 rounded-2xl transition-all duration-300 text-left group"
-                            >
-                                <span className="font-semibold text-anthracite pr-4">{item.q}</span>
-                                <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center transition-transform duration-300 ${openQuestion === item.q ? 'rotate-180' : ''
-                                    }`}>
-                                    <ChevronDownIcon size={18} className="text-gray-500" />
-                                </div>
-                            </button>
-                            <AnimatePresence>
-                                {openQuestion === item.q && (
-                                    <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: 'auto', opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3 }}
-                                        className="overflow-hidden"
-                                    >
-                                        <div className="p-5 pt-2 text-gray-600 leading-relaxed">
-                                            {item.a}
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </motion.div>
-                    ))}
-                </motion.div>
             </div>
         </section>
     );

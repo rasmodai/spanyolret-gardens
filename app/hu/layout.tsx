@@ -1,12 +1,15 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Spanyolrét Gardens | Prémium sorházak saját kerttel | Budapest XI. kerület',
-    description: '6 exkluzív új építésű sorház Budapest XI. kerületében. 117 m² belső tér + akár 317 m² saját kert. Hőszivattyú, padlófűtés, prémium anyagok. Átadás 2026 őszén.',
-    keywords: 'új építésű sorház Budapest, sorház kerttel Budapest, családi ház Budapest, ingatlan XI. kerület, eladó sorház Spanyolrét',
+    title: 'Spanyolrét Gardens | Sorházak 102–317 m² saját kerttel | Budapest XI.',
+    description:
+        'Hat új építésű sorház Budapest XI. kerületében. Öt szoba, 117 m² belső tér és 102–317 m² saját kert — nem erkély. Kulcsrakészen 240 millió Ft-tól, kertépítéssel és parkolóval. Kulcsátadás 2026 szeptemberében.',
+    keywords:
+        'új építésű sorház Budapest, sorház kerttel Budapest, családi ház Budapest, ingatlan XI. kerület, eladó sorház Spanyolrét',
     openGraph: {
-        title: 'Spanyolrét Gardens | Prémium sorházak saját kerttel | Budapest',
-        description: '6 exkluzív új építésű sorház Budapest XI. kerületében. 117 m² belső tér + akár 317 m² saját kert.',
+        title: 'Saját kert. Nem erkély. | Spanyolrét Gardens',
+        description:
+            'Hat sorház Budapest XI. kerületében, 102–317 m² saját kerttel. Kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban. Kulcsátadás 2026 szeptemberében.',
         type: 'website',
         locale: 'hu_HU',
     },
@@ -17,5 +20,14 @@ export default function HungarianLayout({
 }: {
     children: React.ReactNode;
 }) {
-    return children;
+    /* The root layout owns <html lang="en"> and a nested layout cannot change
+     * it, so the Hungarian subtree was inheriting English. That breaks
+     * hyphenation of compounds (Kulcsrakész, Hőszivattyús) and makes screen
+     * readers pronounce Hungarian with English phonetics.
+     *
+     * `lang` on a wrapper element is valid HTML and scopes correctly to
+     * everything inside it. The alternative — moving to app/[locale]/ — is a
+     * routing refactor, not a design change.
+     */
+    return <div lang="hu">{children}</div>;
 }

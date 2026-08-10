@@ -23,12 +23,12 @@ export default function Button({
     className = '',
     href
 }: ButtonProps) {
-    const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 btn-magnetic';
+    const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 animate-rise';
 
     const variantStyles = {
-        primary: 'bg-primary text-white hover:bg-primary/90 focus:ring-primary',
-        secondary: 'bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white focus:ring-primary',
-        accent: 'bg-secondary text-white hover:bg-secondary/90 focus:ring-secondary',
+        primary: 'bg-primary text-paper hover:bg-primary/90 focus:ring-primary',
+        secondary: 'bg-paper text-primary border-2 border-primary hover:bg-primary hover:text-paper focus:ring-primary',
+        accent: 'bg-secondary text-paper hover:bg-secondary/90 focus:ring-secondary',
         ghost: 'bg-transparent text-primary hover:bg-primary/10 focus:ring-primary'
     };
 

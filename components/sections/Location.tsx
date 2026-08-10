@@ -1,82 +1,36 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { MetroIcon, BusIcon, CarIcon, PlaneIcon, CheckIcon } from '@/components/ui/Icons';
 import { transportLinks, nearbyAmenities, neighborhoodHighlights } from '@/lib/data';
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1,
-            delayChildren: 0.1
-        }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.5,
-            ease: 'easeOut' as const
-        }
-    }
-};
-
+/* Was: a rounded-2xl map with shadow-xl, transport links as icon-in-rounded-
+ * square rows, and the neighbourhood list as ticks in circles. Rewritten as a
+ * table of distances — which is what this section is, and it lets the reader
+ * check the claim instead of being told it.
+ *
+ * ⚠️ The Google Maps embed URL below carries placeholder coordinates
+ * (`!1d2697.1234567890123`, `0x1234567890abcdef`). Generate a real embed for
+ * Spanyolréti út 1116 before this ships, or the map points somewhere else and
+ * the one checkable fact on the page becomes the one that is wrong.
+ */
 export default function Location() {
-    const getTransportIcon = (iconName: string) => {
-        const icons: Record<string, React.ReactNode> = {
-            metro: <MetroIcon size={24} />,
-            bus: <BusIcon size={24} />,
-            car: <CarIcon size={24} />,
-            plane: <PlaneIcon size={24} />
-        };
-        return icons[iconName] || null;
-    };
-
     return (
-        <section id="location" className="section-padding bg-gradient-to-b from-facade to-white relative overflow-hidden">
-            {/* Premium ambient background */}
-            <div className="absolute inset-0 pointer-events-none">
-                {/* Noise texture overlay */}
-                <div className="absolute inset-0 noise-overlay opacity-[0.015]" />
+        <section id="location" className="section-padding border-t border-line bg-paper">
+            <div className="section-container">
+                <div className="eyebrow">Where it is</div>
 
-                {/* Floating gradient orbs */}
-                <div className="absolute top-10 right-10 w-80 h-80 bg-gradient-to-br from-primary/6 to-transparent rounded-full blur-3xl animate-[breathe_9s_ease-in-out_infinite]" />
-                <div className="absolute bottom-20 left-10 w-72 h-72 bg-gradient-to-tr from-secondary/6 to-transparent rounded-full blur-3xl animate-[breathe_11s_ease-in-out_infinite_1.5s]" />
-
-                {/* Subtle map glow effect */}
-                <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-gradient-radial from-skyBlue/5 to-transparent rounded-full blur-3xl" />
-            </div>
-
-            <div className="section-container relative z-10">
-                {/* Section Header */}
-                <div className="text-center mb-12">
-                    <span className="section-badge mb-4">
-                        LOCATION
-                    </span>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-anthracite mb-4">
-                        Perfectly Positioned
+                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                    <h2 className="display-l text-ink">
+                        Twenty minutes from the centre. None of the noise.
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        The best of both worlds: city access with suburban peace. Connected but quiet.
+                    <p className="lede self-end">
+                        Spanyolrét is not central and we are not going to pretend otherwise. What you get
+                        for those extra fifteen minutes is a street where nothing happens.
                     </p>
                 </div>
 
-                <div className="grid lg:grid-cols-2 gap-10">
-                    {/* Google Maps Embed */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                        className="order-2 lg:order-1"
-                    >
-                        <div className="rounded-2xl overflow-hidden shadow-xl h-[450px]">
+                <div className="mt-12 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+                    <div>
+                        <div className="h-[22rem] overflow-hidden border border-line lg:h-[26rem]">
                             <iframe
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2697.1234567890123!2d19.0123456!3d47.4567890!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741ddc7e0c8f4b7%3A0x1234567890abcdef!2sSpanyolr%C3%A9ti%20%C3%BAt%2C%20Budapest%2C%20Hungary!5e0!3m2!1sen!2shu!4v1702900000000!5m2!1sen!2shu"
                                 width="100%"
@@ -85,108 +39,71 @@ export default function Location() {
                                 allowFullScreen
                                 loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
-                                title="Spanyolrét Gardens Location"
-                                className="w-full h-full"
+                                title="Spanyolrét Gardens location on Google Maps"
+                                className="h-full w-full"
                             />
                         </div>
-                        <div className="mt-4 text-center">
+
+                        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+                            <p className="measure text-[0.9375rem] text-ink">
+                                Spanyolréti út, 1116 Budapest
+                                <span className="ml-3 text-ink-soft">XI. District (Újbuda)</span>
+                            </p>
                             <a
                                 href="https://www.google.com/maps/search/Spanyolréti+út,+Budapest+1116"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+                                className="btn-quiet inline-flex min-h-[44px] items-center text-[0.9375rem]"
                             >
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                                    <circle cx="12" cy="10" r="3" />
-                                </svg>
-                                Open in Google Maps
+                                Open in Google Maps →
                             </a>
                         </div>
-                    </motion.div>
-
-                    {/* Location Details */}
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        variants={containerVariants}
-                        className="order-1 lg:order-2 space-y-8"
-                    >
-                        {/* Address */}
-                        <motion.div variants={itemVariants} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-                            <h3 className="text-xl font-bold text-anthracite mb-2">Address</h3>
-                            <p className="text-gray-600">Spanyolréti út, 1116 Budapest</p>
-                            <p className="text-gray-500 text-sm">XI. District (Újbuda)</p>
-                        </motion.div>
-
-                        {/* Transport Links */}
-                        <motion.div variants={itemVariants}>
-                            <h3 className="text-xl font-bold text-anthracite mb-4">Getting Around</h3>
-                            <div className="space-y-3">
-                                {transportLinks.map((link, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex items-center gap-4 bg-white rounded-xl p-4 shadow-sm border border-gray-100/50 hover:shadow-md transition-shadow"
-                                    >
-                                        <div className="w-12 h-12 bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl flex items-center justify-center text-primary">
-                                            {getTransportIcon(link.icon)}
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="font-medium text-anthracite">{link.name}</div>
-                                            <div className="text-sm text-gray-500">{link.time}</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.div>
-
-                        {/* Neighborhood Highlights */}
-                        <motion.div variants={itemVariants}>
-                            <h3 className="text-xl font-bold text-anthracite mb-4">The Neighborhood</h3>
-                            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100/50">
-                                <ul className="space-y-3">
-                                    {neighborhoodHighlights.map((highlight, index) => (
-                                        <li key={index} className="flex items-center gap-3">
-                                            <CheckIcon size={20} className="text-secondary flex-shrink-0" />
-                                            <span className="text-gray-700">{highlight}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </motion.div>
-                    </motion.div>
-                </div>
-
-                {/* Nearby Amenities */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
-                    variants={containerVariants}
-                    className="mt-14"
-                >
-                    <motion.h3 variants={itemVariants} className="text-xl font-bold text-anthracite mb-6 text-center">Nearby Amenities</motion.h3>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {nearbyAmenities.map((amenity, index) => (
-                            <motion.div
-                                key={index}
-                                variants={itemVariants}
-                                className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/50 hover:shadow-xl transition-shadow"
-                            >
-                                <h4 className="font-bold text-primary mb-3">{amenity.category}</h4>
-                                <ul className="space-y-2">
-                                    {amenity.items.map((item, itemIndex) => (
-                                        <li key={itemIndex} className="text-sm text-gray-600 flex items-start gap-2">
-                                            <span className="text-secondary mt-1">•</span>
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </motion.div>
-                        ))}
                     </div>
-                </motion.div>
+
+                    <div>
+                        <h3 className="caption border-b border-line pb-3">Getting around</h3>
+                        <dl className="mb-10">
+                            {transportLinks.map((link) => (
+                                <div
+                                    key={link.name}
+                                    className="flex items-baseline justify-between gap-6 border-b border-line py-3.5"
+                                >
+                                    <dt className="text-[0.9375rem] text-ink">{link.name}</dt>
+                                    <dd className="measure shrink-0 text-sm text-ink-soft">{link.time}</dd>
+                                </div>
+                            ))}
+                        </dl>
+
+                        <h3 className="caption border-b border-line pb-3">What is nearby</h3>
+                        <dl className="mb-10">
+                            {nearbyAmenities.map((group) => (
+                                <div key={group.category} className="border-b border-line py-3.5">
+                                    <dt className="caption">{group.category}</dt>
+                                    <dd className="mt-1.5 text-[0.9375rem] leading-relaxed text-ink-soft">
+                                        {group.items.join(' · ')}
+                                    </dd>
+                                </div>
+                            ))}
+                        </dl>
+
+                        <h3 className="caption border-b border-line pb-3">The street itself</h3>
+                        <ul>
+                            {neighborhoodHighlights.map((highlight) => (
+                                <li
+                                    key={highlight}
+                                    className="border-b border-line py-3 text-[0.9375rem] text-ink-soft"
+                                >
+                                    {highlight}
+                                </li>
+                            ))}
+                        </ul>
+
+                        <p className="mt-6 max-w-[46ch] text-sm text-ink-soft">
+                            The part you cannot check on a map is what the street sounds like at nine in
+                            the evening. Come and hear it before you decide anything.
+                        </p>
+                    </div>
+                </div>
             </div>
         </section>
     );

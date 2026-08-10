@@ -2,42 +2,29 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { units } from '@/lib/data';
-import { formatArea, getStatusStyles } from '@/lib/utils';
-import Button from '@/components/ui/Button';
 import { uiTextsHu } from '@/lib/data-hu';
+import { formatArea, scrollToElement } from '@/lib/utils';
+import GardenRibbon from '@/components/ui/GardenRibbon';
+import { useReveal } from '@/lib/useReveal';
 
-type Building = 'all' | 'A' | 'B';
 type FloorPlanView = 'site' | 'A' | 'B';
 type Floor = 'ground' | 'first';
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1, delayChildren: 0.1 }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' as const } }
-};
-
+/* Mirror of components/sections/FloorPlans.tsx. The six bars share one left
+ * edge and are sorted smallest garden to largest, so they read as a single
+ * rising column — which is the only reason to draw them to scale at all. */
 export default function FloorPlansHu() {
-    const [activeBuilding, setActiveBuilding] = useState<Building>('all');
+    const t = uiTextsHu.floorPlans;
     const [floorPlanView, setFloorPlanView] = useState<FloorPlanView>('site');
     const [activeFloor, setActiveFloor] = useState<Floor>('ground');
-    const t = uiTextsHu.floorPlans;
 
-    const filteredUnits = activeBuilding === 'all'
-        ? units
-        : units.filter(unit => unit.building === activeBuilding);
+    const sortedUnits = [...units].sort((a, b) => a.gardenArea - b.gardenArea);
+    const planRef = useReveal<HTMLElement>(0.15);
 
-    const scrollToForm = () => {
-        document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' });
-    };
+    const statusLabel = (status: string) =>
+        ({ available: t.available, reserved: t.reserved, sold: t.sold } as Record<string, string>)[status] ??
+        status;
 
     const getFloorPlanImage = () => {
         if (floorPlanView === 'site') return '/assets/floorplans/site-plan.jpg';
@@ -51,273 +38,126 @@ export default function FloorPlansHu() {
             : '/assets/floorplans/b-first-floor.webp';
     };
 
-    const getFloorPlanTitle = () => {
-        if (floorPlanView === 'site') return 'Teljes helyszínrajz';
-        const floorLabel = activeFloor === 'ground' ? 'Földszint' : 'Emelet';
-        return `${floorPlanView} épület - ${floorLabel}`;
-    };
-
-    const getStatusLabel = (status: string) => {
-        const labels: Record<string, string> = {
-            available: t.available,
-            reserved: t.reserved,
-            sold: t.sold
-        };
-        return labels[status] || status;
-    };
-
-    const getHighlightHu = (highlight?: string) => {
-        if (!highlight) return undefined;
-        const highlights: Record<string, string> = {
-            'Largest Interior': 'Legnagyobb belső tér',
-            'Best Value': 'Legjobb ár-érték',
-            'Largest Garden': 'Legnagyobb kert'
-        };
-        return highlights[highlight] || highlight;
-    };
+    const planTitle =
+        floorPlanView === 'site'
+            ? t.sitePlan
+            : `${floorPlanView} épület — ${activeFloor === 'ground' ? t.groundFloor : t.firstFloor}`;
 
     return (
-        <section id="floor-plans" className="section-padding bg-white relative overflow-hidden">
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute inset-0 noise-overlay opacity-[0.01]" />
-                <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl animate-[breathe_10s_ease-in-out_infinite]" />
-            </div>
+        <section id="floor-plans" className="section-padding border-t border-line bg-paper">
+            <div className="section-container">
+                <div className="eyebrow">{t.badge}</div>
 
-            <div className="section-container relative z-10">
-                {/* Header */}
-                <div className="text-center mb-10">
-                    <span className="section-badge mb-4">{t.badge}</span>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-anthracite mb-4">
-                        {t.title}
-                    </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">{t.subtitle}</p>
+                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                    <h2 className="display-l wrap-compound text-ink">{t.title}</h2>
+                    <p className="lede wrap-compound self-end">{t.subtitle}</p>
                 </div>
 
-                {/* Floor Plan Viewer */}
-                <div className="mb-12 bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl p-4 sm:p-6 md:p-8">
-                    <div className="flex flex-wrap justify-center gap-3 mb-6">
+                <div className="mt-14">
+                    <div className="scale-sticky hidden items-baseline gap-6 border-b border-line pb-3 pt-4 md:flex">
+                        <span className="caption w-16 shrink-0">Ház</span>
+                        <span className="caption flex-1">Saját kert, méretarányosan</span>
+                    </div>
+
+                    {sortedUnits.map((unit) => {
+                        const isSold = unit.status !== 'available';
+                        return (
+                            <article
+                                key={unit.id}
+                                className="grid gap-x-6 gap-y-3 border-b border-line py-6 md:grid-cols-[4rem_1fr] md:items-center"
+                            >
+                                <div className="flex items-baseline gap-3 md:block">
+                                    <h3
+                                        className={`font-display text-2xl leading-none ${
+                                            isSold ? 'text-ink-soft' : 'text-ink'
+                                        }`}
+                                    >
+                                        {unit.id}
+                                    </h3>
+                                    <span className="caption md:mt-1.5 md:block">
+                                        {statusLabel(unit.status)}
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                                        <span className="measure text-sm text-ink-soft">
+                                            {formatArea(unit.totalInternal, 'hu')} belső · {unit.rooms} szoba ·{' '}
+                                            {formatArea(unit.terraceArea, 'hu')} terasz
+                                        </span>
+                                        <button
+                                            type="button"
+                                            onClick={() => scrollToElement('lead-form')}
+                                            className="btn-quiet text-[0.9375rem] text-lawn"
+                                        >
+                                            Ár kérésre
+                                        </button>
+                                    </div>
+
+                                    <GardenRibbon gardenArea={unit.gardenArea} locale="hu" muted={isSold} />
+                                </div>
+                            </article>
+                        );
+                    })}
+
+                    <p className="wrap-compound mt-4 max-w-[60ch] text-sm text-ink-soft">
+                        A B2 láthatóan a legkisebb, és ezt így is hagytuk. Egy sáv, amiben akkor is megbízol,
+                        amikor nem hízelgő, az a sáv, amiben a B3-nál is megbízol.
+                    </p>
+                </div>
+
+                <div className="mt-16 border-t border-line pt-10">
+                    <div className="flex flex-wrap items-center gap-x-8">
                         {(['site', 'A', 'B'] as FloorPlanView[]).map((view) => (
                             <button
                                 key={view}
+                                type="button"
                                 onClick={() => setFloorPlanView(view)}
-                                className={`px-5 py-2.5 rounded-full font-medium transition-all duration-300 ${floorPlanView === view
-                                    ? 'bg-primary text-white shadow-lg'
-                                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                                className={`tab-link ${
+                                    floorPlanView === view
+                                        ? 'border-clay !text-ink'
+                                        : 'border-transparent hover:!text-ink'
                                 }`}
                             >
-                                {view === 'site' ? t.sitePlan : `${t.buildingA.replace('A', view)}`}
+                                {view === 'site' ? t.sitePlan : `${view} épület`}
                             </button>
                         ))}
+
+                        {floorPlanView !== 'site' && (
+                            <span className="ml-auto flex items-center gap-6">
+                                {(['ground', 'first'] as Floor[]).map((floor) => (
+                                    <button
+                                        key={floor}
+                                        type="button"
+                                        onClick={() => setActiveFloor(floor)}
+                                        className={`tab-link ${
+                                            activeFloor === floor
+                                                ? 'border-clay !text-ink'
+                                                : 'border-transparent hover:!text-ink'
+                                        }`}
+                                    >
+                                        {floor === 'ground' ? t.groundFloor : t.firstFloor}
+                                    </button>
+                                ))}
+                            </span>
+                        )}
                     </div>
 
-                    {floorPlanView !== 'site' && (
-                        <div className="flex justify-center gap-2 mb-6">
-                            {(['ground', 'first'] as Floor[]).map((floor) => (
-                                <button
-                                    key={floor}
-                                    onClick={() => setActiveFloor(floor)}
-                                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${activeFloor === floor
-                                        ? 'bg-secondary text-white'
-                                        : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-                                    }`}
-                                >
-                                    {floor === 'ground' ? t.groundFloor : t.firstFloor}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-
-                    <h3 className="text-xl font-bold text-anthracite text-center mb-4">{getFloorPlanTitle()}</h3>
-
-                    <div className="relative w-full bg-white rounded-2xl overflow-hidden shadow-lg">
-                        <div className="relative aspect-[4/3] sm:aspect-[16/10] w-full">
+                    <figure ref={planRef} className="reveal-unroll mt-4">
+                        <div className="relative aspect-[4/3] w-full border border-line bg-paper md:aspect-[16/9]">
                             <Image
+                                key={getFloorPlanImage()}
                                 src={getFloorPlanImage()}
-                                alt={getFloorPlanTitle()}
+                                alt={planTitle}
                                 fill
-                                className="object-contain p-2 sm:p-4"
-                                sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px"
-                                priority
+                                sizes="(max-width: 768px) 100vw, 1180px"
+                                className="plan-swap object-contain p-2 sm:p-4"
                             />
                         </div>
-                        <div className="sm:hidden text-center py-2 text-xs text-gray-400">
-                            Csípéssel nagyítható
-                        </div>
-                    </div>
-                </div>
-
-                {/* Building Selector */}
-                <div className="flex justify-center gap-2 sm:gap-3 mb-8 sm:mb-10">
-                    {(['all', 'A', 'B'] as Building[]).map((building) => (
-                        <button
-                            key={building}
-                            onClick={() => setActiveBuilding(building)}
-                            className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm sm:text-base font-medium transition-all duration-300 ${activeBuilding === building
-                                ? 'bg-primary text-white shadow-lg'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                            }`}
-                        >
-                            {building === 'all' ? t.allUnits : `${building} épület`}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Units Grid */}
-                <motion.div
-                    key={activeBuilding}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
-                    variants={containerVariants}
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-10"
-                >
-                    {filteredUnits.map((unit) => (
-                        <motion.div
-                            key={unit.id}
-                            variants={itemVariants}
-                            className={`bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:-translate-y-1 flex flex-col relative ${unit.status === 'sold' ? 'opacity-75' : ''}`}
-                        >
-                            {unit.status === 'sold' && (
-                                <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-3xl">
-                                    <div className="absolute top-[30px] -right-[60px] w-[200px] transform rotate-45 bg-gradient-to-r from-red-600 via-red-500 to-red-600 text-white text-center py-2 font-bold text-sm tracking-wider shadow-lg">
-                                        ELKELT
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="h-10 flex items-center justify-center">
-                                {unit.highlight ? (
-                                    <div className={`w-full text-white text-center py-2 text-sm font-medium ${unit.status === 'sold'
-                                        ? 'bg-gradient-to-r from-gray-400 to-gray-500'
-                                        : 'bg-gradient-to-r from-secondary to-green-500'
-                                    }`}>
-                                        {getHighlightHu(unit.highlight)}
-                                    </div>
-                                ) : (
-                                    <div className="w-full h-full"></div>
-                                )}
-                            </div>
-
-                            <div className="p-6 flex-1 flex flex-col">
-                                <div className="flex justify-between items-start mb-4">
-                                    <div>
-                                        <h3 className={`text-2xl font-bold ${unit.status === 'sold' ? 'text-gray-400' : 'text-anthracite'}`}>
-                                            {unit.id} lakás
-                                        </h3>
-                                        <span className="text-sm text-gray-500">{unit.building} épület</span>
-                                    </div>
-                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusStyles(unit.status)}`}>
-                                        {getStatusLabel(unit.status)}
-                                    </span>
-                                </div>
-
-                                <div className="space-y-3 mb-6 flex-1">
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-gray-500">{t.internalArea}</span>
-                                        <span className={`font-semibold ${unit.status === 'sold' ? 'text-gray-400' : 'text-anthracite'}`}>
-                                            {formatArea(unit.totalInternal)}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-gray-500">{t.garden}</span>
-                                        <span className={`font-semibold ${unit.status === 'sold' ? 'text-gray-400' : 'text-secondary'}`}>
-                                            {formatArea(unit.gardenArea)}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-gray-500">Terasz</span>
-                                        <span className="font-medium">{formatArea(unit.terraceArea)}</span>
-                                    </div>
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-gray-500">{t.rooms}</span>
-                                        <span className="font-medium">{unit.rooms} szoba</span>
-                                    </div>
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-gray-500">Fürdőszoba</span>
-                                        <span className="font-medium">{unit.bathrooms}</span>
-                                    </div>
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-gray-500">Parkoló</span>
-                                        <span className="font-medium">{unit.parkingSpaces} hely</span>
-                                    </div>
-                                </div>
-
-                                {unit.status === 'available' ? (
-                                    <Button variant="primary" className="w-full" onClick={scrollToForm}>
-                                        {t.requestDetails}
-                                    </Button>
-                                ) : (
-                                    <div className="w-full py-3 text-center text-gray-400 font-medium bg-gray-100 rounded-xl line-through">
-                                        {t.noLongerAvailable}
-                                    </div>
-                                )}
-                            </div>
-                        </motion.div>
-                    ))}
-                </motion.div>
-
-                {/* Comparison Table */}
-                <div className="bg-gradient-to-br from-facade to-white rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg">
-                    <h3 className="text-xl font-bold text-anthracite mb-4 sm:mb-6">{t.comparison}</h3>
-
-                    {/* Mobile: Card view */}
-                    <div className="sm:hidden space-y-3">
-                        {units.map((unit) => (
-                            <div key={unit.id} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className="font-bold text-anthracite">{unit.id} lakás</span>
-                                    <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusStyles(unit.status)}`}>
-                                        {getStatusLabel(unit.status)}
-                                    </span>
-                                </div>
-                                <div className="grid grid-cols-3 gap-2 text-sm">
-                                    <div>
-                                        <span className="text-gray-500 block text-xs">Belső</span>
-                                        <span className="font-medium">{formatArea(unit.totalInternal)}</span>
-                                    </div>
-                                    <div>
-                                        <span className="text-gray-500 block text-xs">Kert</span>
-                                        <span className="font-medium text-secondary">{formatArea(unit.gardenArea)}</span>
-                                    </div>
-                                    <div>
-                                        <span className="text-gray-500 block text-xs">Szoba</span>
-                                        <span className="font-medium">{unit.rooms}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Desktop: Table view */}
-                    <div className="hidden sm:block overflow-x-auto">
-                        <table className="w-full min-w-[400px]">
-                            <thead>
-                                <tr className="border-b border-gray-300">
-                                    <th className="text-left py-3 px-3 md:px-4 text-sm font-semibold text-gray-600">Lakás</th>
-                                    <th className="text-left py-3 px-3 md:px-4 text-sm font-semibold text-gray-600">Belső</th>
-                                    <th className="text-left py-3 px-3 md:px-4 text-sm font-semibold text-gray-600">Kert</th>
-                                    <th className="text-left py-3 px-3 md:px-4 text-sm font-semibold text-gray-600">Szoba</th>
-                                    <th className="text-left py-3 px-3 md:px-4 text-sm font-semibold text-gray-600">Státusz</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {units.map((unit) => (
-                                    <tr key={unit.id} className="border-b border-gray-200 hover:bg-white/50 transition-colors">
-                                        <td className="py-3 px-3 md:px-4 font-medium">{unit.id}</td>
-                                        <td className="py-3 px-3 md:px-4">{formatArea(unit.totalInternal)}</td>
-                                        <td className="py-3 px-3 md:px-4 text-secondary font-medium">{formatArea(unit.gardenArea)}</td>
-                                        <td className="py-3 px-3 md:px-4">{unit.rooms}</td>
-                                        <td className="py-3 px-3 md:px-4">
-                                            <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusStyles(unit.status)}`}>
-                                                {getStatusLabel(unit.status)}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                    <p className="text-xs sm:text-sm text-gray-500 mt-4">{t.comparisonNote}</p>
+                        <figcaption className="caption wrap-compound mt-3">
+                            {planTitle} · JRT Stúdió Kft. · M 1:250
+                        </figcaption>
+                    </figure>
                 </div>
             </div>
         </section>

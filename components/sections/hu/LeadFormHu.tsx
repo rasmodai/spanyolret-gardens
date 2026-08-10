@@ -2,8 +2,7 @@
 
 import { useState, useRef, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import Input, { Select, Checkbox } from '@/components/ui/Input';
+import Input, { Select, Checkbox, Textarea } from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import { uiTextsHu } from '@/lib/data-hu';
 import { track, identify, setUserProperties, timeEvent } from '@/lib/mixpanel';
@@ -174,31 +173,45 @@ export default function LeadFormHu() {
     };
 
     return (
-        <section id="lead-form" className="section-padding bg-gradient-to-b from-facade to-white relative overflow-hidden">
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute inset-0 noise-overlay opacity-[0.015]" />
-                <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl" />
-                <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-tr from-secondary/5 to-transparent rounded-full blur-3xl" />
-            </div>
+        <section id="lead-form" className="section-padding band-frame">
+            <div className="section-container">
+                <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+                    <div className="text-onmedia">
+                        <div className="caption mb-6 flex items-center gap-4 !text-[color:var(--on-frame-soft)]">
+                            Időpontfoglalás
+                            <span className="h-px flex-1 bg-onmedia/20" />
+                        </div>
 
-            <div className="section-container relative z-10">
-                <div className="max-w-4xl mx-auto">
-                    <div className="text-center mb-12">
-                        <span className="section-badge mb-4">{t.badge}</span>
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-anthracite mb-4">
-                            {t.title}
-                        </h2>
-                        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                            {t.subtitle}
+                        <h2 className="display-l wrap-compound text-onmedia">Gyere el, állj be a kertbe.</h2>
+                        <p className="wrap-compound mt-5 max-w-[46ch] text-[1.0625rem] leading-relaxed text-[color:var(--on-frame-soft)]">
+                            Hozd a gyerekeket. Ők többet mondanak majd 300 m² fűről, mint mi.
+                            Egy látogatás, és nincs utánkövetés, hacsak nem kéred.
                         </p>
+
+                        <dl className="mt-9 border-t border-onmedia/20">
+                            <div className="border-b border-onmedia/15 py-4">
+                                <dt className="measure text-[0.9375rem] text-onmedia">Még ma hívunk</dt>
+                                <dd className="wrap-compound mt-1 text-sm text-[color:var(--on-frame-soft)]">
+                                    Budapesti munkaidőben egy órán belül. Azon kívül másnap reggel elsőként.
+                                </dd>
+                            </div>
+                            <div className="border-b border-onmedia/15 py-4">
+                                <dt className="measure text-[0.9375rem] text-onmedia">Magyarul és angolul</dt>
+                                <dd className="wrap-compound mt-1 text-sm text-[color:var(--on-frame-soft)]">
+                                    A teljes vásárlási folyamat mehet angolul is, ha az kényelmesebb.
+                                </dd>
+                            </div>
+                            <div className="border-b border-onmedia/15 py-4">
+                                <dt className="measure text-[0.9375rem] text-onmedia">Mit kezdünk az adataiddal</dt>
+                                <dd className="wrap-compound mt-1 text-sm text-[color:var(--on-frame-soft)]">
+                                    A Spanyolrét Gardensszel kapcsolatban keresünk meg. Nem adjuk tovább senkinek,
+                                    és egyetlen e-mailedre töröljük.
+                                </dd>
+                            </div>
+                        </dl>
                     </div>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="bg-white rounded-3xl shadow-xl p-8 md:p-10 border border-gray-100"
-                    >
+                    <div className="bg-paper p-6 md:p-8">
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="grid md:grid-cols-2 gap-6">
                                 <Input
@@ -263,18 +276,16 @@ export default function LeadFormHu() {
                                 />
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    {t.message}
-                                </label>
-                                <textarea
-                                    rows={4}
-                                    className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none resize-none"
-                                    placeholder={t.messagePlaceholder}
-                                    value={formData.message}
-                                    onChange={(e) => handleChange('message', e.target.value)}
-                                />
-                            </div>
+                            {/* Was a raw <textarea> with a <label> that had no htmlFor —
+                              * the one control on this page a screen reader announced
+                              * as unlabelled. Uses the shared component now. */}
+                            <Textarea
+                                label={t.message}
+                                rows={4}
+                                placeholder={t.messagePlaceholder}
+                                value={formData.message}
+                                onChange={(e) => handleChange('message', e.target.value)}
+                            />
 
                             <div className="space-y-3">
                                 <Checkbox
@@ -291,20 +302,20 @@ export default function LeadFormHu() {
                             </div>
 
                             {submitError && (
-                                <p className="text-red-600 text-sm text-center">{submitError}</p>
+                                <p role="alert" className="text-sm text-bad">{submitError}</p>
                             )}
 
                             <div className="pt-4">
                                 <Button type="submit" variant="primary" className="w-full md:w-auto" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Küldés...' : t.submit}
+                                    {isSubmitting ? 'Küldés…' : t.submit}
                                 </Button>
                             </div>
 
-                            <p className="text-xs text-gray-500 text-center pt-4">
+                            <p className="text-xs text-ink-soft text-center pt-4">
                                 {t.privacy}
                             </p>
                         </form>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>
