@@ -88,14 +88,14 @@ export default function PriceDisplay({
         <div className={`flex flex-col ${align === 'center' ? 'items-center' : 'items-baseline'} ${className}`}>
             <div className={`inline-flex items-baseline gap-2 font-display ${alignmentClasses[align]}`}>
                 {showFrom && (
-                    <span className={`${styles.from} text-white/80 font-medium tracking-wide uppercase mr-2`}>
+                    <span className={`${styles.from} text-paper/80 font-medium tracking-wide uppercase mr-2`}>
                         From
                     </span>
                 )}
-                <span className={`${styles.amount} bg-gradient-to-r from-accent via-yellow-400 to-accent bg-clip-text text-transparent tabular-nums ${animate ? 'animate-shimmer' : ''}`}>
+                <span className={`${styles.amount} bg-paper-deep text-ink tabular-nums ${animate ? '' : ''}`}>
                     {formatNumber(amount)}
                 </span>
-                <span className={`${styles.suffix} text-white/90 font-medium`}>
+                <span className={`${styles.suffix} text-paper/90 font-medium`}>
                     {displaySuffix}
                 </span>
             </div>
@@ -122,10 +122,10 @@ export function PriceTag({
     if (status === 'sold') {
         return (
             <div className={`flex flex-col ${className}`}>
-                <span className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-0.5">
+                <span className="text-xs text-ink-soft font-medium uppercase tracking-wider mb-0.5">
                     Price
                 </span>
-                <span className="text-lg font-bold text-gray-400 line-through">
+                <span className="text-lg font-bold text-ink-soft line-through">
                     Sold
                 </span>
             </div>
@@ -141,15 +141,15 @@ export function PriceTag({
 
     return (
         <div className={`flex flex-col ${className}`}>
-            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-0.5">
+            <span className="text-xs text-ink-soft font-medium uppercase tracking-wider mb-0.5">
                 {label || 'Price'}
             </span>
             <div className="flex items-baseline gap-1">
-                <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent tabular-nums">
+                <span className="text-2xl font-bold bg-paper-deep text-ink tabular-nums">
                     {formatPrice(price)}
                 </span>
                 {showCurrency && (
-                    <span className="text-sm font-semibold text-gray-600">
+                    <span className="text-sm font-semibold text-ink-soft">
                         Million Ft
                     </span>
                 )}

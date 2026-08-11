@@ -2,7 +2,6 @@
 
 import { useState, useRef, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
 import Input, { Select, Checkbox } from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import { track, identify, setUserProperties, timeEvent } from '@/lib/mixpanel';
@@ -186,79 +185,54 @@ export default function LeadForm() {
     };
 
     return (
-        <section id="lead-form" className="section-padding bg-primary relative overflow-hidden">
-            {/* Premium ambient background */}
-            <div className="absolute inset-0 pointer-events-none">
-                {/* Noise texture overlay */}
-                <div className="absolute inset-0 noise-overlay opacity-[0.03]" />
-
-                {/* Floating gradient orbs */}
-                <div className="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl animate-[breathe_10s_ease-in-out_infinite]" />
-                <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-gradient-to-tr from-secondary/20 to-transparent rounded-full blur-3xl animate-[breathe_12s_ease-in-out_infinite_2s]" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-radial from-white/5 to-transparent rounded-full blur-3xl" />
-
-                {/* Decorative accent lines */}
-                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-            </div>
-
+        <section id="lead-form" className="section-padding band-frame">
             <div className="section-container relative z-10">
                 <div className="max-w-4xl mx-auto">
                     <div className="grid lg:grid-cols-2 gap-10">
                         {/* Left - Copy */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                            className="text-white"
-                        >
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-4">
-                                Ready to See Your Future Home?
-                            </h2>
-                            <p className="text-xl text-white/80 mb-8">
-                                Schedule a private consultation with our team. No pressure — just a conversation
-                                about whether Spanyolrét Gardens is right for your family.
+                        <div className="text-onmedia">
+                            <div className="caption mb-6 flex items-center gap-4 !text-[color:var(--on-frame-soft)]">
+                                Book a viewing
+                                <span className="h-px flex-1 bg-onmedia/20" />
+                            </div>
+
+                            <h2 className="display-l text-onmedia">Come and stand in the garden.</h2>
+                            <p className="mt-5 max-w-[46ch] text-[1.0625rem] leading-relaxed text-[color:var(--on-frame-soft)]">
+                                Bring the children. They will tell you more about 300 m&sup2; of grass than we can.
+                                One visit, and no follow-up unless you ask for it.
                             </p>
 
-                            <div className="space-y-4 mb-8">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
-                                        <span className="text-xl">📞</span>
-                                    </div>
-                                    <div>
-                                        <div className="font-medium">Response within 24 hours</div>
-                                        <div className="text-white/60 text-sm">Usually much faster</div>
-                                    </div>
+                            {/* Was three emoji in circles. The middle one promised a
+                              * response "within 24 hours" while the sales process
+                              * targets first contact in under five minutes, and the
+                              * third made a claim about infrastructure ("your data is
+                              * secure") rather than saying what happens to the data. */}
+                            <dl className="mt-9 border-t border-onmedia/20">
+                                <div className="border-b border-onmedia/15 py-4">
+                                    <dt className="measure text-[0.9375rem] text-onmedia">A call today</dt>
+                                    <dd className="mt-1 text-sm text-[color:var(--on-frame-soft)]">
+                                        Within the hour during Budapest office hours. Otherwise first thing tomorrow.
+                                    </dd>
                                 </div>
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
-                                        <span className="text-xl">🌍</span>
-                                    </div>
-                                    <div>
-                                        <div className="font-medium">English-speaking team</div>
-                                        <div className="text-white/60 text-sm">No Hungarian required</div>
-                                    </div>
+                                <div className="border-b border-onmedia/15 py-4">
+                                    <dt className="measure text-[0.9375rem] text-onmedia">In English</dt>
+                                    <dd className="mt-1 text-sm text-[color:var(--on-frame-soft)]">
+                                        The whole purchase runs in English. No Hungarian required at any point.
+                                    </dd>
                                 </div>
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
-                                        <span className="text-xl">🔒</span>
-                                    </div>
-                                    <div>
-                                        <div className="font-medium">Your data is secure</div>
-                                        <div className="text-white/60 text-sm">We never share your information</div>
-                                    </div>
+                                <div className="border-b border-onmedia/15 py-4">
+                                    <dt className="measure text-[0.9375rem] text-onmedia">What we do with this</dt>
+                                    <dd className="mt-1 text-sm text-[color:var(--on-frame-soft)]">
+                                        We contact you about Spanyolr&eacute;t Gardens. We do not pass it to anyone
+                                        else, and one email from you removes it.
+                                    </dd>
                                 </div>
-                            </div>
-                        </motion.div>
+                            </dl>
+                        </div>
 
                         {/* Right - Form */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                            className="bg-white rounded-2xl p-6 md:p-8 shadow-xl"
+                        <div
+                            className="bg-paper p-6 md:p-8"
                         >
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div className="grid md:grid-cols-2 gap-4">
@@ -329,7 +303,7 @@ export default function LeadForm() {
                                 </div>
 
                                 {submitError && (
-                                    <p className="text-red-500 text-sm text-center">{submitError}</p>
+                                    <p role="alert" className="text-sm text-bad">{submitError}</p>
                                 )}
 
                                 <Button
@@ -339,14 +313,14 @@ export default function LeadForm() {
                                     className="w-full"
                                     disabled={isSubmitting}
                                 >
-                                    {isSubmitting ? 'Sending...' : 'Request a Viewing'}
+                                    {isSubmitting ? 'Sending…' : 'Book a viewing'}
                                 </Button>
 
-                                <p className="text-xs text-gray-500 text-center">
+                                <p className="text-xs text-ink-soft text-center">
                                     Your information is secure and will only be used to contact you about Spanyolrét Gardens.
                                 </p>
                             </form>
-                        </motion.div>
+                        </div>
                     </div>
                 </div>
             </div>

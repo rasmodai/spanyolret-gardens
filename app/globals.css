@@ -1,31 +1,128 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+/* Spanyolrét Gardens — see DESIGN.md. Nothing here without a line in that file.
+ *
+ * Replaces the previous 470-line "premium" layer: gradients, glassmorphism,
+ * blurred orbs, ambient glows, shimmer/float/breathe animations, rounded-3xl
+ * cards and hover-lift. All of it is banned in DESIGN.md → Anti-Patterns.
+ */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --color-primary: #1B3B6F;
-  --color-secondary: #4A7C23;
-  --color-accent: #B8956B;
-  --color-facade: #F5F5F0;
-  --color-anthracite: #383E42;
+  --paper-rgb: 246 244 239;
+  --paper: rgb(var(--paper-rgb));
+  --paper-deep-rgb: 235 231 223;
+  --paper-deep: rgb(var(--paper-deep-rgb));
+  --ink-rgb: 35 38 42;
+  --ink: rgb(var(--ink-rgb));
+  --ink-soft-rgb: 107 110 112;
+  --ink-soft: rgb(var(--ink-soft-rgb));
+  --frame-rgb: 56 62 66;
+  --frame: rgb(var(--frame-rgb));
+  --lawn-rgb: 63 107 46;
+  --lawn: rgb(var(--lawn-rgb));
+  --lawn-deep-rgb: 53 90 38;
+  --lawn-deep: rgb(var(--lawn-deep-rgb));
+  --clay-rgb: 176 137 104;
+  --clay: rgb(var(--clay-rgb));
+  --on-lawn-rgb: 255 255 255;
+  --on-lawn: rgb(var(--on-lawn-rgb));
+  --on-frame-rgb: 246 244 239;
+  --on-frame: rgb(var(--on-frame-rgb));
+  --on-frame-soft-rgb: 180 184 186;
+  --on-frame-soft: rgb(var(--on-frame-soft-rgb));
+  --line: rgb(var(--ink-rgb) / 0.14);
+  --line-strong: rgb(var(--ink-rgb) / 0.28);
+  --lawn-inv: #8FBB78;
+  --clay-inv: #C9A382;
+
+  color-scheme: light;
 }
 
-* {
+/* Dark mode. Surfaces are redesigned, not inverted, and the accents lighten so
+ * they hold on a dark ground. Every pair below was measured, not guessed:
+ * ink 13.78 · ink-soft 8.28 · lawn 7.53 · clay 7.13 — all AAA on --paper.
+ * DESIGN.md → Color → Dark.
+ *
+ * Two selectors on purpose: the media query is the default signal, and the
+ * data-theme attribute lets the toggle win in both directions. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper-rgb: 28 31 34;
+    --paper: rgb(var(--paper-rgb));
+    --paper-deep-rgb: 36 40 43;
+    --paper-deep: rgb(var(--paper-deep-rgb));
+    --ink-rgb: 237 234 227;
+    --ink: rgb(var(--ink-rgb));
+    --ink-soft-rgb: 180 184 186;
+    --ink-soft: rgb(var(--ink-soft-rgb));
+    --frame-rgb: 18 20 22;
+    --frame: rgb(var(--frame-rgb));
+    --lawn-rgb: 143 187 120;
+    --lawn: rgb(var(--lawn-rgb));
+    --lawn-deep-rgb: 163 201 143;
+    --lawn-deep: rgb(var(--lawn-deep-rgb));
+    --clay-rgb: 201 163 130;
+    --clay: rgb(var(--clay-rgb));
+    --on-lawn-rgb: 18 33 12;
+    --on-lawn: rgb(var(--on-lawn-rgb));
+    --on-frame-rgb: 237 234 227;
+    --on-frame: rgb(var(--on-frame-rgb));
+    --on-frame-soft-rgb: 180 184 186;
+    --on-frame-soft: rgb(var(--on-frame-soft-rgb));
+    --line: rgb(var(--ink-rgb) / 0.16);
+    --line-strong: rgb(var(--ink-rgb) / 0.3);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --paper-rgb: 28 31 34;
+  --paper: rgb(var(--paper-rgb));
+  --paper-deep-rgb: 36 40 43;
+  --paper-deep: rgb(var(--paper-deep-rgb));
+  --ink-rgb: 237 234 227;
+  --ink: rgb(var(--ink-rgb));
+  --ink-soft-rgb: 180 184 186;
+  --ink-soft: rgb(var(--ink-soft-rgb));
+  --frame-rgb: 18 20 22;
+  --frame: rgb(var(--frame-rgb));
+  --lawn-rgb: 143 187 120;
+  --lawn: rgb(var(--lawn-rgb));
+  --lawn-deep-rgb: 163 201 143;
+  --lawn-deep: rgb(var(--lawn-deep-rgb));
+  --clay-rgb: 201 163 130;
+  --clay: rgb(var(--clay-rgb));
+  --on-lawn-rgb: 18 33 12;
+  --on-lawn: rgb(var(--on-lawn-rgb));
+  --on-frame-rgb: 237 234 227;
+  --on-frame: rgb(var(--on-frame-rgb));
+  --on-frame-soft-rgb: 180 184 186;
+  --on-frame-soft: rgb(var(--on-frame-soft-rgb));
+  --line: rgb(var(--ink-rgb) / 0.16);
+  --line-strong: rgb(var(--ink-rgb) / 0.3);
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
-  color: var(--color-anthracite);
-  background-color: white;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 17px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -34,400 +131,229 @@ body {
 h1,
 h2,
 h3,
-h4,
-h5,
-h6 {
-  font-family: 'Outfit', system-ui, sans-serif;
-  font-weight: 700;
-  line-height: 1.2;
+h4 {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  /* Fraunces display cut. wonk 0 — the wobbly axis is off by design. */
+  font-variation-settings: 'opsz' 96;
   letter-spacing: -0.02em;
+  line-height: 1.12;
 }
 
-/* Premium text rendering */
-p,
-span,
-li {
-  text-rendering: optimizeLegibility;
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--lawn);
+  color: var(--on-lawn);
+}
+
+:focus-visible {
+  outline: 2px solid var(--lawn);
+  outline-offset: 3px;
 }
 
 @layer components {
   .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-content px-5 sm:px-8;
   }
 
   .section-padding {
-    @apply py-20 md:py-28;
+    @apply py-[3.5rem] md:py-section;
   }
 
-  /* Premium Button Styles */
+  /* --- Typography ------------------------------------------------------- */
+
+  /* 1.02 is for single-line headlines only. Two lines need 1.12: measured ink
+   * clearance drops to 3.73px at 52px otherwise, in English as well as
+   * Hungarian. See DESIGN.md → Two-line headlines need 1.12. */
+  .display-xl {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2.75rem, 7vw, 4.75rem);
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    font-variation-settings: 'opsz' 120;
+  }
+
+  .display-l {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.875rem, 4vw, 2.75rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .lede {
+    @apply text-[1.1875rem] leading-[1.55] text-ink-soft;
+    max-width: 60ch;
+  }
+
+  /* Every measured quantity. Areas, prices, thicknesses, dates. Never a
+   * sentence — that is the whole point of the register. */
+  .measure {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  .caption {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    @apply text-xs uppercase text-ink-soft;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+  }
+
+  /* A caption-styled control still needs a finger-sized hit area. The label
+   * looks 12px tall; the target underneath is 44px, per WCAG 2.5.5 and the
+   * Apple HIG minimum. Padding is invisible, missed taps are not. */
+  .tab-link {
+    @apply caption inline-flex min-h-[44px] items-center border-b transition-colors duration-short;
+  }
+
+  /* Section label with a rule running off to the right. */
+  .eyebrow {
+    @apply caption mb-6 flex items-center gap-4;
+  }
+
+  .eyebrow::after {
+    content: '';
+    @apply h-px flex-1;
+    background: var(--line);
+  }
+
+  /* --- Actions ---------------------------------------------------------- */
+
+  /* One filled button per screen, and it carries the accent. Hover changes
+   * colour only: no lift, no scale, no shadow. */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2.5 border border-transparent px-6 py-[0.9375rem] text-[0.9375rem] font-semibold;
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+  }
+
   .btn-primary {
-    @apply inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-primary to-primary/90 text-white font-semibold rounded-xl hover:from-primary/90 hover:to-primary transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5;
+    background: var(--lawn);
+    border-color: var(--lawn);
+    color: var(--on-lawn);
   }
 
-  .btn-secondary {
-    @apply inline-flex items-center justify-center px-8 py-4 bg-white text-primary font-semibold rounded-xl border-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 hover:-translate-y-0.5;
+  .btn-primary:hover {
+    background: var(--lawn-deep);
+    border-color: var(--lawn-deep);
   }
 
-  .btn-accent {
-    @apply inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-secondary to-green-500 text-white font-semibold rounded-xl hover:from-green-500 hover:to-secondary transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 shadow-lg shadow-secondary/20 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-0.5;
+  .btn-ghost {
+    @apply bg-transparent text-ink;
+    border-color: var(--line-strong);
   }
 
-  /* Premium Card Styles */
-  .card {
-    @apply bg-white rounded-3xl shadow-lg p-6 md:p-8 transition-all duration-500 hover:shadow-2xl border border-gray-100/50;
+  .btn-ghost:hover {
+    border-color: var(--ink);
   }
 
-  .card-elevated {
-    @apply bg-white rounded-3xl shadow-xl p-6 md:p-8 border border-gray-100;
+  /* On photography or the dark band. */
+  .btn-ghost-inv {
+    @apply bg-transparent;
+    color: var(--on-frame);
+    border-color: rgb(var(--on-frame-rgb) / 0.5);
   }
 
-  /* Premium Glass Effect */
-  .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl;
+  .btn-ghost-inv:hover {
+    border-color: var(--on-frame);
   }
 
-  .glass-dark {
-    @apply bg-black/20 backdrop-blur-md border border-white/10 rounded-2xl;
+  .btn-quiet {
+    @apply border-0 bg-transparent px-0 py-1 text-ink;
+    border-bottom: 1px solid var(--clay);
   }
 
-  /* Gradient Overlays */
-  .gradient-overlay {
-    @apply absolute inset-0 bg-gradient-to-b from-black/40 to-black/60;
+  .btn-quiet:hover {
+    border-bottom-color: var(--ink);
   }
 
-  .gradient-overlay-premium {
-    @apply absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30;
+  /* --- Forms ------------------------------------------------------------ */
+
+  /* Inputs are lines, not boxes. */
+  .field-label {
+    @apply caption mb-2 block;
   }
 
-  /* Premium Text Gradient */
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
-  }
-
-  .text-gradient-gold {
-    @apply bg-gradient-to-r from-accent via-yellow-500 to-accent bg-clip-text text-transparent;
-  }
-
-  /* Premium Input Styles */
   .input-field {
-    @apply w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 outline-none bg-white shadow-sm;
+    @apply w-full border-0 bg-transparent px-0 py-2.5 text-[1.0625rem] text-ink outline-none;
+    border-bottom: 1px solid var(--line-strong);
+    transition: border-color 140ms ease;
   }
 
-  /* Placeholder Image */
-  .placeholder-image {
-    @apply bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100 flex items-center justify-center text-gray-400 font-medium rounded-2xl;
+  .input-field:focus {
+    border-bottom-color: var(--lawn);
   }
 
-  /* Premium Section Headers */
-  .section-badge {
-    @apply inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full tracking-wide uppercase;
+  .input-field::placeholder {
+    color: var(--ink-soft);
+    opacity: 0.7;
   }
 
-  /* Premium Hover Effects */
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+  .input-field[aria-invalid='true'] {
+    border-bottom-color: #8C3A2E;
   }
 
-  .hover-glow {
-    @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/20;
-  }
-}
+  /* --- Surfaces --------------------------------------------------------- */
 
-/* Premium Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+  /* A card is a hairline and a band, not an elevated rounded surface. */
+  .card {
+    @apply p-6 md:p-8;
+    border: 1px solid var(--line);
+    background: var(--paper);
   }
 
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+  .band-deep {
+    background: var(--paper-deep);
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
+  .band-frame {
+    background: var(--frame);
+    color: var(--on-frame);
   }
 
-  100% {
-    background-position: 200% 0;
+  .band-frame .caption,
+  .band-frame .text-muted {
+    color: var(--on-frame-soft);
+  }
+
+  .rule {
+    @apply h-px w-full border-0;
+    background: var(--line);
   }
 }
 
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
+@layer utilities {
+  /* Hungarian compounds (Kulcsrakész, Hőszivattyús) will not break on their
+   * own. Pair with lang="hu" on the subtree or the browser cannot hyphenate. */
+  .wrap-compound {
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
-}
+/* --- Material motion ---------------------------------------------------
+ *
+ * Motion that behaves like physical things, rather than motion that decorates.
+ * A print being uncovered, a drawing being unrolled, a bar filling to its true
+ * length. Each one is tied to something real about the subject; none of them
+ * draws attention to the animation itself.
+ *
+ * The base state of every element below is VISIBLE. `.reveal-run` is added by
+ * useReveal() on intersection and never removed — so content never depends on
+ * an observer firing. See lib/useReveal.ts.
+ */
 
-.animate-slide-up {
-  animation: slideUp 0.8s ease-out forwards;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* Custom Scrollbar - Premium */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f8f8f8;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--color-primary), var(--color-anthracite));
-  border-radius: 5px;
-  border: 2px solid #f8f8f8;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
-}
-
-/* Selection color */
-::selection {
-  background: var(--color-primary);
-  color: white;
-}
-
-/* Focus styles for accessibility */
-:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-/* =====================================================
-   PREMIUM ENHANCEMENTS
-   ===================================================== */
-
-/* Tabular Figures for Price Display */
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum";
-}
-
-/* Premium Link Underline Animation */
-.link-underline {
-  position: relative;
-  text-decoration: none;
-}
-
-.link-underline::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
-  transition: width 0.3s ease;
-}
-
-.link-underline:hover::after {
-  width: 100%;
-}
-
-/* Premium Button Magnetic Effect Base */
-.btn-magnetic {
-  transition: transform 0.2s ease-out;
-}
-
-.btn-magnetic:hover {
-  transform: translateY(-2px);
-}
-
-/* Premium Card Hover Effect */
-.card-premium {
-  @apply bg-white rounded-3xl shadow-lg p-6 md:p-8 border border-gray-100/50;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.card-premium:hover {
-  transform: translateY(-8px);
-  box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(27, 59, 111, 0.05);
-}
-
-/* Ambient Glow Effect */
-.ambient-glow {
-  position: relative;
-}
-
-.ambient-glow::before {
-  content: '';
-  position: absolute;
-  inset: -20%;
-  background: radial-gradient(circle at center,
-      rgba(74, 124, 35, 0.15) 0%,
-      transparent 70%);
-  filter: blur(40px);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.ambient-glow:hover::before {
-  opacity: 1;
-}
-
-/* Noise Texture Overlay */
-.noise-overlay {
-  position: relative;
-}
-
-.noise-overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.03;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-}
-
-/* Gradient Border Effect */
-.gradient-border {
-  position: relative;
-  background: white;
-  border-radius: 1rem;
-}
-
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent), var(--color-secondary));
-  z-index: -1;
-  opacity: 0.3;
-  transition: opacity 0.3s ease;
-}
-
-.gradient-border:hover::before {
-  opacity: 0.6;
-}
-
-/* Staggered Animation Delays */
-.stagger-1 {
-  animation-delay: 0.1s;
-}
-
-.stagger-2 {
-  animation-delay: 0.2s;
-}
-
-.stagger-3 {
-  animation-delay: 0.3s;
-}
-
-.stagger-4 {
-  animation-delay: 0.4s;
-}
-
-.stagger-5 {
-  animation-delay: 0.5s;
-}
-
-.stagger-6 {
-  animation-delay: 0.6s;
-}
-
-/* Premium Text Shadow for Headings */
-.text-shadow-premium {
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Subtle Parallax Container */
-.parallax-subtle {
-  transition: transform 0.3s ease-out;
-}
-
-/* Glass Card Effect */
-.glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-/* Dark Glass Effect */
-.glass-dark-premium {
-  background: rgba(10, 22, 40, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Breathing Glow Animation */
-@keyframes breathe {
-
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.6;
-    transform: scale(1.05);
-  }
-}
-
-.animate-breathe {
-  animation: breathe 4s ease-in-out infinite;
-}
-
-/* Scale Up on Hover */
-@keyframes scaleUp {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.animate-scale-up {
-  animation: scaleUp 0.5s ease-out forwards;
-}
-
-/* Premium Image Reveal */
-@keyframes imageReveal {
+/* An image uncovered left to right, the way you would pull a sheet off a
+ * drawing. Replaces the fade, which is what every other site does. */
+@keyframes mask-wipe {
   from {
     clip-path: inset(0 100% 0 0);
   }
@@ -437,34 +363,79 @@ li {
   }
 }
 
-.animate-reveal {
-  animation: imageReveal 1s ease-out forwards;
+.reveal-mask.reveal-run {
+  animation: mask-wipe 720ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
-/* Hide scrollbar for horizontal scrolling areas */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Mobile-specific improvements */
-@media (max-width: 640px) {
-  .section-padding {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+/* The site plan and floor plans: a slower wipe from the bottom, like a sheet
+ * being unrolled on a table. Slower because a drawing rewards being read. */
+@keyframes mask-unroll {
+  from {
+    clip-path: inset(100% 0 0 0);
   }
 
-  h1 {
-    font-size: 2rem;
-    line-height: 1.15;
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.reveal-unroll.reveal-run {
+  animation: mask-unroll 900ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* Plan swap: the new drawing wipes in rather than snapping. Keyed on the image
+ * src in FloorPlans, so it runs on every tab change. */
+.plan-swap {
+  animation: mask-unroll 520ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* The scale header stays put while the six bars scroll past it. Without this
+ * you lose the reference the bars are measured against halfway down the list,
+ * which is the one thing the ribbon exists to provide. */
+.scale-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-mask.reveal-run,
+  .reveal-unroll.reveal-run,
+  .plan-swap {
+    animation: none;
+    clip-path: none;
+  }
+}
+
+/* Scroll entrance — the only decorative motion. The ribbon fill in
+ * GardenRibbon.tsx is the only other animation, and it carries data. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
 
-  h2 {
-    font-size: 1.75rem;
-    line-height: 1.2;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise {
+  animation: rise 420ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

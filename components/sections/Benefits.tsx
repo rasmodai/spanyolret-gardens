@@ -1,130 +1,57 @@
 'use client';
 
-'use client';
-
-import { motion } from 'framer-motion';
-import {
-    IconGradients,
-    PremiumHeatIcon,
-    PremiumSoundproofIcon,
-    PremiumSolarIcon,
-    PremiumSmartIcon,
-    PremiumSecureIcon,
-    PremiumCustomizeIcon,
-    PremiumQualityIcon,
-    PremiumGardenIcon
-} from '@/components/ui/PremiumIcons';
 import { benefits } from '@/lib/data';
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1,
-            delayChildren: 0.1
-        }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.6,
-            ease: 'easeOut' as const
-        }
-    }
-};
-
+/* Was: a four-column grid of gradient icons over three blurred orbs on
+ * breathe loops, everything centred, each item ending in a pill badge.
+ * That is the canonical AI-slop feature grid (DESIGN.md → Anti-Patterns).
+ *
+ * Now: a numbered list. Each item is a row with its index in mono, a serif
+ * heading and a line of plain text. The "highlight" becomes a measured value
+ * in the left column rather than a coloured pill — which is what it always
+ * was: a number pretending to be a badge.
+ */
 export default function Benefits() {
-    const getIcon = (iconName: string) => {
-        const icons: Record<string, React.ReactNode> = {
-            heat: <PremiumHeatIcon size={56} />,
-            soundproof: <PremiumSoundproofIcon size={56} />,
-            solar: <PremiumSolarIcon size={56} />,
-            smart: <PremiumSmartIcon size={56} />,
-            secure: <PremiumSecureIcon size={56} />,
-            customize: <PremiumCustomizeIcon size={56} />,
-            quality: <PremiumQualityIcon size={56} />,
-            garden: <PremiumGardenIcon size={56} />
-        };
-        return icons[iconName] || null;
-    };
-
     return (
-        <section id="benefits" className="section-padding bg-gradient-to-b from-white via-facade/30 to-facade relative overflow-hidden">
-            {/* Gradient definitions for icons */}
-            <IconGradients />
+        <section id="benefits" className="section-padding border-t border-line band-deep">
+            <div className="section-container">
+                <div className="eyebrow">What you get</div>
 
-            {/* Premium ambient background */}
-            <div className="absolute inset-0 pointer-events-none">
-                {/* Noise texture overlay */}
-                <div className="absolute inset-0 noise-overlay opacity-[0.02]" />
-
-                {/* Floating gradient orbs with staggered animation */}
-                <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-primary/10 to-secondary/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl animate-[breathe_12s_ease-in-out_infinite]" />
-                <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-secondary/10 to-primary/5 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl animate-[breathe_10s_ease-in-out_infinite_2s]" />
-                <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-gradient-to-br from-golden/8 to-transparent rounded-full blur-3xl animate-[breathe_8s_ease-in-out_infinite_1s]" />
-
-                {/* Decorative lines */}
-                <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
-                <div className="absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-secondary/10 to-transparent" />
-            </div>
-
-            <div className="section-container relative z-10">
-                {/* Section Header - Premium styling */}
-                <div className="text-center mb-16">
-                    <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4 tracking-wide">
-                        PREMIUM FEATURES
-                    </span>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-anthracite mb-4">
-                        Built for Modern Family Life
+                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                    <h2 className="display-l text-ink">
+                        The parts you only notice after you move in.
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        Every detail of Spanyolrét Gardens is designed for comfortable, efficient family living.
+                    <p className="lede self-end">
+                        Thirty-centimetre party walls. No gas connection. A gate you open from the
+                        driver&rsquo;s seat. The things you stop thinking about once they are simply true.
                     </p>
                 </div>
 
-                {/* Benefits Grid - Premium card styling */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
-                    variants={containerVariants}
-                    className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
-                >
-                    {benefits.map((benefit, index) => (
-                        <motion.div
-                            key={index}
-                            variants={itemVariants}
-                            className="group card-premium text-center relative overflow-hidden"
+                <ol className="mt-12 border-t border-line">
+                    {benefits.map((benefit, i) => (
+                        <li
+                            key={benefit.title}
+                            className="grid gap-x-6 gap-y-2 border-b border-line py-6 md:grid-cols-[3rem_1fr_minmax(0,22rem)] md:items-baseline"
                         >
-                            {/* Hover gradient overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <span className="measure text-sm text-ink-soft">
+                                {String(i + 1).padStart(2, '0')}
+                            </span>
 
-                            {/* Icon */}
-                            <div className="relative z-10 mb-6 inline-block">
-                                {getIcon(benefit.icon)}
-                            </div>
+                            <h3 className="font-display text-xl leading-snug text-ink">
+                                {benefit.title}
+                            </h3>
 
-                            {/* Content */}
-                            <div className="relative z-10">
-                                <h3 className="text-xl font-bold text-anthracite mb-3 group-hover:text-primary transition-colors duration-300">
-                                    {benefit.title}
-                                </h3>
-                                <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-                                    {benefit.description}
-                                </p>
-                                <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-secondary/20 to-secondary/10 text-secondary text-sm font-semibold rounded-full">
-                                    {benefit.highlight}
-                                </span>
-                            </div>
-                        </motion.div>
+                            <p className="text-[0.9375rem] leading-relaxed text-ink-soft">
+                                {benefit.description}
+                                {benefit.highlight && (
+                                    <span className="measure ml-2 whitespace-nowrap text-ink">
+                                        {benefit.highlight}
+                                    </span>
+                                )}
+                            </p>
+                        </li>
                     ))}
-                </motion.div>
+                </ol>
             </div>
         </section>
     );

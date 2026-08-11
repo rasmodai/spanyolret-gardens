@@ -6,6 +6,7 @@ import PropertyOverviewHu from '@/components/sections/hu/PropertyOverviewHu';
 import GalleryHu from '@/components/sections/hu/GalleryHu';
 import BenefitsHu from '@/components/sections/hu/BenefitsHu';
 import FloorPlansHu from '@/components/sections/hu/FloorPlansHu';
+import PricingHu from '@/components/sections/hu/PricingHu';
 import LocationHu from '@/components/sections/hu/LocationHu';
 import DeveloperHu from '@/components/sections/hu/DeveloperHu';
 import SpecsHu from '@/components/sections/hu/SpecsHu';
@@ -20,7 +21,7 @@ export default function HomeHu() {
     return (
         <main>
             <NavbarHu />
-            <FloatingBadge availableUnits={4} totalUnits={6} locale="hu" />
+            <FloatingBadge locale="hu" />
             <HeroHu />
             <TrustBarHu />
             <SectionDivider variant="gradient" />
@@ -31,6 +32,7 @@ export default function HomeHu() {
             <BenefitsHu />
             <SectionDivider variant="gradient" />
             <FloorPlansHu />
+            <PricingHu />
             <LocationHu />
             <SectionDivider variant="accent" />
             <DeveloperHu />

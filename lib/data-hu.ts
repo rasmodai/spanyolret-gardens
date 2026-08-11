@@ -13,9 +13,11 @@ export { units } from './data';
 
 export const trustBarItemsHu = [
     { icon: 'building', value: '50+', label: 'Átadott projekt' },
-    { icon: 'calendar', value: '13', label: 'Év tapasztalat' },
+    // Az alapítás évéből számolva, nem beégetve.
+    { icon: 'calendar', value: `${new Date().getFullYear() - 2012}`, label: 'Éve építünk' },
+    // ⚠️ NEM ELLENŐRIZHETŐ — lásd developerStatsHu.
     { icon: 'shield', value: '100%', label: 'Határidőre kész' },
-    { icon: 'award', value: 'Prémium', label: 'Alapanyagok' }
+    { icon: 'award', value: '30 cm', label: 'Válaszfalak' }
 ];
 
 // ============================================
@@ -25,46 +27,46 @@ export const trustBarItemsHu = [
 export const problemsHu = [
     {
         icon: 'compress',
-        title: 'Kinőttétek a lakást',
-        description: 'A gyerekek egy szobában. Home office az ágyból. Mindenhol játékok.'
+        title: 'Az iroda a hálószoba sarka',
+        description: 'Mindig telefonál valaki. És mindig kérnek meg valaki mást, hogy legyen csendben.'
     },
     {
         icon: 'tree-slash',
-        title: 'Nincs kert',
-        description: 'Az erkély kevés. A gyerekeknek kell a fű, a friss levegő, a hely a játékhoz.'
+        title: 'Az erkély nem a szabad ég alatt van',
+        description: 'Egy ötévest nem küldesz ki az erkélyre, hogy közben elintézd a délelőttöt.'
     },
     {
         icon: 'car-xmark',
-        title: 'Parkolási rémálom',
-        description: 'Körbejárni a blokkot. Utcai parkolás. Bevásárlás cipelése három utcáról.'
+        title: 'Húsz perc parkolóhelyet keresni',
+        description: 'Utána három utca gyalog, a bevásárlással és mindkét gyerekkel.'
     },
     {
         icon: 'money',
-        title: 'Az albérlet nem épít jövőt',
-        description: 'Havi 500 ezer a főbérlőnek. Évi 6 millió, ami nem a tiéd lesz.'
+        title: 'Évi 6 millió, és egyik forint sem a tiéd',
+        description: 'Havi 500 ezerrel egy ház jó részét kifizetted. Csak nem a tiédet.'
     }
 ];
 
 export const solutionsHu = [
     {
         icon: 'expand',
-        title: '117 m² élettér',
-        description: '5 szoba két szinten. Home office. Tárolók. Van hely lélegezni.'
+        title: '117 m², öt szoba, két szint',
+        description: 'Egy szoba, ahol dolgozni lehet, becsukható ajtóval. Kamra, háztartási helyiség, gardrób.'
     },
     {
         icon: 'tree',
-        title: 'Akár 317 m² saját kert',
-        description: 'Saját fű. Hétvégi grillezés. A gyerekek biztonságban játszanak kint.'
+        title: '102 és 316,84 m² közötti kert',
+        description: 'Kézi vetésű fű, körbekerítve, a nappaliból nyíló ajtóval. A teraszról az egészet belátod.'
     },
     {
         icon: 'car',
-        title: 'Saját parkoló',
-        description: 'Hazaérsz. Távirányító. Beállsz. Minden egyes nap.'
+        title: 'Egy hely, kapu mögött, amit az autóból nyitsz',
+        description: 'Megérkezel, a kapu kinyílik, beállsz. Ennyi az egész, minden nap.'
     },
     {
         icon: 'piggy-bank',
-        title: 'Valódi befektetés',
-        description: 'Prémium ingatlan egy fejlődő piacon. Ne más jelzáloghitelét fizesd.'
+        title: 'A törlesztés olyanba megy, ami a tiéd',
+        description: 'Nem fogunk a budapesti piacról jóslatot mondani. De a pénz nem megy el többé.'
     }
 ];
 
@@ -73,12 +75,12 @@ export const solutionsHu = [
 // ============================================
 
 export const propertyStatsHu = [
-    { value: '6', label: 'Exkluzív sorház', icon: 'home' },
-    { value: '117 m²', label: 'Belső élettér', icon: 'expand' },
-    { value: '102-317 m²', label: 'Saját kertek', icon: 'tree' },
-    { value: '220M Ft', label: 'Induló ár', icon: 'money' },
-    { value: '5', label: 'Szoba lakásonként', icon: 'door' },
-    { value: '2026. ősz', label: 'Kulcsrakész átadás', icon: 'calendar-check' }
+    { value: '6', label: 'Sorház', icon: 'home' },
+    { value: '117–120 m²', label: 'Belső tér', icon: 'expand' },
+    { value: '102–317 m²', label: 'Saját kert', icon: 'tree' },
+    { value: '5', label: 'Szoba', icon: 'door' },
+    { value: '6,60 m²', label: 'Terasz', icon: 'money' },
+    { value: '2026. szeptember', label: 'Kulcsátadás', icon: 'calendar-check' }
 ];
 
 // ============================================
@@ -88,51 +90,54 @@ export const propertyStatsHu = [
 export const benefitsHu = [
     {
         icon: 'heat',
-        title: 'Hőszivattyús rendszer',
-        description: 'Nincs gázszámla. Westen Auriga hőszivattyú padlófűtéssel és hűtéssel. A energiaosztály.',
-        highlight: 'Évi 400 ezer+ spórolás'
+        // "A energiaosztály" és "Évi 400 ezer+ spórolás" törölve: egyik sem
+        // szerepel a műszaki leírásban. Energetikai tanúsítvány és tényleges
+        // fogyasztási adatok nélkül nem kerülnek vissza.
+        title: 'Nincs gázszámla, mert nincs gáz',
+        description: 'Egy Westen Auriga hőszivattyú viszi télen a padlófűtést, nyáron a hűtést.',
+        highlight: 'Nincs gázbekötés'
     },
     {
         icon: 'soundproof',
-        title: '30 cm-es hangszigetelés',
-        description: 'Silka hangszigetelő tégla a lakások között. Nem hallod a szomszédot.',
-        highlight: 'Nyugalom garantálva'
+        title: '30 cm tégla a szomszéd és közted',
+        description: 'Silka hangszigetelő blokk a válaszfalakban. Ezért nem fogod hallani őket.',
+        highlight: '30 cm'
     },
     {
         icon: 'solar',
-        title: 'Napelem-előkészítés',
-        description: 'Előre kiépített vezetékek a tetőn. Felkészülve a jövőre.',
-        highlight: 'Napelem-ready'
+        title: 'A napelem vezetékei már a helyükön',
+        description: 'Védőcső fut a tetőig. Maga a napelem külön díjazású extra, nincs benne az árban.',
+        highlight: 'Védőcső kiépítve'
     },
     {
         icon: 'smart',
-        title: 'Okos termosztátok',
-        description: 'SIEMENS programozható termosztátok minden szinten. Beállítod és kész.',
-        highlight: 'Zónánkénti szabályzás'
+        title: 'Szintenként egy termosztát',
+        description: 'Heti programozású, SIEMENS vagy HONEYWELL. A földszintnek és az emeletnek nem kell egyetértenie.',
+        highlight: 'Szintenként'
     },
     {
         icon: 'secure',
-        title: 'Beépített biztonság',
-        description: 'MABISZ-minősített bejárati ajtó. Riasztó-előkészítés minden szobában. Távirányítós kapu.',
-        highlight: 'Családi biztonság'
+        title: 'MABISZ-minősített bejárati ajtó',
+        description: 'Négy-nyolc pontos zárás, riasztó-előkészítés minden szobában, és egy kapu, amit az autóból nyitsz.',
+        highlight: 'Minősített'
     },
     {
         icon: 'customize',
-        title: 'Személyre szabható',
-        description: 'Válaszd ki a csempét, a padlót, a festék színét. Tedd magadévá mielőtt beköltözöl.',
-        highlight: 'Te döntesz'
+        title: 'A burkolatokat még építés közben választod',
+        description: 'Csempe, padló, festés. Ezt az egyet nem tudod megtenni, ha kész házat veszel.',
+        highlight: 'Átadásig'
     },
     {
         icon: 'quality',
-        title: 'Prémium alapanyagok',
-        description: 'Wienerberger tégla. LEGRAND elektromos szerelvények. VEKA nyílászárók. Háromrétegű üvegezés.',
-        highlight: 'Minőség ami tart'
+        title: 'A műszaki leírás, írásban',
+        description: 'Kívül Wienerberger Porotherm, közte Silka, LEGRAND Valena szerelvények, háromrétegű üvegezés. A megnevezett márka olyan állítás, amin számon kérhetsz minket.',
+        highlight: 'Megnevezve, nem sugallva'
     },
     {
         icon: 'garden',
-        title: 'Saját kertek',
-        description: '102 m²-től 317 m²-ig. Kézi vetésű fű. Öntözés-előkészítés. A te szabadtéri nappalid.',
-        highlight: 'Akár 317 m²'
+        title: 'A kert az egész lényege',
+        description: '102,12 m²-től 316,84 m²-ig. Kézi vetésű fű, 10–15 cm humusz, öntözés-előkészítés.',
+        highlight: 'Akár 316,84 m²'
     }
 ];
 
@@ -179,18 +184,25 @@ export const neighborhoodHighlightsHu = [
 // ============================================
 
 export const developerStatsHu = [
-    { value: '2012', label: 'Alapítva' },
+    { value: '2012', label: 'Építünk azóta' },
     { value: '50+', label: 'Átadott projekt' },
+    // ⚠️ NEM ELLENŐRIZHETŐ — a "100% határidőre" sehol nem szerepel a műszaki
+    // dokumentációban, marketingszövegből ered. Írásos megerősítés vagy törlés.
     { value: '100%', label: 'Határidőre kész' },
-    { value: '13', label: 'Év tapasztalat' }
+    // Az alapítás évéből számolva. Ne legyen beégetve: a korábbi '13' 2025
+    // decemberében készült, és 2026 augusztusára már téves volt.
+    { value: `${new Date().getFullYear() - 2012}`, label: 'Éve építünk' }
 ];
 
 export const qualityPromisesHu = [
-    'Prémium európai alapanyagok (Wienerberger, LEGRAND, VEKA)',
-    'Teljes kivitelezési garancia',
-    'Átlátható árazás — nincsenek rejtett költségek',
-    'Rendszeres építési tájékoztatók',
-    'Személyes kapcsolattartó'
+    'A teljes műszaki leírás írásban, mielőtt bármire elköteleződsz',
+    'Törvény szerinti szerkezeti garancia, plusz gyártói garanciák',
+    // Volt: "Átlátható árazás — nincsenek rejtett költségek". Ez már nem áll,
+    // mert az extrák külön díjazásúak. Ez ugyanannak az ígéretnek az őszinte formája.
+    'Minden külön díjazású extra előre listázva, nem a szerződésnél derül ki',
+    'Rendszeres tájékoztatás az építkezés haladásáról',
+    'Egy angolul beszélő kapcsolattartó, végig ugyanaz',
+    'Átadott projektjeink címei, hogy a kivitelezést magad nézhesd meg'
 ];
 
 // ============================================
@@ -247,7 +259,7 @@ export const specsCategoriesHu = [
         title: 'Burkolatok és anyagok',
         items: [
             'Lakóterek: Prémium laminált padló',
-            'Vizesblokkok: Kerámia burkolat (8.000 Ft/m²-ig)',
+            'Vizesblokkok: Kerámia burkolat (8 000 Ft/m²-ig)',
             'Falak: 2 réteg glett + 2-3 réteg festés (3 szín)',
             'Terasz: Porcelán kőlap (max 60×60 cm)',
             'Homlokzat: Dörzsölt nemesvakolat'
@@ -282,7 +294,7 @@ export const includedInPriceHu = [
 ];
 
 export const optionalExtrasHu = [
-    { item: 'További parkolóhely', price: '4.000.000 Ft' },
+    { item: 'További parkolóhely', price: '4 000 000 Ft' },
     { item: 'Mennyezeti fűtés-hűtés', price: 'Egyedi árajánlat' },
     { item: 'Motoros redőny', price: 'Egyedi árajánlat' },
     { item: 'Napelem telepítés', price: 'Egyedi árajánlat' },
@@ -331,7 +343,7 @@ export const processStepsHu = [
     },
     {
         step: 6,
-        title: 'Beköltözés (2026 ősz)',
+        title: 'Beköltözés (2026. szeptember)',
         description: 'Megkapod a kulcsokat a kulcsrakész, azonnal beköltözhető otthonodhoz.',
         duration: 'Átadás napja',
         icon: 'key'
@@ -410,7 +422,7 @@ export const faqsHu = [
             },
             {
                 q: 'Hány parkoló jár?',
-                a: 'Minden lakáshoz 1 saját parkoló. További hely vásárolható 4 millió Ft-ért. Távirányítós kapu. Vége az utcai parkolásnak.'
+                a: 'Minden lakáshoz 1 saját parkoló. További hely vásárolható 4 000 000 Ft-ért. Távirányítós kapu. Vége az utcai parkolásnak.'
             }
         ]
     },
@@ -443,19 +455,21 @@ export const faqsHu = [
 
 export const uiTextsHu = {
     hero: {
-        badge: 'Foglalás nyitva • Csak 6 lakás',
-        headline: 'Családod saját kertje',
-        headlineHighlight: 'vár rád Budapesten',
-        subheadline: 'Prémium társasházak Spanyolréten, akár 317 m² saját kerttel, padlófűtéssel és saját parkolóval.',
-        priceLabel: 'Már',
-        priceValue: '220 millió Ft-tól',
-        ctaPrimary: 'Időpont egyeztetés',
-        ctaSecondary: 'Alaprajzok megtekintése',
+        // Mirrors the English hero. 'vár rád' (awaits) is gone: PRD §7.0 bans
+        // verbs of longing in both languages.
+        headline: 'Saját kert.',
+        headlineSecond: 'Nem erkély.',
+        subheadline: 'Hat sorház Budapest XI. kerületében, két épületben. Öt szoba két szinten, és egy kert, ami 102-től 317 m²-ig terjed.',
+        priceValue: '240 000 000 Ft-tól',
+        priceQualifier: 'Kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban',
+        ctaPrimary: 'Időpontot kérek',
+        ctaSecondary: 'A hat kert',
+        location: 'Budapest XI. · 2026. szeptember',
         stats: [
-            { value: '6', label: 'Exkluzív lakás' },
-            { value: '117 m²', label: 'Belső tér' },
-            { value: '317 m²', label: 'Max. kert' },
-            { value: '2026 ősz', label: 'Átadás' }
+            { value: '6', label: 'Sorház' },
+            { value: '117–120 m²', label: 'Belső tér' },
+            { value: '102–317 m²', label: 'Saját kert' },
+            { value: '2026. szeptember', label: 'Kulcsátadás' }
         ]
     },
     problemSolution: {
@@ -480,11 +494,11 @@ export const uiTextsHu = {
     },
     floorPlans: {
         badge: 'ALAPRAJZOK',
-        title: 'Válaszd ki a tökéletes lakást',
-        subtitle: '6 egyedi otthon, azonos prémium minőség. Már 220 millió Ft-tól.',
-        sitePlan: '📍 Helyszínrajz',
-        buildingA: '🏠 A épület',
-        buildingB: '🏠 B épület',
+        title: 'Hatszor ugyanaz a ház. A kert az, ami változik.',
+        subtitle: 'Hatszor ugyanaz a ház: öt szoba, két szint, 6,60 m² terasz. A kert az, ami változik — 102,12 m²-től 316,84 m²-ig, több mint háromszoros különbség.',
+        sitePlan: 'Helyszínrajz',
+        buildingA: 'A épület',
+        buildingB: 'B épület',
         groundFloor: 'Földszint',
         firstFloor: 'Emelet',
         allUnits: 'Összes lakás',
@@ -502,8 +516,11 @@ export const uiTextsHu = {
     },
     location: {
         badge: 'ELHELYEZKEDÉS',
-        title: 'Tökéletes lokáció',
-        subtitle: 'A legjobb mindkét világból: városi elérhetőség vidéki nyugalommal. Kapcsolat a várossal, mégis csend.',
+        // Volt: 'Tökéletes lokáció' / 'A legjobb mindkét világból' — mindkettő
+        // tiltott a PRD §7.0 szerint. Az új verzió elismeri a kompromisszumot,
+        // és ettől lesz hihető a többi.
+        title: 'Húsz perc a belvárostól. A zajból semmi.',
+        subtitle: 'Spanyolrét nem belváros, és nem is teszünk úgy, mintha az lenne. Amit a plusz tizenöt percért kapsz, az egy utca, ahol nem történik semmi.',
         address: 'Cím',
         gettingAround: 'Közlekedés',
         neighborhood: 'A környék',

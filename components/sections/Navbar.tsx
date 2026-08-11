@@ -2,12 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { scrollToElement } from '@/lib/utils';
+import ThemeToggle from '@/components/ui/ThemeToggle';
+
+/* Was a floating dark-glass capsule: rounded-2xl, backdrop-blur(20px), a
+ * hardcoded navy background, shadow-2xl and a hover:scale CTA. Frosted glass
+ * does not exist in this project (DESIGN.md → Anti-Patterns).
+ *
+ * Now: a paper bar that sits flush to the top edge with a single hairline
+ * under it. No radius, no elevation, no blur. It still only appears after the
+ * poster has done its job.
+ */
 
 const navLinks = [
     { label: 'Overview', href: '#property-overview' },
     { label: 'Gallery', href: '#gallery' },
-    { label: 'Floor Plans', href: '#floor-plans' },
+    { label: 'The six gardens', href: '#floor-plans' },
     { label: 'Location', href: '#location' },
 ];
 
@@ -17,20 +27,13 @@ export default function Navbar() {
 
     useEffect(() => {
         const handleScroll = () => {
-            // Show navbar after scrolling past hero (100vh)
-            const heroHeight = window.innerHeight;
-            setIsVisible(window.scrollY > heroHeight * 0.7);
+            setIsVisible(window.scrollY > window.innerHeight * 0.7);
 
-            // Determine active section
-            const sections = navLinks.map(link => link.href.slice(1));
-            for (const section of sections.reverse()) {
-                const element = document.getElementById(section);
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    if (rect.top <= 150) {
-                        setActiveSection(section);
-                        break;
-                    }
+            for (const section of navLinks.map((l) => l.href.slice(1)).reverse()) {
+                const el = document.getElementById(section);
+                if (el && el.getBoundingClientRect().top <= 150) {
+                    setActiveSection(section);
+                    break;
                 }
             }
         };
@@ -39,86 +42,60 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const scrollToSection = (href: string) => {
-        const element = document.querySelector(href);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
-    const scrollToForm = () => {
-        document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' });
-    };
-
     return (
-        <AnimatePresence>
-            {isVisible && (
-                <motion.nav
-                    initial={{ y: -100, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -100, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="fixed top-0 left-0 right-0 z-50"
+        <nav
+            aria-label="Section navigation"
+            className={`fixed inset-x-0 top-0 z-50 border-b border-line bg-paper transition-[opacity,transform] duration-medium ease-enter ${
+                isVisible ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-full opacity-0'
+            }`}
+        >
+            <div className="section-container flex items-center justify-between gap-6 py-3">
+                <button
+                    type="button"
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className="-my-2 flex min-h-[44px] items-center gap-3 py-2"
+                    aria-label="Back to top"
                 >
-                    <div className="mx-4 mt-4">
-                        <div className="max-w-6xl mx-auto">
-                            <div
-                                className="flex items-center justify-between px-6 py-3 rounded-2xl border border-white/10 shadow-2xl"
-                                style={{
-                                    background: 'rgba(10, 22, 40, 0.85)',
-                                    backdropFilter: 'blur(20px)',
-                                    WebkitBackdropFilter: 'blur(20px)',
-                                }}
+                    <Image
+                        src="/espatrick-bau-logo.png"
+                        alt="S-Patrik Bau"
+                        width={120}
+                        height={36}
+                        className="h-7 w-auto object-contain"
+                    />
+                </button>
+
+                <div className="hidden items-center gap-7 md:flex">
+                    {navLinks.map((link) => {
+                        const isActive = activeSection === link.href.slice(1);
+                        return (
+                            <button
+                                key={link.href}
+                                type="button"
+                                onClick={() => scrollToElement(link.href.slice(1))}
+                                className={`tab-link ${
+                                    isActive
+                                        ? 'border-clay !text-ink'
+                                        : 'border-transparent hover:!text-ink'
+                                }`}
                             >
-                                {/* Logo / Brand */}
-                                <button
-                                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                                    className="flex items-center gap-3 group"
-                                >
-                                    <div className="bg-white rounded-lg px-3 py-1.5">
-                                        <Image
-                                            src="/espatrick-bau-logo.png"
-                                            alt="S-Patrik Bau"
-                                            width={120}
-                                            height={36}
-                                            className="h-7 sm:h-8 w-auto object-contain"
-                                        />
-                                    </div>
-                                </button>
+                                {link.label}
+                            </button>
+                        );
+                    })}
+                </div>
 
-                                {/* Navigation Links */}
-                                <div className="hidden md:flex items-center gap-1">
-                                    {navLinks.map((link) => (
-                                        <button
-                                            key={link.href}
-                                            onClick={() => scrollToSection(link.href)}
-                                            className={`
-                                                px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 relative group
-                                                ${activeSection === link.href.slice(1)
-                                                    ? 'text-white bg-white/10'
-                                                    : 'text-white/70 hover:text-white'
-                                                }
-                                            `}
-                                        >
-                                            {link.label}
-                                            <span className={`absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-secondary to-green-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ${activeSection === link.href.slice(1) ? 'scale-x-100' : ''}`} />
-                                        </button>
-                                    ))}
-                                </div>
-
-                                {/* CTA Button */}
-                                <button
-                                    onClick={scrollToForm}
-                                    className="px-5 py-2.5 bg-gradient-to-r from-secondary to-green-500 text-white text-sm font-semibold rounded-xl shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all duration-300 hover:scale-105 btn-magnetic"
-                                >
-                                    <span className="hidden sm:inline">Request Viewing</span>
-                                    <span className="sm:hidden">Contact</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </motion.nav>
-            )}
-        </AnimatePresence>
+                <div className="flex items-center gap-6">
+                    <ThemeToggle />
+                    <button
+                        type="button"
+                        onClick={() => scrollToElement('lead-form')}
+                        className="btn btn-primary !px-5 !py-2.5 !text-sm"
+                    >
+                        Book a viewing
+                    </button>
+                </div>
+            </div>
+        </nav>
     );
 }

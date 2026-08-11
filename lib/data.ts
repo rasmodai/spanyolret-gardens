@@ -12,8 +12,9 @@ export interface Unit {
     terraceArea: number;
     gardenArea: number;
     gardenSize: 'small' | 'medium' | 'large' | 'xlarge';
-    price: number;
-    priceEur: number;
+    // No price fields. Per-unit prices are never published, and anything in this
+    // shape ships in the client bundle where devtools can read it.
+    // See DESIGN.md → Pricing Display Rule.
     status: 'available' | 'reserved' | 'sold';
     rooms: number;
     bathrooms: number;
@@ -32,8 +33,6 @@ export const units: Unit[] = [
         terraceArea: 6.60,
         gardenArea: 201.79,
         gardenSize: 'large',
-        price: 195000000,
-        priceEur: 480000,
         status: 'available',
         rooms: 5,
         bathrooms: 2,
@@ -49,13 +48,11 @@ export const units: Unit[] = [
         terraceArea: 6.60,
         gardenArea: 147.19,
         gardenSize: 'medium',
-        price: 205000000,
-        priceEur: 505000,
         status: 'available',
         rooms: 5,
         bathrooms: 2,
         parkingSpaces: 1,
-        highlight: 'Largest Interior'
+        highlight: 'Largest interior'
     },
     {
         id: 'A3',
@@ -67,8 +64,6 @@ export const units: Unit[] = [
         terraceArea: 6.60,
         gardenArea: 260.01,
         gardenSize: 'xlarge',
-        price: 215000000,
-        priceEur: 530000,
         status: 'sold',
         rooms: 5,
         bathrooms: 2,
@@ -84,8 +79,6 @@ export const units: Unit[] = [
         terraceArea: 6.60,
         gardenArea: 185.65,
         gardenSize: 'large',
-        price: 205000000,
-        priceEur: 505000,
         status: 'available',
         rooms: 5,
         bathrooms: 2,
@@ -101,13 +94,11 @@ export const units: Unit[] = [
         terraceArea: 6.60,
         gardenArea: 102.12,
         gardenSize: 'small',
-        price: 195000000,
-        priceEur: 480000,
         status: 'sold',
         rooms: 5,
         bathrooms: 2,
         parkingSpaces: 1,
-        highlight: 'Best Value'
+        highlight: 'Smallest garden'
     },
     {
         id: 'B3',
@@ -119,13 +110,11 @@ export const units: Unit[] = [
         terraceArea: 6.60,
         gardenArea: 316.84,
         gardenSize: 'xlarge',
-        price: 225000000,
-        priceEur: 555000,
         status: 'available',
         rooms: 5,
         bathrooms: 2,
         parkingSpaces: 1,
-        highlight: 'Largest Garden'
+        highlight: 'Largest garden'
     }
 ];
 
@@ -134,13 +123,23 @@ export const units: Unit[] = [
 // ============================================
 
 export const trustBarItems = [
-    { icon: 'building', value: '50+', label: 'Completed Projects' },
-    { icon: 'calendar', value: '13', label: 'Years Experience' },
-    { icon: 'shield', value: '100%', label: 'On-Time Delivery' },
-    { icon: 'award', value: 'Premium', label: 'Materials' }
+    { icon: 'building', value: '50+', label: 'Projects finished' },
+    // Derived, not hardcoded. The previous '13' was written in Dec 2025 and was
+    // already wrong by Aug 2026.
+    { icon: 'calendar', value: `${new Date().getFullYear() - 2012}`, label: 'Years building' },
+    // ⚠️ UNVERIFIED — "100% on-time delivery" appears nowhere in the technical
+    // spec; it originates in marketing copy. On a HUF 240M purchase this is a
+    // claim with legal weight. Confirm in writing with S-Patrik Bau or cut it.
+    { icon: 'shield', value: '100%', label: 'Delivered on time' },
+    { icon: 'award', value: '30 cm', label: 'Party walls' }
 ];
 
-export const brandLogos = ['Wienerberger', 'LEGRAND', 'VEKA', 'SIEMENS'];
+// Only brands the technical specification actually commits to. BOSCH was on
+// this wall and appears nowhere in the spec — removed. VEKA and SIEMENS are
+// listed in the spec as options ("VEKA 82 or Aluplast Neo", "SIEMENS or
+// HONEYWELL"), so they are named in the spec section rather than shown as
+// settled commitments here. See DESIGN.md → Credibility slop.
+export const brandLogos = ['Wienerberger', 'LEGRAND', 'Silka'];
 
 // ============================================
 // PROBLEM-SOLUTION CONTENT
@@ -149,46 +148,46 @@ export const brandLogos = ['Wienerberger', 'LEGRAND', 'VEKA', 'SIEMENS'];
 export const problems = [
     {
         icon: 'compress',
-        title: 'Outgrowing Your Space',
-        description: 'Kids sharing rooms. Work calls from the bedroom. Toys everywhere.'
+        title: 'The office is the corner of the bedroom',
+        description: 'Someone is always on a call. Someone else is always being asked to be quiet.'
     },
     {
         icon: 'tree-slash',
-        title: 'No Outdoor Space',
-        description: "A balcony isn't enough. The kids need grass, fresh air, room to play."
+        title: 'A balcony is not outside',
+        description: 'You cannot send a five-year-old out to a balcony and get on with your morning.'
     },
     {
         icon: 'car-xmark',
-        title: 'Parking Nightmares',
-        description: 'Circling blocks. Street parking. Carrying groceries three streets.'
+        title: 'Twenty minutes looking for a space',
+        description: 'Then three streets to walk, with the shopping and both children.'
     },
     {
         icon: 'money',
-        title: 'Rent Going Nowhere',
-        description: "€1,500/month to a landlord. €18,000/year not building any equity."
+        title: '€18,000 a year, and none of it is yours',
+        description: 'At €1,500 a month you have paid for a good part of a house. Someone else owns it.'
     }
 ];
 
 export const solutions = [
     {
         icon: 'expand',
-        title: '117m² of Living Space',
-        description: '5 rooms across 2 floors. Home office. Storage. Room to breathe.'
+        title: '117 m², five rooms, two floors',
+        description: 'A room to work in with a door that shuts. A pantry, a utility room, a walk-in wardrobe.'
     },
     {
         icon: 'tree',
-        title: 'Up to 317m² Private Garden',
-        description: 'Your own grass. Weekend barbecues. Kids playing safely outside.'
+        title: 'Between 102 and 316.84 m² of garden',
+        description: 'Hand-sown grass, fenced, with a door from the living room. You can see all of it from the terrace.'
     },
     {
         icon: 'car',
-        title: 'Dedicated Parking',
-        description: 'Drive home. Press remote. Park. Every single day.'
+        title: 'One space, behind a gate you open from the car',
+        description: 'You arrive, the gate opens, you park. That is the whole of it, every day.'
     },
     {
         icon: 'piggy-bank',
-        title: 'Build Real Wealth',
-        description: "Own premium property in a growing market. Stop paying someone else's mortgage."
+        title: 'The payment goes into something you own',
+        description: 'We are not going to forecast the Budapest market for you. But the money stops leaving.'
     }
 ];
 
@@ -197,13 +196,24 @@ export const solutions = [
 // ============================================
 
 export const propertyStats = [
-    { value: '6', label: 'Exclusive Townhouses', icon: 'home' },
-    { value: '117m²', label: 'Internal Living Space', icon: 'expand' },
-    { value: '102-317m²', label: 'Private Gardens', icon: 'tree' },
-    { value: '220M HUF', label: 'Starting Price', icon: 'money' },
-    { value: '5', label: 'Rooms per Unit', icon: 'door' },
-    { value: 'Sept 2026', label: 'Turnkey Delivery', icon: 'calendar-check' }
+    { value: '6', label: 'Townhouses', icon: 'home' },
+    { value: '117–120 m²', label: 'Inside', icon: 'expand' },
+    { value: '102–317 m²', label: 'Private garden', icon: 'tree' },
+    { value: '5', label: 'Rooms', icon: 'door' },
+    { value: '6.60 m²', label: 'Terrace', icon: 'door' },
+    { value: 'September 2026', label: 'Keys', icon: 'calendar-check' }
 ];
+
+/* The one public figure. It never appears without `anchorQualifier` — a bare
+ * number invites comparison against competitors' shell prices and loses it.
+ * Per-unit prices are never published. See DESIGN.md → Pricing Display Rule. */
+export const pricing = {
+    anchor: 'From 240,000,000 HUF',
+    anchorQualifier: 'Turnkey — landscaping and one parking space included',
+    perUnit: 'Price on request',
+    extrasNote:
+        'Optional extras are priced separately and listed below. We put them here rather than at contract stage, because finding out later is how people end up feeling sold to.'
+};
 
 // ============================================
 // BENEFITS
@@ -212,51 +222,54 @@ export const propertyStats = [
 export const benefits = [
     {
         icon: 'heat',
-        title: 'Heat Pump System',
-        description: 'No gas bills. Westen Auriga heat pump with underfloor heating and cooling. Energy class A.',
-        highlight: 'Save €1,000+/year'
+        title: 'No gas bill, because there is no gas',
+        // "Energy class A" and "Save €1,000+/year" removed: neither appears in
+        // the technical specification. Get the energy certificate and the actual
+        // running-cost figures before either goes back.
+        description: 'A Westen Auriga heat pump runs the underfloor heating in winter and the cooling in summer.',
+        highlight: 'No gas connection'
     },
     {
         icon: 'soundproof',
-        title: '30cm Sound Insulation',
-        description: "Silka sound-insulating brick between units. You won't hear your neighbors.",
-        highlight: 'Peace & quiet'
+        title: '30 cm of brick between you and next door',
+        description: 'Silka sound-insulating block on the party walls. It is the reason you will not hear them.',
+        highlight: '30 cm'
     },
     {
         icon: 'solar',
-        title: 'Solar Ready',
-        description: 'Conduits pre-installed for rooftop solar panels. Future-proof your energy.',
-        highlight: 'Ready for solar'
+        title: 'The pipework for solar is already in',
+        description: 'Protective conduit runs to the roof. The panels themselves are a chargeable extra, not included.',
+        highlight: 'Conduit installed'
     },
     {
         icon: 'smart',
-        title: 'Smart Thermostats',
-        description: 'SIEMENS programmable thermostats on each floor. Set it and forget it.',
-        highlight: 'Zone control'
+        title: 'A thermostat per floor',
+        description: 'Programmable weekly, SIEMENS or HONEYWELL. Upstairs and downstairs do not have to agree.',
+        highlight: 'Per floor'
     },
     {
         icon: 'secure',
-        title: 'Security Built-In',
-        description: 'MABISZ-certified entrance doors. Alarm preparation in every room. Remote-controlled gate.',
-        highlight: 'Family safe'
+        title: 'MABISZ-certified entrance door',
+        description: 'Four to eight point locking, alarm wiring prepared in every room, and a gate you open from the car.',
+        highlight: 'Certified'
     },
     {
         icon: 'customize',
-        title: 'Customize Before Completion',
-        description: 'Choose your tiles, flooring, paint colors. Make it yours before you move in.',
-        highlight: 'Your choices'
+        title: 'Choose the finishes while it is still being built',
+        description: 'Tiles, flooring, paint. This is the one thing you cannot do when you buy a house that is already finished.',
+        highlight: 'Until completion'
     },
     {
         icon: 'quality',
-        title: 'Premium Materials',
-        description: 'Wienerberger brick. LEGRAND electrical. VEKA windows. Triple-glazed throughout.',
-        highlight: 'Built to last'
+        title: 'The specification, in writing',
+        description: 'Wienerberger Porotherm outside, Silka between, LEGRAND Valena fittings, triple glazing. Named brands are a claim we can be held to.',
+        highlight: 'Named, not implied'
     },
     {
         icon: 'garden',
-        title: 'Private Gardens',
-        description: 'From 102m² to 317m². Hand-sown grass. Irrigation-ready. Your outdoor living room.',
-        highlight: 'Up to 317m²'
+        title: 'The garden is the whole point',
+        description: 'From 102.12 to 316.84 m². Hand-sown grass, 10–15 cm of topsoil, irrigation pipework prepared.',
+        highlight: 'Up to 316.84 m²'
     }
 ];
 
@@ -292,10 +305,10 @@ export const nearbyAmenities = [
 
 export const neighborhoodHighlights = [
     'Quiet residential streets',
-    'Low traffic area',
-    'Established family neighborhood',
+    'Very little through traffic',
+    'Houses people have lived in for twenty years',
     'Green surroundings',
-    'No competing new developments'
+    'No other new development on the street'
 ];
 
 // ============================================
@@ -303,18 +316,22 @@ export const neighborhoodHighlights = [
 // ============================================
 
 export const developerStats = [
-    { value: '2012', label: 'Established' },
-    { value: '50+', label: 'Projects Completed' },
-    { value: '100%', label: 'On-Time Delivery' },
-    { value: '13', label: 'Years Experience' }
+    { value: '2012', label: 'Building since' },
+    { value: '50+', label: 'Projects finished' },
+    // ⚠️ UNVERIFIED — see trustBarItems. Confirm in writing or cut.
+    { value: '100%', label: 'Delivered on time' },
+    { value: `${new Date().getFullYear() - 2012}`, label: 'Years building' }
 ];
 
 export const qualityPromises = [
-    'Premium European materials (Wienerberger, LEGRAND, VEKA)',
-    'Full construction warranty',
-    'Transparent pricing — no hidden costs',
-    'Regular construction updates',
-    'Dedicated English-speaking contact'
+    'The full technical specification, in writing, before you commit to anything',
+    'Structural warranty as required by Hungarian law, plus manufacturer warranties',
+    // Was "Transparent pricing — no hidden costs", which no longer holds now that
+    // extras are chargeable. This version is the honest form of the same promise.
+    'Every chargeable extra listed up front, not discovered at contract stage',
+    'Construction updates as the build progresses',
+    'One English-speaking contact who stays with you throughout',
+    'Addresses of finished projects, so you can go and look at the workmanship'
 ];
 
 // ============================================
@@ -485,10 +502,6 @@ export const faqs = [
             {
                 q: 'What is the payment schedule?',
                 a: 'Typically: 10% reservation deposit, followed by stage payments during construction, with the final payment at handover. Exact terms are discussed during consultation and can be tailored to your situation.'
-            },
-            {
-                q: 'Can I get a mortgage in Hungary as an expat?',
-                a: 'Yes, several Hungarian banks offer mortgages to foreign residents with proof of income. We can recommend English-speaking mortgage brokers who specialize in expat clients.'
             },
             {
                 q: 'What happens if construction is delayed?',

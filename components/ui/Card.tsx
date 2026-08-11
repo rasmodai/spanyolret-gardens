@@ -15,13 +15,13 @@ export default function Card({
     hover = true,
     padding = 'md'
 }: CardProps) {
-    const baseStyles = 'bg-white rounded-2xl transition-all duration-300';
+    const baseStyles = 'bg-paper rounded-2xl transition-all duration-300';
 
     const shadowStyles = elevated
-        ? 'shadow-xl border border-gray-100'
+        ? 'shadow-xl border border-line'
         : 'shadow-lg';
 
-    const hoverStyles = hover ? 'hover:shadow-xl hover:-translate-y-1' : '';
+    const hoverStyles = hover ? 'hover:shadow-xl ' : '';
 
     const paddingStyles = {
         sm: 'p-4',
@@ -51,7 +51,7 @@ export function FeatureCard({ icon, title, description, highlight }: FeatureCard
                 {icon}
             </div>
             <h3 className="text-xl font-bold text-anthracite mb-2">{title}</h3>
-            <p className="text-gray-600 mb-3">{description}</p>
+            <p className="text-ink-soft mb-3">{description}</p>
             {highlight && (
                 <span className="inline-block px-3 py-1 bg-secondary/10 text-secondary text-sm font-medium rounded-full">
                     {highlight}
@@ -77,7 +77,7 @@ export function StatCard({ value, label, icon }: StatCardProps) {
                 </div>
             )}
             <div className="text-3xl md:text-4xl font-bold text-primary mb-1">{value}</div>
-            <div className="text-gray-600 text-sm">{label}</div>
+            <div className="text-ink-soft text-sm">{label}</div>
         </div>
     );
 }
@@ -107,15 +107,15 @@ export function UnitCard({
     onClick
 }: UnitCardProps) {
     const statusColors = {
-        available: 'bg-green-100 text-green-800',
-        reserved: 'bg-yellow-100 text-yellow-800',
-        sold: 'bg-red-100 text-red-800'
+        available: 'bg-paper-deep text-lawn',
+        reserved: 'bg-paper-deep text-warn',
+        sold: 'bg-paper-deep text-bad'
     };
 
     return (
         <Card className="relative" hover={status === 'available'}>
             {highlight && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-secondary text-white text-sm font-medium rounded-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-secondary text-paper text-sm font-medium rounded-full">
                     {highlight}
                 </div>
             )}
@@ -129,21 +129,21 @@ export function UnitCard({
 
             <div className="space-y-2 mb-4 text-sm">
                 <div className="flex justify-between">
-                    <span className="text-gray-500">Internal:</span>
+                    <span className="text-ink-soft">Internal:</span>
                     <span className="font-medium">{internal}</span>
                 </div>
                 <div className="flex justify-between">
-                    <span className="text-gray-500">Garden:</span>
+                    <span className="text-ink-soft">Garden:</span>
                     <span className="font-medium">{garden}</span>
                 </div>
             </div>
 
             <div className="border-t pt-4 mb-4">
                 <div className="text-2xl font-bold text-primary">{price}</div>
-                <div className="text-sm text-gray-500">{priceEur}</div>
+                <div className="text-sm text-ink-soft">{priceEur}</div>
             </div>
 
-            <ul className="space-y-1 mb-4 text-sm text-gray-600">
+            <ul className="space-y-1 mb-4 text-sm text-ink-soft">
                 {features.map((feature, index) => (
                     <li key={index} className="flex items-center gap-2">
                         <svg className="w-4 h-4 text-secondary" fill="currentColor" viewBox="0 0 20 20">
@@ -157,7 +157,7 @@ export function UnitCard({
             {status === 'available' && onClick && (
                 <button
                     onClick={onClick}
-                    className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+                    className="w-full py-3 bg-primary text-paper font-semibold rounded-lg hover:bg-primary/90 transition-colors"
                 >
                     Inquire About This Unit
                 </button>

@@ -6,6 +6,7 @@ import PropertyOverview from '@/components/sections/PropertyOverview';
 import Gallery from '@/components/sections/Gallery';
 import Benefits from '@/components/sections/Benefits';
 import FloorPlans from '@/components/sections/FloorPlans';
+import Pricing from '@/components/sections/Pricing';
 import Location from '@/components/sections/Location';
 import Developer from '@/components/sections/Developer';
 import Specs from '@/components/sections/Specs';
@@ -20,7 +21,7 @@ export default function Home() {
     return (
         <main>
             <Navbar />
-            <FloatingBadge availableUnits={4} totalUnits={6} />
+            <FloatingBadge />
             <Hero />
             <TrustBar />
             <SectionDivider variant="gradient" />
@@ -31,6 +32,7 @@ export default function Home() {
             <Benefits />
             <SectionDivider variant="gradient" />
             <FloorPlans />
+            <Pricing />
             <Location />
             <SectionDivider variant="accent" />
             <Developer />
