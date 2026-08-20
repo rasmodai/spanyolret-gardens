@@ -590,6 +590,49 @@ export const galleryImages = [
 ];
 
 // ============================================
+// ADDRESS
+// ============================================
+
+/* One address, shared by both locales — a Hungarian street address does not
+ * translate, so it belongs here next to `units` rather than being retyped per
+ * language. It is a single constant because the site carried three different
+ * versions of it: 1110 in this file, 1116 in the four components that print it,
+ * and a third location encoded in the map embed.
+ *
+ * Verified against OpenStreetMap. The street is `Spanyolrét út` — no `i`.
+ * `Spanyolréti út`, the spelling the site shipped with, returns no result
+ * anywhere in Hungary. The coordinates the embed used to carry
+ * (47.4584, 19.0234) reverse-geocode to the M4 metro depot in Kelenföld,
+ * 3.2 km from Spanyolrét.
+ *
+ * Still not pinned: the plot itself, hrsz 1318/7. The map shows the street and
+ * its surroundings, which is what we can actually stand behind.
+ */
+export const siteAddress = {
+    street: 'Spanyolrét út',
+    postalCode: '1112',
+    city: 'Budapest',
+    /** What the page prints. */
+    full: 'Spanyolrét út, 1112 Budapest',
+    /** What Google is asked to resolve. */
+    query: 'Spanyolrét út, 1112 Budapest, Hungary',
+} as const;
+
+/* The previous embed was a `pb=` blob holding placeholder coordinates and a
+ * placeholder place id (`0x1234567890abcdef`), so the map pointed wherever that
+ * resolved to. A `pb` string can only be produced by Google's own embed
+ * generator — it cannot be written by hand — so this uses the keyless query
+ * form and lets Google geocode the address itself. Zoom 15 shows the street in
+ * context without implying a pin on a plot we have not confirmed.
+ */
+export const mapEmbedSrc =
+    `https://maps.google.com/maps?q=${encodeURIComponent(siteAddress.query)}&z=15&output=embed`;
+
+/** Documented Google Maps URL scheme, for the "open in Maps" link. */
+export const mapLinkHref =
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(siteAddress.query)}`;
+
+// ============================================
 // FOOTER
 // ============================================
 
@@ -597,7 +640,7 @@ export const footerContent = {
     contact: {
         phone: '+36 XX XXX XXXX',
         email: 'info@spanyolretgardens.hu',
-        address: '1110 Budapest, Spanyolréti út'
+        address: siteAddress.full
     },
     developer: {
         name: 'S-Patrik Bau Kft.',

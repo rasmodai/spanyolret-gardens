@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { scrollToElement } from '@/lib/utils';
+import { siteAddress } from '@/lib/data-hu';
 
 /* Mirror of components/sections/Footer.tsx.
  *
@@ -14,7 +15,7 @@ const companyDetails = {
     name: 'S-Patrik Bau Kft.',
     email: 'info@spatrikbau.com',
     phone: '+36 1 234 5678',
-    address: 'Spanyolréti út, 1116 Budapest',
+    address: siteAddress.full,
     taxNumber: '24304559213',
     registrationNumber: '13 09 220814',
     website: 'spatrikbau.com',

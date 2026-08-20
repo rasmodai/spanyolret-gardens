@@ -3,7 +3,7 @@
 
 > **Project:** Premium Townhouse Development Landing Page  
 > **Client:** S-Patrik Bau Kft.  
-> **Location:** 1110 Budapest, Spanyolréti út, hrsz: 1318/7  
+> **Location:** 1112 Budapest, Spanyolrét út, hrsz: 1318/7  
 > **Units:** 6 Townhouses (2 buildings × 3 units)  
 > **Delivery:** September 2026  
 > **Last Updated:** December 2025  
@@ -82,7 +82,13 @@ project:
   configuration: "Freestanding, articulated mass, ground floor + 1 story"
   
 location:
-  address: "1110 Budapest, Spanyolréti út"
+  # Corrected 2026-08-20. The street is `Spanyolrét út`, no `i`, postcode 1112 —
+  # verified twice, independently: OpenStreetMap has no `Spanyolréti út` anywhere
+  # in Hungary, and Google resolves "Spanyolrét út, 1112 Budapest" to
+  # 47.4685414, 18.9811916, labelled "Spanyolrét, 1112 Hungary". The coordinates
+  # this document used to carry (47.4584, 19.0234) reverse-geocode to the M4
+  # metro depot in Kelenföld, 3.4 km away. The plot itself is not pinned.
+  address: "1112 Budapest, Spanyolrét út"
   plot_number: "hrsz: 1318/7"
   district: "XI. (Újbuda)"
   neighborhood: "Spanyolrét"
@@ -1129,8 +1135,8 @@ const locationContent = {
   // makes the rest of the section believable.
   title: "Twenty minutes from the centre. None of the noise.",
   subtitle: "Spanyolrét is not central and we are not going to pretend otherwise. What you get for those extra fifteen minutes is a street where nothing happens.",
-  address: "1110 Budapest, Spanyolréti út",
-  mapCenter: { lat: 47.4584, lng: 19.0234 },
+  address: "1112 Budapest, Spanyolrét út",
+  mapCenter: { lat: 47.4685, lng: 18.9812 },
   
   transportLinks: [
     { icon: 'metro', name: 'Kelenföld M4 Metro', time: '6-8 min by bus' },
@@ -1598,7 +1604,7 @@ const footerContent = {
     title: 'Contact',
     phone: '+36 XX XXX XXXX',
     email: 'info@spanyolretgardens.hu',
-    address: '1110 Budapest, Spanyolréti út'
+    address: '1112 Budapest, Spanyolrét út'
   },
   
   developer: {
@@ -2418,15 +2424,15 @@ url_structure:
   "url": "https://spanyolretgardens.hu",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Spanyolréti út",
+    "streetAddress": "Spanyolrét út",
     "addressLocality": "Budapest",
-    "postalCode": "1110",
+    "postalCode": "1112",
     "addressCountry": "HU"
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": "47.4584",
-    "longitude": "19.0234"
+    "latitude": "47.4685",
+    "longitude": "18.9812"
   },
   "makesOffer": {
     "@type": "Offer",
