@@ -62,8 +62,17 @@ export default function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
+    /* `data-scroll-behavior` is required from Next 16: it no longer neutralises
+     * `scroll-behavior: smooth` during route transitions on its own. globals.css
+     * sets smooth scrolling on <html> for the in-page anchors, so without this
+     * attribute an EN <-> HU navigation would animate its way to the top instead
+     * of arriving there. */
     return (
-        <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+        <html
+            lang="en"
+            data-scroll-behavior="smooth"
+            className={`${display.variable} ${body.variable} ${mono.variable}`}
+        >
             <head>
                 {/* Applied before first paint. Without this the page renders in
                   * the system theme and then snaps to the stored one on
