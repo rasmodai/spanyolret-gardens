@@ -47,7 +47,7 @@ export default function LocationHu() {
                                 href="https://www.google.com/maps/search/Spanyolréti+út,+Budapest+1116"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="btn-quiet inline-flex min-h-[44px] items-center text-[0.9375rem]"
+                                className="btn-quiet text-[0.9375rem]"
                             >
                                 Megnyitás a Google Térképen →
                             </a>

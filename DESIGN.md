@@ -275,6 +275,7 @@ Zero radius, zero shadow, 1px hairlines. This is what makes the page look unlike
 ## Component Rules
 
 - **Buttons:** One filled button per screen, and it carries `--lawn`. Everything else is a bordered ghost or a quiet underline. Padding 15px/26px, weight 600, radius 0.
+- **Every control has a 44px hit area, whatever its visible size.** `.tab-link` gets there with `min-height`; `.btn-quiet` gets there with a transparent `::after`, because growing its box would drag the underline away from the text. Verified on production, where the six "Price on request" buttons — the primary conversion action in the unit list — measured 33px on a 375px viewport. They pass WCAG 2.5.8 at that size, but the minimum is not the target: a thumb is not a mouse pointer, and this is the control that generates the leads.
 - **Inputs:** Bottom rule only, no box. `--line-strong` at rest, `--lawn` on focus. Focus is always visible — never remove the outline without replacing it.
 - **Cards:** A card is a hairline rule and a background band, not an elevated rounded surface.
 - **Images:** Square corners, no border. Full-bleed wherever the layout allows.

@@ -266,9 +266,31 @@ video {
     border-color: var(--on-frame);
   }
 
+  /* A quiet underlined action. The visible box stays the height of its text so
+   * the underline stays welded to the baseline — but the *target* underneath is
+   * 44px, per WCAG 2.5.5 and the Apple HIG minimum.
+   *
+   * Done with a pseudo-element rather than min-height on purpose: growing the
+   * box would drag the border-bottom away from the text, and padding with a
+   * negative margin would still move the underline. This leaves layout and
+   * appearance untouched and only enlarges what the thumb can hit.
+   *
+   * It matters here because the six "Price on request" buttons in the unit list
+   * are the primary conversion action on mobile — production measured them at
+   * 33px. */
   .btn-quiet {
-    @apply border-0 bg-transparent px-0 py-1 text-ink;
+    @apply relative border-0 bg-transparent px-0 py-1 text-ink;
     border-bottom: 1px solid var(--clay);
+  }
+
+  .btn-quiet::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 44px;
+    transform: translateY(-50%);
   }
 
   .btn-quiet:hover {
