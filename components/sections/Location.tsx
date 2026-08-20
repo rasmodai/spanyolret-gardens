@@ -1,16 +1,24 @@
 'use client';
 
-import { transportLinks, nearbyAmenities, neighborhoodHighlights } from '@/lib/data';
+import {
+    transportLinks,
+    nearbyAmenities,
+    neighborhoodHighlights,
+    siteAddress,
+    mapEmbedSrc,
+    mapLinkHref,
+} from '@/lib/data';
 
 /* Was: a rounded-2xl map with shadow-xl, transport links as icon-in-rounded-
  * square rows, and the neighbourhood list as ticks in circles. Rewritten as a
  * table of distances — which is what this section is, and it lets the reader
  * check the claim instead of being told it.
  *
- * ⚠️ The Google Maps embed URL below carries placeholder coordinates
- * (`!1d2697.1234567890123`, `0x1234567890abcdef`). Generate a real embed for
- * Spanyolréti út 1116 before this ships, or the map points somewhere else and
- * the one checkable fact on the page becomes the one that is wrong.
+ * The map used to be a hand-written `pb=` blob whose coordinates
+ * (47.4584, 19.0234) land on the M4 metro depot in Kelenföld, 3.2 km from
+ * here, and whose place id was the literal `0x1234567890abcdef`. Address, pin
+ * and link now all come from `siteAddress` in lib/data.ts, so the one checkable
+ * fact on this page can only be wrong in one place.
  */
 export default function Location() {
     return (
@@ -32,7 +40,7 @@ export default function Location() {
                     <div>
                         <div className="h-[22rem] overflow-hidden border border-line lg:h-[26rem]">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2697.1234567890123!2d19.0123456!3d47.4567890!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741ddc7e0c8f4b7%3A0x1234567890abcdef!2sSpanyolr%C3%A9ti%20%C3%BAt%2C%20Budapest%2C%20Hungary!5e0!3m2!1sen!2shu!4v1702900000000!5m2!1sen!2shu"
+                                src={mapEmbedSrc}
                                 width="100%"
                                 height="100%"
                                 style={{ border: 0 }}
@@ -46,11 +54,11 @@ export default function Location() {
 
                         <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
                             <p className="measure text-[0.9375rem] text-ink">
-                                Spanyolréti út, 1116 Budapest
+                                {siteAddress.full}
                                 <span className="ml-3 text-ink-soft">XI. District (Újbuda)</span>
                             </p>
                             <a
-                                href="https://www.google.com/maps/search/Spanyolréti+út,+Budapest+1116"
+                                href={mapLinkHref}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-quiet text-[0.9375rem]"

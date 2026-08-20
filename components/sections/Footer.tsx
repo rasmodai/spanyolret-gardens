@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { scrollToElement } from '@/lib/utils';
+import { siteAddress } from '@/lib/data';
 
 /* Was: a dark gradient over two 500px blurred orbs, social icons in rounded
  * squares with hover:scale-110, and a newsletter block. Rewritten as a plain
@@ -16,7 +17,7 @@ const companyDetails = {
     name: 'S-Patrik Bau Kft.',
     email: 'info@spatrikbau.com',
     phone: '+36 1 234 5678',
-    address: 'Spanyolréti út, 1116 Budapest',
+    address: siteAddress.full,
     taxNumber: '24304559213',
     registrationNumber: '13 09 220814',
     website: 'spatrikbau.com',

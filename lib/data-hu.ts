@@ -7,6 +7,9 @@ import { Unit } from './data';
 // Units data stays the same (numbers don't change)
 export { units } from './data';
 
+// Nor does the address: Spanyolrét út is Spanyolrét út in both languages.
+export { siteAddress, mapEmbedSrc, mapLinkHref } from './data';
+
 // ============================================
 // TRUST BAR DATA
 // ============================================
