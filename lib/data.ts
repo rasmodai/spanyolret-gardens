@@ -128,7 +128,7 @@ export const trustBarItems = [
     // already wrong by Aug 2026.
     { icon: 'calendar', value: `${new Date().getFullYear() - 2012}`, label: 'Years building' },
     // ⚠️ UNVERIFIED — "100% on-time delivery" appears nowhere in the technical
-    // spec; it originates in marketing copy. On a HUF 240M purchase this is a
+    // spec; it originates in marketing copy. On a HUF 242M purchase this is a
     // claim with legal weight. Confirm in writing with S-Patrik Bau or cut it.
     { icon: 'shield', value: '100%', label: 'Delivered on time' },
     { icon: 'award', value: '30 cm', label: 'Party walls' }
@@ -206,10 +206,19 @@ export const propertyStats = [
 
 /* The one public figure. It never appears without `anchorQualifier` — a bare
  * number invites comparison against competitors' shell prices and loses it.
- * Per-unit prices are never published. See DESIGN.md → Pricing Display Rule. */
+ * Per-unit prices are never published. See DESIGN.md → Pricing Display Rule.
+ *
+ * 242,050,000 is B3's promotional price in the 2026-09 list — the lowest of the
+ * six, and the only figure the site may honestly call "from". It is conditional:
+ * the promotion is a complimentary parking space worth 4,000,000, held only for
+ * a reservation deposit received by 30 September 2026. Without it the lowest is
+ * 246,050,000, so the qualifier has to carry the deadline. A conditional price
+ * shown as unconditional is the kind of thing a buyer discovers at contract
+ * stage, which is exactly what the extras note exists to avoid. */
 export const pricing = {
-    anchor: 'From 240,000,000 HUF',
-    anchorQualifier: 'Turnkey — landscaping and one parking space included',
+    anchor: 'From 242,050,000 HUF',
+    anchorQualifier:
+        'Turnkey — landscaping and one parking space included, on a reservation deposit received by 30 September 2026',
     perUnit: 'Price on request',
     extrasNote:
         'Optional extras are priced separately and listed below. We put them here rather than at contract stage, because finding out later is how people end up feeling sold to.'
@@ -599,23 +608,30 @@ export const galleryImages = [
  * versions of it: 1110 in this file, 1116 in the four components that print it,
  * and a third location encoded in the map embed.
  *
- * Verified against OpenStreetMap. The street is `Spanyolrét út` — no `i`.
- * `Spanyolréti út`, the spelling the site shipped with, returns no result
- * anywhere in Hungary. The coordinates the embed used to carry
- * (47.4584, 19.0234) reverse-geocode to the M4 metro depot in Kelenföld,
- * 3.2 km from Spanyolrét.
+ * Source: the developer's own price list, `Spanyolret_Gardens_price_list_
+ * 2026_09_EN.pdf`, which gives `1112 Budapest, Törökbálinti út · Lot no.
+ * 1318/7`. That supersedes the reading we had before.
+ *
+ * The history is worth keeping, because two of the three earlier versions were
+ * wrong and one was only half right. The site shipped `Spanyolréti út, 1116`,
+ * a street that returns no result anywhere in Hungary. The PRD said
+ * `Spanyolréti út, 1110`. Reading OpenStreetMap we corrected to `Spanyolrét
+ * út, 1112` — right postcode, wrong street: Spanyolrét is the neighbourhood,
+ * and it does have a street of that name, 550 m from this one. Törökbálinti út
+ * is confirmed in OSM at postcode 1112 (Pösingermajor) and Google resolves it
+ * to 47.4763, 18.9870.
  *
  * Still not pinned: the plot itself, hrsz 1318/7. The map shows the street and
  * its surroundings, which is what we can actually stand behind.
  */
 export const siteAddress = {
-    street: 'Spanyolrét út',
+    street: 'Törökbálinti út',
     postalCode: '1112',
     city: 'Budapest',
     /** What the page prints. */
-    full: 'Spanyolrét út, 1112 Budapest',
+    full: 'Törökbálinti út, 1112 Budapest',
     /** What Google is asked to resolve. */
-    query: 'Spanyolrét út, 1112 Budapest, Hungary',
+    query: 'Törökbálinti út, 1112 Budapest, Hungary',
 } as const;
 
 /* The previous embed was a `pb=` blob holding placeholder coordinates and a

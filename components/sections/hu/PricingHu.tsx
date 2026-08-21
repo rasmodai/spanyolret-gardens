@@ -63,7 +63,7 @@ export default function PricingHu() {
                             ))}
                         </dl>
                         <p className="wrap-compound mt-5 max-w-[46ch] text-sm text-ink-soft">
-                            Ezek egyike sincs benne a 240 000 000 Ft-os összegben. Azért itt soroljuk fel,
+                            Ezek egyike sincs benne a 242 050 000 Ft-os összegben. Azért itt soroljuk fel,
                             és nem a szerződésnél, mert utólag megtudni pont az, amitől az ember úgy érzi,
                             rásóztak valamit.
                         </p>

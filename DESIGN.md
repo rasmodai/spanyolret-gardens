@@ -224,10 +224,10 @@ One convention per locale. Never mix them, and never let one locale's formatter 
 
 | | English | Hungarian |
 |---|---------|-----------|
-| Thousands | `240,000,000` | `240 000 000` (non-breaking space) |
+| Thousands | `242,050,000` | `242 050 000` (non-breaking space) |
 | Decimal | `117.45 m²` | `117,45 m²` |
 | Currency | `HUF`, before or after per copy | `Ft`, always postfix |
-| Anchor price | `From 240,000,000 HUF` | `240 000 000 Ft-tól` |
+| Anchor price | `From 242,050,000 HUF` | `242 050 000 Ft-tól` |
 | Date | `September 2026` | `2026. szeptember` — the period after the year is mandatory |
 
 ### Known defects to fix at implementation time
@@ -320,13 +320,14 @@ Decided 2026-08-08. This overrides the unit prices currently sitting in `lib/dat
 
 **One number appears on the site, and only one:**
 
-> **From 240,000,000 HUF — turnkey, landscaping and one parking space included.**
-> HU: **240 000 000 Ft-tól — kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban.**
+> **From 242,050,000 HUF — turnkey, landscaping and one parking space included, on a reservation deposit received by 30 September 2026.**
+> HU: **242 050 000 Ft-tól — kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban — 2026. szeptember 30-ig beérkező foglaló esetén.**
 
 *(The Hungarian is composed from strings already written by a native speaker in `lib/data-hu.ts` — `Kulcsrakész átadás`, `Teljes kertépítés`, `1 saját parkolóhely`. Have a native speaker confirm the assembled sentence before it ships.)*
 
+- **The deadline is part of the qualifier, not a footnote.** 242,050,000 is unit B3's *promotional* price: it holds only for a reservation deposit received by 30 September 2026, and the promotion is a complimentary parking space worth 4,000,000. Without it the lowest price on the 2026-09 list is 246,050,000. A conditional price shown as permanent fails the same way "everything included" does — the buyer finds out later.
 - **The qualifier names what is included. It never claims everything is.** Optional extras — a second parking space, solar, irrigation, motorised shutters, the ceiling heating-cooling upgrade — are chargeable on top, so "everything included" would be misleading. Corrected 2026-08-08.
-- **The number never appears alone**, in either locale. If a layout has no room for the qualifier, the layout is wrong, not the rule — a bare "from 240,000,000 HUF" invites a comparison against competitors' shell prices and loses it.
+- **The number never appears alone**, in either locale. If a layout has no room for the qualifier, the layout is wrong, not the rule — a bare "from 242,050,000 HUF" invites a comparison against competitors' shell prices and loses it.
 - **Where the extras are listed, say plainly that they are on top.** "Optional extras are priced separately" / "A választható extrák külön díjazásúak." Never bury it in a footnote: the buyer who discovers a cost after the fact is the buyer who walks.
 - **No per-unit prices anywhere.** Not in the unit comparison, not in the floor plans, not in cards, not in tooltips. Each unit shows **Price on request** / **Ár kérésre**, which is also the CTA hook into the lead form.
 - **This is a positioning decision, not a formatting one.** A high turnkey anchor plus price-on-request qualifies the buyer into a conversation instead of letting them self-disqualify on a number. Do not "helpfully" reintroduce a price range, a per-m² figure, or a "from 195M" line.
@@ -421,6 +422,8 @@ The poster is now generated from the cleaned video's own first frame, so it matc
 | 2026-08-08 | Corrected: "everything included" → the precise qualifier | Optional extras are chargeable on top, so the blanket claim was misleading. The qualifier now names what is covered and the extras list says plainly that it is not |
 | 2026-08-08 | No per-unit prices anywhere; "Price on request" | Qualifies the buyer into a conversation instead of letting them self-disqualify on a number. Supersedes the 195–225M range in the PRD and in `lib/data.ts` |
 | 2026-08-08 | Two-line headlines use line-height 1.12, both locales | Measured 3.73px ink clearance at 1.02 vs 9.97px at 1.12. English ascent (38.64px) is taller than Hungarian (36.56px), so this is a leading problem, not a diacritics problem |
+| 2026-08-21 | Anchor moved to 242,050,000 HUF, with the deposit deadline in the qualifier | The developer's 2026-09 price list put the lowest unit at 242,050,000 promotional / 246,050,000 without. The old 240,000,000 anchor was below every price actually on sale. The figure is B3's promotional price and lapses with the 30 September 2026 deposit deadline, so the deadline travels with the number |
+| 2026-08-21 | Address is `Törökbálinti út`, from the developer's price list | Fourth version of this address, first from a primary source. See the provenance note in `lib/data.ts` |
 | 2026-08-08 | Components must survive ±40% string-length swing | Measured on real strings: Hungarian ranges from −43% to +28% against English. "Leave room for expansion" is the wrong rule — it also contracts hard |
 | 2026-08-08 | Remove BOSCH from the brand wall | Appears zero times in the PRD. VEKA and SIEMENS appear only as "or" alternatives and must not be shown as commitments |
 | 2026-08-08 | PRD aligned to the 240M anchor; §7 Copy Bank rewritten | Prices, dates, meta description and JSON-LD all carried the stale 195–225M range. Copy voice now lives in PRD §7.0 and is binding alongside this file |

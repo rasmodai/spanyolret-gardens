@@ -3,7 +3,7 @@
 
 > **Project:** Premium Townhouse Development Landing Page  
 > **Client:** S-Patrik Bau Kft.  
-> **Location:** 1112 Budapest, Spanyolrét út, hrsz: 1318/7  
+> **Location:** 1112 Budapest, Törökbálinti út, hrsz: 1318/7  
 > **Units:** 6 Townhouses (2 buildings × 3 units)  
 > **Delivery:** September 2026  
 > **Last Updated:** December 2025  
@@ -82,13 +82,19 @@ project:
   configuration: "Freestanding, articulated mass, ground floor + 1 story"
   
 location:
-  # Corrected 2026-08-20. The street is `Spanyolrét út`, no `i`, postcode 1112 —
-  # verified twice, independently: OpenStreetMap has no `Spanyolréti út` anywhere
-  # in Hungary, and Google resolves "Spanyolrét út, 1112 Budapest" to
-  # 47.4685414, 18.9811916, labelled "Spanyolrét, 1112 Hungary". The coordinates
-  # this document used to carry (47.4584, 19.0234) reverse-geocode to the M4
-  # metro depot in Kelenföld, 3.4 km away. The plot itself is not pinned.
-  address: "1112 Budapest, Spanyolrét út"
+  # Corrected 2026-08-21 from the developer's own price list
+  # (Spanyolret_Gardens_price_list_2026_09_EN.pdf), which reads
+  # "1112 Budapest, Törökbálinti út · Lot no.: 1318/7". This is the fourth
+  # version of this address and the first from a primary source.
+  #
+  # The three before it: the site shipped `Spanyolréti út, 1116`, a street that
+  # returns no result anywhere in Hungary; this document said `Spanyolréti út,
+  # 1110`; reading OpenStreetMap we corrected to `Spanyolrét út, 1112` — right
+  # postcode, wrong street, since Spanyolrét is the neighbourhood and its
+  # namesake street sits 550 m away. Törökbálinti út is confirmed in OSM at
+  # postcode 1112 (Pösingermajor); Google resolves it to 47.4763, 18.9870.
+  # The plot itself is still not pinned.
+  address: "1112 Budapest, Törökbálinti út"
   plot_number: "hrsz: 1318/7"
   district: "XI. (Újbuda)"
   neighborhood: "Spanyolrét"
@@ -106,16 +112,20 @@ timeline:
   delivery: "September 2026"
   
 pricing:
-  # Updated 2026-08-08. Supersedes the former 195,000,000-225,000,000 HUF range.
-  public_anchor_huf: "From 240,000,000 HUF"
+  # Updated 2026-08-21 from the developer's 2026-09 price list. Supersedes the
+  # 240,000,000 anchor, which was below every price actually on that list.
+  public_anchor_huf: "From 242,050,000 HUF"
   public_anchor_basis: "Turnkey delivery, full landscaping and 1 parking space included"
+  public_anchor_condition: "Promotional. Requires a reservation deposit received by 30 September 2026."
+  public_anchor_without_promotion: "From 246,050,000 HUF"
+  public_anchor_source: "Unit B3, the lowest of the six in the 2026-09 list"
   per_unit_pricing: "On request only — never published"
   first_parking_space: "Included in the anchor"
   optional_extras: "Chargeable on top — see §6.11. Never described as included."
 ```
 
 > **PRICING POLICY — read before writing any price anywhere.**
-> One figure is public: **from 240,000,000 HUF**, and it never appears without its qualifier — *turnkey, landscaping and one parking space included*. **Do not write "everything included."** The optional extras in §6.11 (second parking space, solar, irrigation, motorised shutters, ceiling heating-cooling) are chargeable on top, so a blanket claim would be misleading — and a buyer who finds a cost after the fact is a buyer who walks. **Per-unit prices are never published**; on the site each unit reads "Price on request" / "Ár kérésre". See `DESIGN.md → Pricing Display Rule`.
+> One figure is public: **from 242,050,000 HUF**, and it never appears without its qualifier — *turnkey, landscaping and one parking space included, on a reservation deposit received by 30 September 2026*. **The deadline is part of the qualifier, not decoration.** 242,050,000 is unit B3's *promotional* price; the promotion is a complimentary parking space worth 4,000,000 and it lapses with the deposit deadline. Without it the lowest price on the list is 246,050,000. Publishing the promotional figure as if it were permanent is the same failure mode as "everything included" — the buyer finds out later. **Do not write "everything included."** The optional extras in §6.11 (second parking space, solar, irrigation, motorised shutters, ceiling heating-cooling) are chargeable on top, so a blanket claim would be misleading — and a buyer who finds a cost after the fact is a buyer who walks. **Per-unit prices are never published**; on the site each unit reads "Price on request" / "Ár kérésre". See `DESIGN.md → Pricing Display Rule`.
 
 ## 2.2 Unit Data (CORRECTED from Architectural Plans)
 
@@ -138,7 +148,7 @@ Areas below are taken from the architectural plans and are the source of truth f
 | B3 | 117.33 m² | 57.95 m² | 59.38 m² | 6.60 m² | 316.84 m² | On request |
 
 > **Superseded per-unit figures, kept for traceability — DO NOT PUBLISH AND DO NOT REUSE.**
-> The previous version of this document listed A1 195,000,000 · A2 205,000,000 · A3 215,000,000 · B1 205,000,000 · B2 195,000,000 · B3 225,000,000 HUF. These predate the 240,000,000 HUF turnkey anchor and have **not** been restated against it. Do not derive a range, a per-m² figure, or a "from" price from them. If per-unit figures are needed for the internal sales sheet, request the current ones from the developer.
+> The previous version of this document listed A1 195,000,000 · A2 205,000,000 · A3 215,000,000 · B1 205,000,000 · B2 195,000,000 · B3 225,000,000 HUF. These predate the 242,050,000 HUF turnkey anchor and have **not** been restated against it. Do not derive a range, a per-m² figure, or a "from" price from them. If per-unit figures are needed for the internal sales sheet, request the current ones from the developer.
 
 ### TypeScript Data Model
 
@@ -155,7 +165,7 @@ interface Unit {
   gardenSize: 'small' | 'medium' | 'large' | 'xlarge';
   // NO price / priceEur fields. Per-unit prices are never published, and anything
   // in this shape reaches the client bundle where it stays readable in devtools.
-  // The single public figure ("from 240,000,000 HUF — turnkey, landscaping and
+  // The single public figure ("from 242,050,000 HUF — turnkey, landscaping and
   // one parking space included") is a page-level string, not unit data.
   status: 'available' | 'reserved' | 'sold';
   rooms: number;
@@ -1135,8 +1145,8 @@ const locationContent = {
   // makes the rest of the section believable.
   title: "Twenty minutes from the centre. None of the noise.",
   subtitle: "Spanyolrét is not central and we are not going to pretend otherwise. What you get for those extra fifteen minutes is a street where nothing happens.",
-  address: "1112 Budapest, Spanyolrét út",
-  mapCenter: { lat: 47.4685, lng: 18.9812 },
+  address: "1112 Budapest, Törökbálinti út",
+  mapCenter: { lat: 47.4763, lng: 18.9870 },
   
   transportLinks: [
     { icon: 'metro', name: 'Kelenföld M4 Metro', time: '6-8 min by bus' },
@@ -1286,7 +1296,7 @@ const specsCategories = [
 ```typescript
 const pricingContent = {
   title: "What the price covers, and what it does not.",
-  subtitle: "From 240,000,000 HUF: the house finished, the garden landscaped, one parking space. You get keys, not a shell. The gardens differ by more than three times between units, so the figure for the one you want comes from us directly.",
+  subtitle: "From 242,050,000 HUF: the house finished, the garden landscaped, one parking space. You get keys, not a shell. The gardens differ by more than three times between units, so the figure for the one you want comes from us directly.",
 
   // Order is deliberate: smallest garden to largest, so the ribbon reads as a
   // rising line. No "Best Value" badge — that is a judgement, not a fact, and
@@ -1358,11 +1368,11 @@ const pricingContent = {
     'All electrical and plumbing fixtures fitted'
   ],
 
-  // CONFIRMED 2026-08-08: these are chargeable on top of the 240,000,000 HUF
+  // CONFIRMED 2026-08-08: these are chargeable on top of the 242,050,000 HUF
   // anchor. That is why the anchor qualifier names what it covers instead of
   // claiming "everything included".
   optionalExtrasHeading: "Priced on top",
-  optionalExtrasNote: "None of the below is in the 240,000,000 HUF figure. We list them here rather than at contract stage, because finding out later is how people end up feeling sold to.",
+  optionalExtrasNote: "None of the below is in the 242,050,000 HUF figure. We list them here rather than at contract stage, because finding out later is how people end up feeling sold to.",
   optionalExtras: [
     { item: 'A second parking space', price: '4,000,000 HUF' },
     { item: 'Ceiling heating and cooling instead of underfloor', price: 'Quote on request' },
@@ -1604,7 +1614,7 @@ const footerContent = {
     title: 'Contact',
     phone: '+36 XX XXX XXXX',
     email: 'info@spanyolretgardens.hu',
-    address: '1112 Budapest, Spanyolrét út'
+    address: '1112 Budapest, Törökbálinti út'
   },
   
   developer: {
@@ -1767,7 +1777,7 @@ const subheadlines = {
   
   developer: "S-Patrik Bau has been building in Budapest since 2012, with more than fifty finished projects. Ask us for addresses and go and look at them.",
 
-  pricing: "From 240,000,000 HUF: the house finished, the garden landscaped, one parking space. Extras are priced separately and listed below, not buried in a contract.",
+  pricing: "From 242,050,000 HUF: the house finished, the garden landscaped, one parking space. Extras are priced separately and listed below, not buried in a contract.",
 
   leadForm: "One visit, no follow-up unless you ask for it. Bring the children, they will tell you more about the garden than we can."
 };
@@ -2424,15 +2434,15 @@ url_structure:
   "url": "https://spanyolretgardens.hu",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Spanyolrét út",
+    "streetAddress": "Törökbálinti út",
     "addressLocality": "Budapest",
     "postalCode": "1112",
     "addressCountry": "HU"
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": "47.4685",
-    "longitude": "18.9812"
+    "latitude": "47.4763",
+    "longitude": "18.9870"
   },
   "makesOffer": {
     "@type": "Offer",
@@ -2449,9 +2459,9 @@ url_structure:
     "priceSpecification": {
       "@type": "PriceSpecification",
       "priceCurrency": "HUF",
-      "minPrice": "240000000",
+      "minPrice": "242050000",
       "valueAddedTaxIncluded": true,
-      "description": "From 240,000,000 HUF: turnkey delivery, full landscaping and one parking space included. Optional extras are priced separately. Per-unit pricing on request."
+      "description": "From 242,050,000 HUF: turnkey delivery, full landscaping and one parking space included. Optional extras are priced separately. Per-unit pricing on request."
     }
   }
 }

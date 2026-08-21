@@ -101,14 +101,14 @@ Project-specific hard rules from DESIGN.md:
 - **Any measured quantity** (m², HUF, cm, dates) is set in Geist Mono with tabular figures.
 - **Fonts must serve the `latin-ext` subset** — the HU locale needs `ő` and `ű` and breaks silently otherwise.
 - Garden ribbon widths are derived from `lib/data.ts`, never hardcoded.
-- **Pricing:** one number only, `240,000,000 HUF` / `240 000 000 Ft`, and it **never appears without its qualifier** — "turnkey, landscaping and one parking space included" / "kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban". Do **not** write "everything included": the optional extras are chargeable on top. **Never display a per-unit price** — each unit shows "Price on request" / "Ár kérésre". The `price` / `priceEur` fields must not reach the client bundle, and JSON-LD must declare `minPrice` only. The 195–225M range in the PRD and in `lib/data.ts` is stale.
+- **Pricing:** one number only, `242,050,000 HUF` / `242 050 000 Ft`, and it **never appears without its qualifier** — "turnkey, landscaping and one parking space included" / "kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban". Do **not** write "everything included": the optional extras are chargeable on top. **Never display a per-unit price** — each unit shows "Price on request" / "Ár kérésre". The `price` / `priceEur` fields must not reach the client bundle, and JSON-LD must declare `minPrice` only. The 195–225M range in the PRD and in `lib/data.ts` is stale.
 
 ### Bilingual (EN + HU) — non-negotiable
 
 - **Every change lands in both locales.** `components/sections/` and `components/sections/hu/` are parallel trees. A fix applied to one is not done.
 - **Components must survive a ±40% string-length swing.** Hungarian measured from −43% (`Padlófűtés` vs `Underfloor heating`) to +28%. No fixed widths, no padding tuned to one locale. Check the *short* case too.
 - **Two-line headlines use `line-height: 1.12`** in both languages. 1.02 is single-line only — it leaves 3.73px of ink clearance, and English ascenders are taller than Hungarian ones, so this is not a HU-only fix.
-- **Formatting per locale, never mixed:** EN `240,000,000 HUF` / `117.45 m²` / `September 2026`. HU `240 000 000 Ft` / `117,45 m²` / `2026. szeptember` (the period after the year is mandatory).
+- **Formatting per locale, never mixed:** EN `242,050,000 HUF` / `117.45 m²` / `September 2026`. HU `242 050 000 Ft` / `117,45 m²` / `2026. szeptember` (the period after the year is mandatory).
 - `lang="hu"` on the HU routes — required for hyphenation of compound words and for screen readers.
 
 ### Anti-slop — the credibility rules
