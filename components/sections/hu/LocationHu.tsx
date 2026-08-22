@@ -12,12 +12,11 @@ import {
 
 /* Mirror of components/sections/Location.tsx.
  *
- * A térkép korábban kézzel írt `pb=` blokk volt: a koordinátái
- * (47.4584, 19.0234) a kelenföldi 4-es metró járműtelepre esnek, innen 3,2
- * km-re, a hely azonosítója pedig szó szerint `0x1234567890abcdef` volt. A cím,
- * a jelölő és a hivatkozás mostantól mind a lib/data.ts `siteAddress`
+ * A cím, a jelölő és a hivatkozás mind a lib/data.ts `siteAddress`
  * konstansából jön, így az oldal egyetlen ellenőrizhető állítása egyetlen
- * helyen romolhat el.
+ * helyen romolhat el — ami eddig háromszor sikerült. A mostani érték a
+ * beruházó 2026-09-es árlistájából származik; a részletek a konstans melletti
+ * megjegyzésben.
  */
 export default function LocationHu() {
     const t = uiTextsHu.location;

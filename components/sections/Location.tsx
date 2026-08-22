@@ -14,11 +14,10 @@ import {
  * table of distances — which is what this section is, and it lets the reader
  * check the claim instead of being told it.
  *
- * The map used to be a hand-written `pb=` blob whose coordinates
- * (47.4584, 19.0234) land on the M4 metro depot in Kelenföld, 3.2 km from
- * here, and whose place id was the literal `0x1234567890abcdef`. Address, pin
- * and link now all come from `siteAddress` in lib/data.ts, so the one checkable
- * fact on this page can only be wrong in one place.
+ * Address, pin and link all come from `siteAddress` in lib/data.ts, so the one
+ * checkable fact on this page can only be wrong in one place — which it has
+ * been, three times. The current value comes from the developer's own 2026-09
+ * price list; see the provenance note next to the constant.
  */
 export default function Location() {
     return (

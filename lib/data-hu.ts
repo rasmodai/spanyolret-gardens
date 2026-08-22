@@ -7,7 +7,7 @@ import { Unit } from './data';
 // Units data stays the same (numbers don't change)
 export { units } from './data';
 
-// Nor does the address: Spanyolrét út is Spanyolrét út in both languages.
+// Nor does the address: Törökbálinti út is Törökbálinti út in both languages.
 export { siteAddress, mapEmbedSrc, mapLinkHref } from './data';
 
 // ============================================
@@ -463,8 +463,9 @@ export const uiTextsHu = {
         headline: 'Saját kert.',
         headlineSecond: 'Nem erkély.',
         subheadline: 'Hat sorház Budapest XI. kerületében, két épületben. Öt szoba két szinten, és egy kert, ami 102-től 317 m²-ig terjed.',
-        priceValue: '240 000 000 Ft-tól',
-        priceQualifier: 'Kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban',
+        priceValue: '242 050 000 Ft-tól',
+        priceQualifier:
+            'Kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban — 2026. szeptember 30-ig beérkező foglaló esetén',
         ctaPrimary: 'Időpontot kérek',
         ctaSecondary: 'A hat kert',
         location: 'Budapest XI. · 2026. szeptember',
