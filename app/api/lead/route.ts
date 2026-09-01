@@ -2,6 +2,8 @@ import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 import { createHash } from 'crypto';
 import { appendLeadToSheet } from '@/lib/google-sheets';
+import { postLeadToOs } from '@/lib/synphos-os';
+import { wasCaptured } from '@/lib/capture-outcome';
 
 const META_PIXEL_ID = '886458420654697';
 
@@ -181,10 +183,28 @@ export async function POST(request: Request) {
             </div>
         `;
 
-        // The CRM row is the only durable record of this lead, so it goes first
-        // and is awaited — a serverless function can freeze compute right after
-        // it responds, so anything fired-and-forgotten here may never finish.
-        const savedToCrm = await appendLeadToSheet({
+        // The OS is the system of record now, so it takes the position the
+        // sheet held: first, and awaited. A serverless function can freeze
+        // compute right after it responds, so anything fired-and-forgotten
+        // here may never finish.
+        const savedToOs = await postLeadToOs({
+            firstName: body.firstName,
+            lastName: body.lastName,
+            email: body.email,
+            phone: body.phone,
+            lang: body.lang,
+            preferredContact: body.preferredContact,
+            preferredUnit: body.preferredUnit,
+            timeline: body.timeline,
+            marketingConsent: body.marketingConsent,
+            sourceUrl: body.sourceUrl,
+        });
+
+        // The sheet stays for as long as the OS path is unproven — a safety
+        // net, not the record. It is still awaited, for the same
+        // frozen-compute reason, but its failure is now just one channel
+        // down rather than the lead being lost.
+        const savedToSheet = await appendLeadToSheet({
             firstName: body.firstName,
             lastName: body.lastName,
             email: body.email,
@@ -194,6 +214,9 @@ export async function POST(request: Request) {
             preferredUnit: body.preferredUnit,
             message: body.message,
             marketingConsent: body.marketingConsent,
+        }).catch((e) => {
+            console.error('Google Sheets error:', e);
+            return false;
         });
 
         // Server-side conversion signal — independent of the CRM write above
@@ -213,10 +236,9 @@ export async function POST(request: Request) {
         });
         if (emailError) console.error('Resend error:', emailError);
 
-        // Only fail the request — which also skips the client-side Pixel fire,
-        // since that depends on this response — if neither channel captured
-        // the lead. One of the two succeeding is enough to call it captured.
-        if (!savedToCrm && emailError) {
+        // Fail only if NO channel captured the lead — which also skips the
+        // client-side Pixel fire, since that depends on this response.
+        if (!wasCaptured({ os: savedToOs, sheet: savedToSheet, email: !emailError })) {
             return NextResponse.json(
                 { error: 'Failed to submit lead' },
                 { status: 500 }
