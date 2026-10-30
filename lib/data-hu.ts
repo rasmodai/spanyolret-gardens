@@ -58,7 +58,7 @@ export const solutionsHu = [
     },
     {
         icon: 'tree',
-        title: '102 és 316,84 m² közötti kert',
+        title: '102 és 202 m² közötti kert',
         description: 'Kézi vetésű fű, körbekerítve, a nappaliból nyíló ajtóval. A teraszról az egészet belátod.'
     },
     {
@@ -80,10 +80,10 @@ export const solutionsHu = [
 export const propertyStatsHu = [
     { value: '6', label: 'Sorház', icon: 'home' },
     { value: '117–120 m²', label: 'Belső tér', icon: 'expand' },
-    { value: '102–317 m²', label: 'Saját kert', icon: 'tree' },
+    { value: '102–202 m²', label: 'Saját kert', icon: 'tree' },
     { value: '5', label: 'Szoba', icon: 'door' },
     { value: '6,60 m²', label: 'Terasz', icon: 'money' },
-    { value: '2026. szeptember', label: 'Kulcsátadás', icon: 'calendar-check' }
+    { value: '2027. április', label: 'Kulcsátadás', icon: 'calendar-check' }
 ];
 
 // ============================================
@@ -139,8 +139,8 @@ export const benefitsHu = [
     {
         icon: 'garden',
         title: 'A kert az egész lényege',
-        description: '102,12 m²-től 316,84 m²-ig. Kézi vetésű fű, 10–15 cm humusz, öntözés-előkészítés.',
-        highlight: 'Akár 316,84 m²'
+        description: '102,12 m²-től 201,79 m²-ig. Kézi vetésű fű, 10–15 cm humusz, öntözés-előkészítés.',
+        highlight: 'Akár 201,79 m²'
     }
 ];
 
@@ -346,7 +346,7 @@ export const processStepsHu = [
     },
     {
         step: 6,
-        title: 'Beköltözés (2026. szeptember)',
+        title: 'Beköltözés (2027. április)',
         description: 'Megkapod a kulcsokat a kulcsrakész, azonnal beköltözhető otthonodhoz.',
         duration: 'Átadás napja',
         icon: 'key'
@@ -462,18 +462,18 @@ export const uiTextsHu = {
         // verbs of longing in both languages.
         headline: 'Saját kert.',
         headlineSecond: 'Nem erkély.',
-        subheadline: 'Hat sorház Budapest XI. kerületében, két épületben. Öt szoba két szinten, és egy kert, ami 102-től 317 m²-ig terjed.',
+        subheadline: 'Hat sorház Budapest XI. kerületében, két épületben. Öt szoba két szinten, és egy kert, ami 102-től 202 m²-ig terjed.',
         priceValue: '215 766 000 Ft-tól',
         priceQualifier:
             'Kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban — 2026. december 1-jéig beérkező foglaló esetén',
         ctaPrimary: 'Időpontot kérek',
         ctaSecondary: 'A hat kert',
-        location: 'Budapest XI. · 2026. szeptember',
+        location: 'Budapest XI. · 2027. április',
         stats: [
             { value: '6', label: 'Sorház' },
             { value: '117–120 m²', label: 'Belső tér' },
-            { value: '102–317 m²', label: 'Saját kert' },
-            { value: '2026. szeptember', label: 'Kulcsátadás' }
+            { value: '102–202 m²', label: 'Saját kert' },
+            { value: '2027. április', label: 'Kulcsátadás' }
         ]
     },
     problemSolution: {
@@ -499,7 +499,7 @@ export const uiTextsHu = {
     floorPlans: {
         badge: 'ALAPRAJZOK',
         title: 'Hatszor ugyanaz a ház. A kert az, ami változik.',
-        subtitle: 'Hatszor ugyanaz a ház: öt szoba, két szint, 6,60 m² terasz. A kert az, ami változik — 102,12 m²-től 316,84 m²-ig, több mint háromszoros különbség.',
+        subtitle: 'Hatszor ugyanaz a ház: öt szoba, két szint, 6,60 m² terasz. A kert az, ami változik — 102,12 m²-től 201,79 m²-ig a még szabad házaknál, közel kétszeres különbség.',
         sitePlan: 'Helyszínrajz',
         buildingA: 'A épület',
         buildingB: 'B épület',

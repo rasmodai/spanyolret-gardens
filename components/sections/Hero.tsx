@@ -19,8 +19,8 @@ import HeroMedia from '@/components/ui/HeroMedia';
 const FACTS = [
     { value: '6', label: 'Townhouses' },
     { value: '117–120 m²', label: 'Inside' },
-    { value: '102–317 m²', label: 'Private garden' },
-    { value: 'September 2026', label: 'Keys' },
+    { value: '102–202 m²', label: 'Private garden' },
+    { value: 'April 2027', label: 'Keys' },
 ];
 
 export default function Hero() {
@@ -46,7 +46,7 @@ export default function Hero() {
             <div className="absolute inset-x-0 top-0 border-b border-onmedia/20">
                 <div className="section-container flex items-center justify-between py-4 text-onmedia">
                     <span className="whitespace-nowrap font-display text-base tracking-tight">Spanyolrét Gardens</span>
-                    <span className="caption hidden !text-onmedia/70 sm:inline">Budapest XI. · September 2026</span>
+                    <span className="caption hidden !text-onmedia/70 sm:inline">Budapest XI. · April 2027</span>
                 </div>
             </div>
 
@@ -60,7 +60,7 @@ export default function Hero() {
 
                     <p className="mt-5 max-w-[46ch] text-[1.0625rem] text-onmedia/80 md:text-lg">
                         Six townhouses in Budapest&rsquo;s XI. District, in two buildings of three.
-                        Five rooms over two floors, and a garden that runs from 102 to 317 m².
+                        Five rooms over two floors, and a garden that runs from 102 to 202 m².
                     </p>
 
                     <dl className="mt-7 grid grid-cols-2 border-t border-onmedia/25 sm:grid-cols-4">

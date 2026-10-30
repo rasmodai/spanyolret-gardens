@@ -26,7 +26,7 @@ export default function PricingHu() {
                         <p className="measure text-3xl text-ink md:text-4xl">{t.priceValue}</p>
                         <p className="caption wrap-compound mt-2">{t.priceQualifier}</p>
                         <p className="lede wrap-compound mt-5">
-                            Kulcsot kapsz, nem szerkezetkész házat. A kertek több mint háromszorosan
+                            Kulcsot kapsz, nem szerkezetkész házat. A kertek közel kétszeresen
                             különböznek, ezért az adott házra vonatkozó összeget tőlünk kapod meg.
                         </p>
                     </div>

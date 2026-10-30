@@ -51,7 +51,7 @@ export default function Gallery() {
                     <h2 className="display-l text-ink">What a Saturday looks like here.</h2>
                     <p className="lede self-end">
                         These are architectural renders, not photographs — the buildings are finished in
-                        September 2026. The dimensions in them are the dimensions in the plans.
+                        April 2027. The dimensions in them are the dimensions in the plans.
                     </p>
                 </div>
 

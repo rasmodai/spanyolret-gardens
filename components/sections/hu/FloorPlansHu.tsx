@@ -101,8 +101,8 @@ export default function FloorPlansHu() {
                     })}
 
                     <p className="wrap-compound mt-4 max-w-[60ch] text-sm text-ink-soft">
-                        A B2 láthatóan a legkisebb, és ezt így is hagytuk. Egy sáv, amiben akkor is megbízol,
-                        amikor nem hízelgő, az a sáv, amiben a B3-nál is megbízol.
+                        A B1 láthatóan a legkisebb, és ezt így is hagytuk. Egy sáv, amiben akkor is megbízol,
+                        amikor nem hízelgő, az a sáv, amiben az A2-nél is megbízol.
                     </p>
                 </div>
 

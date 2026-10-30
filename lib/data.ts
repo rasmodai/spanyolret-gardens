@@ -22,6 +22,10 @@ export interface Unit {
     highlight?: string;
 }
 
+/* Units as in the developer's 2026-10 price list, which Brenda confirmed is correct.
+ * The list rounds gardens (185, 202, 102, 147); the decimals come from the earlier
+ * plans. A3 and B2 are sold, and the list gives no garden for them, so 260.01 and
+ * 316.84 are carried over from those plans. */
 export const units: Unit[] = [
     {
         id: 'A1',
@@ -31,7 +35,7 @@ export const units: Unit[] = [
         groundFloor: 58.17,
         firstFloor: 59.28,
         terraceArea: 6.60,
-        gardenArea: 201.79,
+        gardenArea: 185.65,
         gardenSize: 'large',
         status: 'available',
         rooms: 5,
@@ -46,8 +50,8 @@ export const units: Unit[] = [
         groundFloor: 59.70,
         firstFloor: 60.57,
         terraceArea: 6.60,
-        gardenArea: 147.19,
-        gardenSize: 'medium',
+        gardenArea: 201.79,
+        gardenSize: 'large',
         status: 'available',
         rooms: 5,
         bathrooms: 2,
@@ -77,44 +81,44 @@ export const units: Unit[] = [
         groundFloor: 58.11,
         firstFloor: 59.27,
         terraceArea: 6.60,
-        gardenArea: 185.65,
-        gardenSize: 'large',
-        status: 'available',
-        rooms: 5,
-        bathrooms: 2,
-        parkingSpaces: 1
-    },
-    {
-        id: 'B2',
-        building: 'B',
-        position: 2,
-        totalInternal: 117.42,
-        groundFloor: 58.04,
-        firstFloor: 59.38,
-        terraceArea: 6.60,
         gardenArea: 102.12,
         gardenSize: 'small',
-        status: 'sold',
+        status: 'available',
         rooms: 5,
         bathrooms: 2,
         parkingSpaces: 1,
         highlight: 'Smallest garden'
     },
     {
-        id: 'B3',
+        id: 'B2',
         building: 'B',
-        position: 3,
+        position: 2,
         totalInternal: 117.33,
         groundFloor: 57.95,
         firstFloor: 59.38,
         terraceArea: 6.60,
         gardenArea: 316.84,
         gardenSize: 'xlarge',
-        status: 'available',
+        status: 'sold',
         rooms: 5,
         bathrooms: 2,
         parkingSpaces: 1,
         highlight: 'Largest garden'
+    },
+    {
+        id: 'B3',
+        building: 'B',
+        position: 3,
+        totalInternal: 117.42,
+        groundFloor: 58.04,
+        firstFloor: 59.38,
+        terraceArea: 6.60,
+        gardenArea: 147.19,
+        gardenSize: 'medium',
+        status: 'available',
+        rooms: 5,
+        bathrooms: 2,
+        parkingSpaces: 1
     }
 ];
 
@@ -176,7 +180,7 @@ export const solutions = [
     },
     {
         icon: 'tree',
-        title: 'Between 102 and 316.84 m² of garden',
+        title: 'Between 102 and 202 m² of garden',
         description: 'Hand-sown grass, fenced, with a door from the living room. You can see all of it from the terrace.'
     },
     {
@@ -198,10 +202,10 @@ export const solutions = [
 export const propertyStats = [
     { value: '6', label: 'Townhouses', icon: 'home' },
     { value: '117–120 m²', label: 'Inside', icon: 'expand' },
-    { value: '102–317 m²', label: 'Private garden', icon: 'tree' },
+    { value: '102–202 m²', label: 'Private garden', icon: 'tree' },
     { value: '5', label: 'Rooms', icon: 'door' },
     { value: '6.60 m²', label: 'Terrace', icon: 'door' },
-    { value: 'September 2026', label: 'Keys', icon: 'calendar-check' }
+    { value: 'April 2027', label: 'Keys', icon: 'calendar-check' }
 ];
 
 /* The one public figure. It never appears without `anchorQualifier` — a bare
@@ -277,8 +281,8 @@ export const benefits = [
     {
         icon: 'garden',
         title: 'The garden is the whole point',
-        description: 'From 102.12 to 316.84 m². Hand-sown grass, 10–15 cm of topsoil, irrigation pipework prepared.',
-        highlight: 'Up to 316.84 m²'
+        description: 'From 102.12 to 201.79 m². Hand-sown grass, 10–15 cm of topsoil, irrigation pipework prepared.',
+        highlight: 'Up to 201.79 m²'
     }
 ];
 
@@ -481,7 +485,7 @@ export const processSteps = [
     },
     {
         step: 6,
-        title: 'Move In (September 2026)',
+        title: 'Move In (April 2027)',
         description: 'Receive your keys to a turnkey, move-in ready home.',
         duration: 'Delivery day',
         icon: 'key'

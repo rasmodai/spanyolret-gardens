@@ -43,7 +43,7 @@ export default function GalleryHu() {
                         Így néz ki itt egy szombat.
                     </h2>
                     <p className="lede wrap-compound self-end">
-                        Ezek látványtervek, nem fényképek — az épületek 2026 szeptemberében készülnek el.
+                        Ezek látványtervek, nem fényképek — az épületek 2027 áprilisában készülnek el.
                         A rajtuk szereplő méretek a tervekben szereplő méretek.
                     </p>
                 </div>
