@@ -39,8 +39,8 @@ export default function Footer() {
                     <div>
                         <p className="font-display text-2xl text-onmedia">Spanyolrét Gardens</p>
                         <p className="mt-3 max-w-[34ch] text-[0.9375rem] leading-relaxed text-[color:var(--on-frame-soft)]">
-                            Six townhouses with private gardens of 102 to 317 m², in Budapest&rsquo;s XI.
-                            District. Keys September 2026.
+                            Six townhouses with private gardens of 102 to 202 m², in Budapest&rsquo;s XI.
+                            District. Keys April 2027.
                         </p>
                         <button
                             type="button"

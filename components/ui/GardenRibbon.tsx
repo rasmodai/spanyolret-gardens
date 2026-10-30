@@ -7,15 +7,15 @@ import { formatArea, gardenRibbonWidth, type Locale } from '@/lib/utils';
 /* The signature pattern. DESIGN.md → Signature Patterns → The garden ribbon.
  *
  * Every unit shows its garden as a bar proportional to its real area, scaled
- * against the largest garden in the development (B3, 316.84 m²). B3 is more
- * than three times B2, and that reads before anyone gets to the number.
+ * against the largest garden in the development (B2, 316.84 m², sold). A2 is nearly
+ * twice B1, and that reads before anyone gets to the number.
  *
  * The scale denominator is derived from the data, never hardcoded: if a unit's
  * area changes, every bar moves with it.
  *
- * This makes B2 visibly the smallest, and that is accepted. The whole value of
- * the pattern is that it is honest — a buyer who can see B2 is smallest will
- * believe the number on B3. Do not rescale to flatten the difference.
+ * This makes B1 visibly the smallest, and that is accepted. The whole value of
+ * the pattern is that it is honest — a buyer who can see B1 is smallest will
+ * believe the number on A2. Do not rescale to flatten the difference.
  *
  * The fill animation is the one piece of motion in the system that carries
  * information rather than decoration, so it survives the ban on entrance

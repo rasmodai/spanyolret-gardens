@@ -20,7 +20,7 @@ export default function PropertyOverviewHu() {
                     </div>
                     <p className="lede wrap-compound self-end">
                         Itt minden ház ugyanaz a ház: öt szoba két szinten, két fürdőszoba, 6,60 m² terasz,
-                        egy parkolóhely. Egyedül a kert változik — és több mint háromszorosan.
+                        egy parkolóhely. Egyedül a kert változik — és közel kétszeresen.
                     </p>
                 </div>
 

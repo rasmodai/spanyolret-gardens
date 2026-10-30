@@ -56,8 +56,8 @@ export default function FloorPlans() {
                 <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
                     <h2 className="display-l text-ink">Same house six times. The garden is what changes.</h2>
                     <p className="lede self-end">
-                        Five rooms, two floors and a 6.60 m² terrace in every one of them. The garden runs
-                        from 102.12 m² to 316.84 m² — more than three times the difference, drawn to scale
+                        Five rooms, two floors and a 6.60 m² terrace in every one of them. On the four still available, the garden runs
+                        from 102.12 m² to 201.79 m² — nearly twice the difference, drawn to scale
                         below.
                     </p>
                 </div>
@@ -115,8 +115,8 @@ export default function FloorPlans() {
                     })}
 
                     <p className="mt-4 max-w-[60ch] text-sm text-ink-soft">
-                        B2 is visibly the smallest and we have left it that way. A bar you can trust when
-                        it is unflattering is a bar you can trust on B3.
+                        B1 is visibly the smallest and we have left it that way. A bar you can trust when
+                        it is unflattering is a bar you can trust on A2.
                     </p>
                 </div>
 

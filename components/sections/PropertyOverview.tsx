@@ -27,7 +27,7 @@ export default function PropertyOverview() {
                     <p className="lede self-end">
                         Every house here is the same house: five rooms over two floors, two bathrooms,
                         a 6.60 m² terrace, one parking space. The garden is the only thing that changes,
-                        and it changes by more than three times.
+                        and it changes by nearly twice.
                     </p>
                 </div>
 

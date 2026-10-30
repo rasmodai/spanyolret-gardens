@@ -108,7 +108,7 @@ Project-specific hard rules from DESIGN.md:
 - **Every change lands in both locales.** `components/sections/` and `components/sections/hu/` are parallel trees. A fix applied to one is not done.
 - **Components must survive a ±40% string-length swing.** Hungarian measured from −43% (`Padlófűtés` vs `Underfloor heating`) to +28%. No fixed widths, no padding tuned to one locale. Check the *short* case too.
 - **Two-line headlines use `line-height: 1.12`** in both languages. 1.02 is single-line only — it leaves 3.73px of ink clearance, and English ascenders are taller than Hungarian ones, so this is not a HU-only fix.
-- **Formatting per locale, never mixed:** EN `215,766,000 HUF` / `117.45 m²` / `September 2026`. HU `215 766 000 Ft` / `117,45 m²` / `2026. szeptember` (the period after the year is mandatory).
+- **Formatting per locale, never mixed:** EN `215,766,000 HUF` / `117.45 m²` / `April 2027`. HU `215 766 000 Ft` / `117,45 m²` / `2027. április` (the period after the year is mandatory).
 - `lang="hu"` on the HU routes — required for hyphenation of compound words and for screen readers.
 
 ### Anti-slop — the credibility rules

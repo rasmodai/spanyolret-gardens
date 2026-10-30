@@ -24,7 +24,7 @@ export default function Pricing() {
                         <p className="measure text-3xl text-ink md:text-4xl">{pricing.anchor}</p>
                         <p className="caption mt-2">{pricing.anchorQualifier}</p>
                         <p className="lede mt-5">
-                            You get keys, not a shell. The gardens differ by more than three times between
+                            You get keys, not a shell. The gardens differ by nearly twice between
                             units, so the figure for the one you want comes from us directly.
                         </p>
                     </div>

@@ -37,8 +37,8 @@ export default function FooterHu() {
                     <div>
                         <p className="font-display text-2xl text-onmedia">Spanyolrét Gardens</p>
                         <p className="wrap-compound mt-3 max-w-[34ch] text-[0.9375rem] leading-relaxed text-[color:var(--on-frame-soft)]">
-                            Hat sorház 102–317 m² saját kerttel, Budapest XI. kerületében.
-                            Kulcsátadás 2026 szeptemberében.
+                            Hat sorház 102–202 m² saját kerttel, Budapest XI. kerületében.
+                            Kulcsátadás 2027 áprilisában.
                         </p>
                         <button
                             type="button"
