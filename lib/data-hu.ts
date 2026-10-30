@@ -463,9 +463,9 @@ export const uiTextsHu = {
         headline: 'Saját kert.',
         headlineSecond: 'Nem erkély.',
         subheadline: 'Hat sorház Budapest XI. kerületében, két épületben. Öt szoba két szinten, és egy kert, ami 102-től 317 m²-ig terjed.',
-        priceValue: '242 050 000 Ft-tól',
+        priceValue: '215 766 000 Ft-tól',
         priceQualifier:
-            'Kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban — 2026. szeptember 30-ig beérkező foglaló esetén',
+            'Kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban — 2026. december 1-jéig beérkező foglaló esetén',
         ctaPrimary: 'Időpontot kérek',
         ctaSecondary: 'A hat kert',
         location: 'Budapest XI. · 2026. szeptember',
