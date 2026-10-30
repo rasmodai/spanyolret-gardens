@@ -224,10 +224,10 @@ One convention per locale. Never mix them, and never let one locale's formatter 
 
 | | English | Hungarian |
 |---|---------|-----------|
-| Thousands | `215,766,000` | `215 766 000` (non-breaking space) |
+| Thousands | `216,616,000` | `216 616 000` (non-breaking space) |
 | Decimal | `117.45 m²` | `117,45 m²` |
 | Currency | `HUF`, before or after per copy | `Ft`, always postfix |
-| Anchor price | `From 215,766,000 HUF` | `215 766 000 Ft-tól` |
+| Anchor price | `From 216,616,000 HUF` | `216 616 000 Ft-tól` |
 | Date | `September 2026` | `2026. szeptember` — the period after the year is mandatory |
 
 ### Known defects to fix at implementation time
@@ -320,14 +320,14 @@ Decided 2026-08-08. This overrides the unit prices currently sitting in `lib/dat
 
 **One number appears on the site, and only one:**
 
-> **From 215,766,000 HUF — turnkey, landscaping and one parking space included, on a reservation deposit received by 1 December 2026.**
-> HU: **215 766 000 Ft-tól — kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban — 2026. december 1-jéig beérkező foglaló esetén.**
+> **From 216,616,000 HUF — turnkey, landscaping and one parking space included, on a reservation deposit received by 1 December 2026.**
+> HU: **216 616 000 Ft-tól — kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban — 2026. december 1-jéig beérkező foglaló esetén.**
 
 *(The Hungarian is composed from strings already written by a native speaker in `lib/data-hu.ts` — `Kulcsrakész átadás`, `Teljes kertépítés`, `1 saját parkolóhely`. Have a native speaker confirm the assembled sentence before it ships.)*
 
-- **The deadline is part of the qualifier, not a footnote.** 215,766,000 is unit B3's *promotional* price: it holds only for a reservation deposit received by 1 December 2026, and the promotion is a complimentary parking space worth 4,000,000. Without it the lowest price on the 2026-09 list is 246,050,000. A conditional price shown as permanent fails the same way "everything included" does — the buyer finds out later.
+- **The deadline is part of the qualifier, not a footnote.** 216,616,000 is unit B3's *promotional* price: it holds only for a reservation deposit received by 1 December 2026, and the promotion is a complimentary parking space worth 4,000,000. Without it the lowest price on the 2026-09 list is 246,050,000. A conditional price shown as permanent fails the same way "everything included" does — the buyer finds out later.
 - **The qualifier names what is included. It never claims everything is.** Optional extras — a second parking space, solar, irrigation, motorised shutters, the ceiling heating-cooling upgrade — are chargeable on top, so "everything included" would be misleading. Corrected 2026-08-08.
-- **The number never appears alone**, in either locale. If a layout has no room for the qualifier, the layout is wrong, not the rule — a bare "from 215,766,000 HUF" invites a comparison against competitors' shell prices and loses it.
+- **The number never appears alone**, in either locale. If a layout has no room for the qualifier, the layout is wrong, not the rule — a bare "from 216,616,000 HUF" invites a comparison against competitors' shell prices and loses it.
 - **Where the extras are listed, say plainly that they are on top.** "Optional extras are priced separately" / "A választható extrák külön díjazásúak." Never bury it in a footnote: the buyer who discovers a cost after the fact is the buyer who walks.
 - **No per-unit prices anywhere.** Not in the unit comparison, not in the floor plans, not in cards, not in tooltips. Each unit shows **Price on request** / **Ár kérésre**, which is also the CTA hook into the lead form.
 - **This is a positioning decision, not a formatting one.** A high turnkey anchor plus price-on-request qualifies the buyer into a conversation instead of letting them self-disqualify on a number. Do not "helpfully" reintroduce a price range, a per-m² figure, or a "from 195M" line.
@@ -422,8 +422,9 @@ The poster is now generated from the cleaned video's own first frame, so it matc
 | 2026-08-08 | Corrected: "everything included" → the precise qualifier | Optional extras are chargeable on top, so the blanket claim was misleading. The qualifier now names what is covered and the extras list says plainly that it is not |
 | 2026-08-08 | No per-unit prices anywhere; "Price on request" | Qualifies the buyer into a conversation instead of letting them self-disqualify on a number. Supersedes the 195–225M range in the PRD and in `lib/data.ts` |
 | 2026-08-08 | Two-line headlines use line-height 1.12, both locales | Measured 3.73px ink clearance at 1.02 vs 9.97px at 1.12. English ascent (38.64px) is taller than Hungarian (36.56px), so this is a leading problem, not a diacritics problem |
+| 2026-10-30 | Anchor corrected to 216,616,000 HUF | Final 2026-10 list: B3's total now includes the 850,000 HUF connection fee, like the other units. Its garden stays at 30,000 HUF/m², on purpose. |
 | 2026-10-30 | Keys April 2027; gardens 102–202 m² on the four units still available | Brenda confirmed the 2026-10 price list is correct: A3 and B2 sold, gardens reassigned per unit, handover at the beginning of April (she wrote 2026, read as 2027). The bars still show all six, scaled to the sold 316.84 m². |
-| 2026-10-30 | Anchor moved to 215,766,000 HUF, deposit deadline 1 December 2026 | The developer's 2026-10 price list puts the lowest unit at 215,766,000 promotional / 219,766,000 without. Garden sizes, unit status and the handover date still follow the old documents, pending the developer's answer. |
+| 2026-10-30 | Anchor moved to 216,616,000 HUF, deposit deadline 1 December 2026 | The developer's 2026-10 price list puts the lowest unit at 216,616,000 promotional / 220,616,000 without. Garden sizes, unit status and the handover date still follow the old documents, pending the developer's answer. |
 | 2026-08-21 | Anchor moved to 242,050,000 HUF, with the deposit deadline in the qualifier | The developer's 2026-09 price list put the lowest unit at 242,050,000 promotional / 246,050,000 without. The old 240,000,000 anchor was below every price actually on sale. The figure is B3's promotional price and lapses with the 30 September 2026 deposit deadline, so the deadline travels with the number |
 | 2026-08-21 | Address is `Törökbálinti út`, from the developer's price list | Fourth version of this address, first from a primary source. See the provenance note in `lib/data.ts` |
 | 2026-08-08 | Components must survive ±40% string-length swing | Measured on real strings: Hungarian ranges from −43% to +28% against English. "Leave room for expansion" is the wrong rule — it also contracts hard |
