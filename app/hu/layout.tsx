@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'Spanyolrét Gardens | Sorházak 102–317 m² saját kerttel | Budapest XI.',
     // Ár nélkül, mint az angol változatban: az ártól elválaszthatatlan a
-    // 2026. szeptember 30-i foglalási határidő, és a kettő együtt nem fér bele
+    // 2026. december 1-jei foglalási határidő, és a kettő együtt nem fér bele
     // abba a ~160 karakterbe, amit a Google megjelenít.
     description:
         'Hat új építésű sorház Budapest XI. kerületében. Öt szoba, 117 m² belső tér és 102–317 m² saját kert — nem erkély. Kulcsátadás 2026 szeptemberében.',

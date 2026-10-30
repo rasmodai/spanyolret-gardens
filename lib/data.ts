@@ -128,7 +128,7 @@ export const trustBarItems = [
     // already wrong by Aug 2026.
     { icon: 'calendar', value: `${new Date().getFullYear() - 2012}`, label: 'Years building' },
     // ⚠️ UNVERIFIED — "100% on-time delivery" appears nowhere in the technical
-    // spec; it originates in marketing copy. On a HUF 242M purchase this is a
+    // spec; it originates in marketing copy. On a HUF 215M purchase this is a
     // claim with legal weight. Confirm in writing with S-Patrik Bau or cut it.
     { icon: 'shield', value: '100%', label: 'Delivered on time' },
     { icon: 'award', value: '30 cm', label: 'Party walls' }
@@ -208,17 +208,17 @@ export const propertyStats = [
  * number invites comparison against competitors' shell prices and loses it.
  * Per-unit prices are never published. See DESIGN.md → Pricing Display Rule.
  *
- * 242,050,000 is B3's promotional price in the 2026-09 list — the lowest of the
+ * 215,766,000 is B3's promotional price in the 2026-10 list — the lowest of the
  * six, and the only figure the site may honestly call "from". It is conditional:
  * the promotion is a complimentary parking space worth 4,000,000, held only for
- * a reservation deposit received by 30 September 2026. Without it the lowest is
- * 246,050,000, so the qualifier has to carry the deadline. A conditional price
+ * a reservation deposit received by 1 December 2026. Without it the lowest is
+ * 219,766,000, so the qualifier has to carry the deadline. A conditional price
  * shown as unconditional is the kind of thing a buyer discovers at contract
  * stage, which is exactly what the extras note exists to avoid. */
 export const pricing = {
-    anchor: 'From 242,050,000 HUF',
+    anchor: 'From 215,766,000 HUF',
     anchorQualifier:
-        'Turnkey — landscaping and one parking space included, on a reservation deposit received by 30 September 2026',
+        'Turnkey — landscaping and one parking space included, on a reservation deposit received by 1 December 2026',
     perUnit: 'Price on request',
     extrasNote:
         'Optional extras are priced separately and listed below. We put them here rather than at contract stage, because finding out later is how people end up feeling sold to.'

@@ -45,7 +45,7 @@ const mono = IBM_Plex_Mono({
 export const metadata: Metadata = {
     title: 'Spanyolrét Gardens | Townhouses with 102–317 m² private gardens | Budapest XI.',
     /* No price here. The anchor may not appear without its qualifier, and since
-     * 2026-08-21 that qualifier includes the 30 September deposit deadline —
+     * 2026-08-21 that qualifier includes the 1 December deposit deadline —
      * which does not fit a description Google truncates near 160 characters.
      * DESIGN.md: if the layout has no room for the qualifier, the layout is
      * wrong, not the rule. The number lives on the page, where it has room. */
