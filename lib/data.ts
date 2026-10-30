@@ -212,15 +212,15 @@ export const propertyStats = [
  * number invites comparison against competitors' shell prices and loses it.
  * Per-unit prices are never published. See DESIGN.md → Pricing Display Rule.
  *
- * 215,766,000 is B3's promotional price in the 2026-10 list — the lowest of the
+ * 216,616,000 is B3's promotional price in the 2026-10 list — the lowest of the
  * six, and the only figure the site may honestly call "from". It is conditional:
  * the promotion is a complimentary parking space worth 4,000,000, held only for
  * a reservation deposit received by 1 December 2026. Without it the lowest is
- * 219,766,000, so the qualifier has to carry the deadline. A conditional price
+ * 220,616,000, so the qualifier has to carry the deadline. A conditional price
  * shown as unconditional is the kind of thing a buyer discovers at contract
  * stage, which is exactly what the extras note exists to avoid. */
 export const pricing = {
-    anchor: 'From 215,766,000 HUF',
+    anchor: 'From 216,616,000 HUF',
     anchorQualifier:
         'Turnkey — landscaping and one parking space included, on a reservation deposit received by 1 December 2026',
     perUnit: 'Price on request',
