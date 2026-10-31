@@ -2,6 +2,7 @@ import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 import { createHash } from 'crypto';
 import { appendLeadToSheet } from '@/lib/google-sheets';
+import { postLeadToOs } from '@/lib/synphos-os';
 
 const META_PIXEL_ID = '886458420654697';
 
@@ -196,6 +197,22 @@ export async function POST(request: Request) {
             marketingConsent: body.marketingConsent,
         });
 
+        // The OS buyer pipeline: a capture channel of its own, independent of the
+        // Sheet and the email. Skipped while SYNPHOS_OS_URL / _LEADS_TOKEN are unset.
+        const savedToOs = await postLeadToOs({
+            firstName: body.firstName,
+            lastName: body.lastName,
+            email: body.email,
+            phone: body.phone,
+            lang: body.lang,
+            preferredUnit: body.preferredUnit,
+            timeline: body.timeline,
+            message: body.message,
+            marketingConsent: body.marketingConsent,
+            privacyConsent: body.privacyConsent,
+            sourceUrl: body.sourceUrl,
+        });
+
         // Server-side conversion signal — independent of the CRM write above
         // and the email below, so a failure in either does not take this down
         // with it, and vice versa.
@@ -214,9 +231,9 @@ export async function POST(request: Request) {
         if (emailError) console.error('Resend error:', emailError);
 
         // Only fail the request — which also skips the client-side Pixel fire,
-        // since that depends on this response — if neither channel captured
-        // the lead. One of the two succeeding is enough to call it captured.
-        if (!savedToCrm && emailError) {
+        // since that depends on this response — if no channel captured the
+        // lead. The Sheet, the OS or the email succeeding is enough.
+        if (!savedToCrm && !savedToOs && emailError) {
             return NextResponse.json(
                 { error: 'Failed to submit lead' },
                 { status: 500 }
