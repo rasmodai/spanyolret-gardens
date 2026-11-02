@@ -6,7 +6,7 @@ import { privacyPath, whatsappDigits } from '@/lib/site';
 import { formatArea } from '@/lib/utils';
 
 const copy: LeadFormCopy = {
-    unit: 'Melyik sorház érdekel?',
+    unit: 'Melyik lakás érdekel?',
     unitAny: 'Még nem tudom',
     priority: 'Mi a legfontosabb számodra?',
     priorities: { outdoor: 'A saját kert', space: 'Az alapterület és az elosztás', location: 'Az elhelyezkedés', price: 'Az ár' },
@@ -41,7 +41,7 @@ const copy: LeadFormCopy = {
     },
     message: {
         intro: 'Jó napot! {name} vagyok, a Spanyolrét Gardens sorházai iránt érdeklődöm.',
-        unit: 'Sorház: {unit}',
+        unit: 'Lakás: {unit}',
         anyUnit: 'Még nem választottam sorházat.',
         priority: 'Számomra a legfontosabb: {priority}',
         timeline: 'Tervezett költözés: {timeline}',
@@ -67,10 +67,10 @@ export default function LeadFormHu() {
                             <span className="h-px flex-1 bg-onmedia/20" />
                         </div>
 
-                        <h2 className="display-l wrap-compound text-onmedia">Gyere el, állj be a kertbe.</h2>
+                        <h2 className="display-l wrap-compound text-onmedia">Látogass a lakásokhoz</h2>
                         <p className="wrap-compound mt-5 max-w-[46ch] text-[1.0625rem] leading-relaxed text-[color:var(--on-frame-soft)]">
                             {whatsappDigits
-                                ? 'Válaszolj három rövid kérdésre, majd válaszd a WhatsAppot vagy az SMS-t: az üzenet előre megírva nyílik meg, csak el kell küldened. A látogatásra hozd a gyerekeket is.'
+                                ? 'Válaszolj három rövid kérdésre, majd válaszd a WhatsAppot vagy az SMS-t: az üzenet előre megírva nyílik meg, csak el kell küldened.'
                                 : 'Hozd a gyerekeket. Ők többet mondanak majd 300 m² fűről, mint mi. Egy látogatás, és nincs utánkövetés, hacsak nem kéred.'}
                         </p>
 
