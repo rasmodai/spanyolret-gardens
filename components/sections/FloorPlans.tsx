@@ -1,15 +1,10 @@
 'use client';
 
 import { OPEN_MESSAGE_EVENT } from '@/lib/lead-message';
-import { useState } from 'react';
-import Image from 'next/image';
 import { units } from '@/lib/data';
 import { formatArea, getStatusLabel } from '@/lib/utils';
 import GardenRibbon from '@/components/ui/GardenRibbon';
-import { useReveal } from '@/lib/useReveal';
-
-type FloorPlanView = 'site' | 'A' | 'B';
-type Floor = 'ground' | 'first';
+import PlanViewer from '@/components/PlanViewer';
 
 /* The signature section. DESIGN.md → Signature Patterns → The garden ribbon.
  *
@@ -25,28 +20,8 @@ type Floor = 'ground' | 'first';
  * decision.
  */
 export default function FloorPlans() {
-    const [floorPlanView, setFloorPlanView] = useState<FloorPlanView>('site');
-    const [activeFloor, setActiveFloor] = useState<Floor>('ground');
 
     const sortedUnits = [...units].sort((a, b) => a.gardenArea - b.gardenArea);
-    const planRef = useReveal<HTMLElement>(0.15);
-
-    const getFloorPlanImage = () => {
-        if (floorPlanView === 'site') return '/assets/floorplans/site-plan.jpg';
-        if (floorPlanView === 'A') {
-            return activeFloor === 'ground'
-                ? '/assets/floorplans/a-ground-floor.webp'
-                : '/assets/floorplans/a-first-floor.webp';
-        }
-        return activeFloor === 'ground'
-            ? '/assets/floorplans/b-ground-floor.webp'
-            : '/assets/floorplans/b-first-floor.webp';
-    };
-
-    const planTitle =
-        floorPlanView === 'site'
-            ? 'Complete site layout'
-            : `Building ${floorPlanView} — ${activeFloor === 'ground' ? 'ground floor' : 'first floor'}`;
 
     return (
         <section id="floor-plans" className="section-padding border-t border-line bg-paper">
@@ -122,59 +97,17 @@ export default function FloorPlans() {
                 </div>
 
                 {/* ---- The drawings --------------------------------------- */}
-                <div className="mt-16 border-t border-line pt-10">
-                    <div className="flex flex-wrap items-center gap-x-8">
-                        {(['site', 'A', 'B'] as FloorPlanView[]).map((view) => (
-                            <button
-                                key={view}
-                                type="button"
-                                onClick={() => setFloorPlanView(view)}
-                                className={`tab-link ${
-                                    floorPlanView === view
-                                        ? 'border-clay !text-ink'
-                                        : 'border-transparent hover:!text-ink'
-                                }`}
-                            >
-                                {view === 'site' ? 'Site plan' : `Building ${view}`}
-                            </button>
-                        ))}
-
-                        {floorPlanView !== 'site' && (
-                            <span className="ml-auto flex items-center gap-6">
-                                {(['ground', 'first'] as Floor[]).map((floor) => (
-                                    <button
-                                        key={floor}
-                                        type="button"
-                                        onClick={() => setActiveFloor(floor)}
-                                        className={`tab-link ${
-                                            activeFloor === floor
-                                                ? 'border-clay !text-ink'
-                                                : 'border-transparent hover:!text-ink'
-                                        }`}
-                                    >
-                                        {floor === 'ground' ? 'Ground floor' : 'First floor'}
-                                    </button>
-                                ))}
-                            </span>
-                        )}
-                    </div>
-
-                    <figure ref={planRef} className="reveal-unroll mt-4">
-                        <div className="relative aspect-[4/3] w-full border border-line bg-paper md:aspect-[16/9]">
-                            <Image
-                                key={getFloorPlanImage()}
-                                src={getFloorPlanImage()}
-                                alt={planTitle}
-                                fill
-                                sizes="(max-width: 768px) 100vw, 1180px"
-                                className="plan-swap object-contain p-2 sm:p-4"
-                            />
-                        </div>
-                        <figcaption className="caption mt-3">
-                            {planTitle} · JRT Stúdió Kft. · scale 1:250
-                        </figcaption>
-                    </figure>
-                </div>
+                <PlanViewer
+                    locale="en"
+                    copy={{
+                        sitePlan: 'Site plan',
+                        house: (id) => `House ${id}`,
+                        groundFloor: 'Ground floor',
+                        firstFloor: 'First floor',
+                        siteCaption: 'JRT Stúdió Kft. · scale 1:250',
+                        planCaption: 'redrawn to scale from the building-permit drawings, net areas as stated on them',
+                    }}
+                />
             </div>
         </section>
     );

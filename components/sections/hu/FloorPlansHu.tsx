@@ -1,48 +1,23 @@
 'use client';
 
 import { OPEN_MESSAGE_EVENT } from '@/lib/lead-message';
-import { useState } from 'react';
-import Image from 'next/image';
 import { units } from '@/lib/data';
 import { uiTextsHu } from '@/lib/data-hu';
 import { formatArea } from '@/lib/utils';
 import GardenRibbon from '@/components/ui/GardenRibbon';
-import { useReveal } from '@/lib/useReveal';
-
-type FloorPlanView = 'site' | 'A' | 'B';
-type Floor = 'ground' | 'first';
+import PlanViewer from '@/components/PlanViewer';
 
 /* Mirror of components/sections/FloorPlans.tsx. The six bars share one left
  * edge and are sorted smallest garden to largest, so they read as a single
  * rising column — which is the only reason to draw them to scale at all. */
 export default function FloorPlansHu() {
     const t = uiTextsHu.floorPlans;
-    const [floorPlanView, setFloorPlanView] = useState<FloorPlanView>('site');
-    const [activeFloor, setActiveFloor] = useState<Floor>('ground');
 
     const sortedUnits = [...units].sort((a, b) => a.gardenArea - b.gardenArea);
-    const planRef = useReveal<HTMLElement>(0.15);
 
     const statusLabel = (status: string) =>
         ({ available: t.available, reserved: t.reserved, sold: t.sold } as Record<string, string>)[status] ??
         status;
-
-    const getFloorPlanImage = () => {
-        if (floorPlanView === 'site') return '/assets/floorplans/site-plan.jpg';
-        if (floorPlanView === 'A') {
-            return activeFloor === 'ground'
-                ? '/assets/floorplans/a-ground-floor.webp'
-                : '/assets/floorplans/a-first-floor.webp';
-        }
-        return activeFloor === 'ground'
-            ? '/assets/floorplans/b-ground-floor.webp'
-            : '/assets/floorplans/b-first-floor.webp';
-    };
-
-    const planTitle =
-        floorPlanView === 'site'
-            ? t.sitePlan
-            : `${floorPlanView} épület — ${activeFloor === 'ground' ? t.groundFloor : t.firstFloor}`;
 
     return (
         <section id="floor-plans" className="section-padding border-t border-line bg-paper">
@@ -108,59 +83,17 @@ export default function FloorPlansHu() {
                     </p>
                 </div>
 
-                <div className="mt-16 border-t border-line pt-10">
-                    <div className="flex flex-wrap items-center gap-x-8">
-                        {(['site', 'A', 'B'] as FloorPlanView[]).map((view) => (
-                            <button
-                                key={view}
-                                type="button"
-                                onClick={() => setFloorPlanView(view)}
-                                className={`tab-link ${
-                                    floorPlanView === view
-                                        ? 'border-clay !text-ink'
-                                        : 'border-transparent hover:!text-ink'
-                                }`}
-                            >
-                                {view === 'site' ? t.sitePlan : `${view} épület`}
-                            </button>
-                        ))}
-
-                        {floorPlanView !== 'site' && (
-                            <span className="ml-auto flex items-center gap-6">
-                                {(['ground', 'first'] as Floor[]).map((floor) => (
-                                    <button
-                                        key={floor}
-                                        type="button"
-                                        onClick={() => setActiveFloor(floor)}
-                                        className={`tab-link ${
-                                            activeFloor === floor
-                                                ? 'border-clay !text-ink'
-                                                : 'border-transparent hover:!text-ink'
-                                        }`}
-                                    >
-                                        {floor === 'ground' ? t.groundFloor : t.firstFloor}
-                                    </button>
-                                ))}
-                            </span>
-                        )}
-                    </div>
-
-                    <figure ref={planRef} className="reveal-unroll mt-4">
-                        <div className="relative aspect-[4/3] w-full border border-line bg-paper md:aspect-[16/9]">
-                            <Image
-                                key={getFloorPlanImage()}
-                                src={getFloorPlanImage()}
-                                alt={planTitle}
-                                fill
-                                sizes="(max-width: 768px) 100vw, 1180px"
-                                className="plan-swap object-contain p-2 sm:p-4"
-                            />
-                        </div>
-                        <figcaption className="caption wrap-compound mt-3">
-                            {planTitle} · JRT Stúdió Kft. · M 1:250
-                        </figcaption>
-                    </figure>
-                </div>
+                <PlanViewer
+                    locale="hu"
+                    copy={{
+                        sitePlan: t.sitePlan,
+                        house: (id) => `${id} ház`,
+                        groundFloor: t.groundFloor,
+                        firstFloor: t.firstFloor,
+                        siteCaption: 'JRT Stúdió Kft. · M 1:250',
+                        planCaption: 'méretarányosan újrarajzolva az építési engedélyezési tervről, a rajta szereplő nettó alapterületekkel',
+                    }}
+                />
             </div>
         </section>
     );
