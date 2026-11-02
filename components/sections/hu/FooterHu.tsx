@@ -1,6 +1,8 @@
 'use client';
 
 import Image from 'next/image';
+import ConsentSettingsButton from '@/components/consent/ConsentSettingsButton';
+import { privacyPath, whatsappNumber } from '@/lib/site';
 import { scrollToElement } from '@/lib/utils';
 import { siteAddress } from '@/lib/data-hu';
 
@@ -14,7 +16,8 @@ import { siteAddress } from '@/lib/data-hu';
 const companyDetails = {
     name: 'S-Patrik Bau Kft.',
     email: 'info@spatrikbau.com',
-    phone: '+36 1 234 5678',
+    // Brenda's number, the buyers' contact (see lib/site.ts). Was a placeholder.
+    phone: whatsappNumber ?? '',
     address: siteAddress.full,
     taxNumber: '24304559213',
     registrationNumber: '13 09 220814',
@@ -116,6 +119,10 @@ export default function FooterHu() {
                     <p className="caption !text-[color:var(--on-frame-soft)]">
                         Tervező: JRT Stúdió Kft.
                     </p>
+                    <div className="flex w-full flex-wrap gap-x-6 gap-y-1 text-[0.9375rem]">
+                        <a href={privacyPath.hu} className="btn-quiet !text-onmedia">Adatkezelési tájékoztató</a>
+                        <ConsentSettingsButton label="Süti-beállítások" className="btn-quiet !text-onmedia" />
+                    </div>
                 </div>
             </div>
         </footer>

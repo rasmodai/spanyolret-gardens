@@ -1,3 +1,4 @@
+import StickyActions from '@/components/StickyActions';
 import HeroHu from '@/components/sections/hu/HeroHu';
 import NavbarHu from '@/components/sections/hu/NavbarHu';
 import TrustBarHu from '@/components/sections/hu/TrustBarHu';
@@ -42,6 +43,7 @@ export default function HomeHu() {
             <FAQHu />
             <LeadFormHu />
             <FooterHu />
+            <StickyActions locale="hu" />
         </main>
     );
 }

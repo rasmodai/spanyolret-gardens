@@ -1,3 +1,4 @@
+import StickyActions from '@/components/StickyActions';
 import Hero from '@/components/sections/Hero';
 import Navbar from '@/components/sections/Navbar';
 import TrustBar from '@/components/sections/TrustBar';
@@ -42,6 +43,7 @@ export default function Home() {
             <FAQ />
             <LeadForm />
             <Footer />
+            <StickyActions locale="en" />
         </main>
     );
 }

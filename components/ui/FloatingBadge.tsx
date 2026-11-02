@@ -47,7 +47,7 @@ export default function FloatingBadge({ locale = 'en' }: FloatingBadgeProps) {
             onClick={() => scrollToElement('floor-plans')}
             aria-hidden={!isVisible}
             tabIndex={isVisible ? 0 : -1}
-            className={`fixed bottom-0 right-0 z-40 border-l border-t border-line bg-paper px-5 py-3 text-left transition-[opacity,transform] duration-medium ease-enter hover:bg-paper-deep ${
+            className={`fixed bottom-0 right-0 z-40 hidden border-l md:block border-t border-line bg-paper px-5 py-3 text-left transition-[opacity,transform] duration-medium ease-enter hover:bg-paper-deep ${
                 isVisible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-full opacity-0'
             }`}
         >

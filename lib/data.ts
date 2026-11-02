@@ -658,7 +658,6 @@ export const mapLinkHref =
 
 export const footerContent = {
     contact: {
-        phone: '+36 XX XXX XXXX',
         email: 'info@spanyolretgardens.hu',
         address: siteAddress.full
     },
@@ -667,8 +666,7 @@ export const footerContent = {
         website: 'www.s-patrikbau.hu'
     },
     legal: [
-        { text: 'Privacy Policy', href: '/privacy' },
-        { text: 'Terms of Use', href: '/terms' },
-        { text: 'Cookie Policy', href: '/cookies' }
+        // Only pages that exist. Cookies are covered in the privacy policy.
+        { text: 'Privacy Policy', href: '/privacy' }
     ]
 };

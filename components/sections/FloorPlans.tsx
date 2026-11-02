@@ -1,12 +1,12 @@
 'use client';
 
+import { OPEN_MESSAGE_EVENT } from '@/lib/lead-message';
 import { useState } from 'react';
 import Image from 'next/image';
 import { units } from '@/lib/data';
 import { formatArea, getStatusLabel } from '@/lib/utils';
 import GardenRibbon from '@/components/ui/GardenRibbon';
 import { useReveal } from '@/lib/useReveal';
-import { scrollToElement } from '@/lib/utils';
 
 type FloorPlanView = 'site' | 'A' | 'B';
 type Floor = 'ground' | 'first';
@@ -97,7 +97,8 @@ export default function FloorPlans() {
                                         </span>
                                         <button
                                             type="button"
-                                            onClick={() => scrollToElement('lead-form')}
+                                            // Opens the form with this house chosen (the form scrolls itself into view).
+                                            onClick={() => window.dispatchEvent(new CustomEvent(OPEN_MESSAGE_EVENT, { detail: unit.status === 'available' ? unit.id : undefined }))}
                                             className="btn-quiet text-[0.9375rem] text-lawn"
                                         >
                                             Price on request
