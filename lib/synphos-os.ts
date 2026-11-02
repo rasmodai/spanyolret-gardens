@@ -5,9 +5,12 @@
  * once that OS change is deployed. Returns true only when the OS stored it.
  */
 export interface OsLead {
+    /** 'form': call back; 'whatsapp' / 'sms': the visitor opened a pre-written message. */
+    source?: 'form' | 'whatsapp' | 'sms';
+    priority?: string;
     firstName: string;
     lastName?: string;
-    email: string;
+    email?: string;
     phone?: string;
     lang?: string;
     preferredUnit?: string;
@@ -40,7 +43,8 @@ export async function postLeadToOs(lead: OsLead): Promise<boolean> {
             headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 client: 'spanyolret-gardens',
-                source: 'form',
+                source: lead.source ?? 'form',
+                priority: lead.priority,
                 firstName: lead.firstName,
                 lastName: lead.lastName,
                 email: lead.email,
@@ -50,7 +54,7 @@ export async function postLeadToOs(lead: OsLead): Promise<boolean> {
                 timeline: lead.timeline,
                 message: lead.message,
                 marketingConsent: lead.marketingConsent === true,
-                // Both forms (EN, HU) refuse to submit without the privacy box ticked.
+                // The API refuses any lead without the privacy box ticked.
                 contactConsent: lead.privacyConsent === true,
                 sourceUrl: lead.sourceUrl,
                 utm,

@@ -1,5 +1,6 @@
 'use client';
 
+import MapEmbed from '@/components/MapEmbed';
 import {
     transportLinks,
     nearbyAmenities,
@@ -38,17 +39,7 @@ export default function Location() {
                 <div className="mt-12 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
                     <div>
                         <div className="h-[22rem] overflow-hidden border border-line lg:h-[26rem]">
-                            <iframe
-                                src={mapEmbedSrc}
-                                width="100%"
-                                height="100%"
-                                style={{ border: 0 }}
-                                allowFullScreen
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                                title="Spanyolrét Gardens location on Google Maps"
-                                className="h-full w-full"
-                            />
+                            <MapEmbed src={mapEmbedSrc} title="Spanyolrét Gardens location on Google Maps" locale="en" />
                         </div>
 
                         <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">

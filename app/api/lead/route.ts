@@ -3,8 +3,11 @@ import { NextResponse } from 'next/server';
 import { createHash } from 'crypto';
 import { appendLeadToSheet } from '@/lib/google-sheets';
 import { postLeadToOs } from '@/lib/synphos-os';
+import { checkRateLimit } from '@/lib/rate-limit';
+import { PRIORITIES } from '@/lib/lead-message';
+import { metaPixelId } from '@/lib/site';
 
-const META_PIXEL_ID = '886458420654697';
+const META_PIXEL_ID = metaPixelId;
 
 function getResend() {
     return new Resend(process.env.RESEND_API_KEY);
@@ -12,8 +15,15 @@ function getResend() {
 
 interface LeadFormBody {
     firstName: string;
-    lastName: string;
-    email: string;
+    lastName?: string;
+    email?: string;
+    /** 'whatsapp' / 'sms': the visitor chose to send a pre-written message; 'form': a call back. */
+    source?: string;
+    priority?: string;
+    /** True only when the visitor accepted cookies: gates the Meta Conversions API. */
+    adConsent?: boolean;
+    /** Honeypot: humans leave it empty. */
+    website?: string;
     phone?: string;
     timeline?: string;
     preferredUnit?: string;
@@ -53,13 +63,13 @@ async function sendMetaConversionEvent(body: LeadFormBody, request: Request) {
     const userAgent = request.headers.get('user-agent') || '';
 
     const userData: Record<string, unknown> = {
-        em: [sha256(body.email)],
         fn: [sha256(body.firstName)],
-        ln: [sha256(body.lastName)],
         client_ip_address: ip,
         client_user_agent: userAgent,
     };
 
+    if (body.email) userData.em = [sha256(body.email)];
+    if (body.lastName) userData.ln = [sha256(body.lastName)];
     if (body.phone) {
         const normalized = body.phone.replace(/[\s\-()]/g, '');
         userData.ph = [sha256(normalized)];
@@ -102,26 +112,40 @@ export async function POST(request: Request) {
     try {
         const body: LeadFormBody = await request.json();
 
-        if (!body.firstName?.trim() || !body.email?.trim()) {
+        // Bots fill every field; a person never sees this one.
+        if (body.website) return NextResponse.json({ success: true });
+
+        // First name, a way to answer (phone or email) and the agreement to be
+        // contacted: both forms refuse to send without them.
+        if (!body.firstName?.trim() || !(body.phone?.trim() || body.email?.trim()) || body.privacyConsent !== true) {
             return NextResponse.json(
-                { error: 'Name and email are required' },
+                { error: 'First name, phone or email, and consent are required' },
                 { status: 400 }
             );
         }
 
+        const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || '';
+        if ((await checkRateLimit(ip)) === 'limited') {
+            return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+        }
+
+        const source = body.source === 'whatsapp' || body.source === 'sms' ? body.source : 'form';
+        const priority = (PRIORITIES as readonly string[]).includes(body.priority ?? '') ? body.priority : undefined;
+
         const isHungarian = body.lang === 'hu';
         const firstName = escapeHtml(body.firstName);
-        const lastName = escapeHtml(body.lastName);
-        const email = escapeHtml(body.email);
+        const lastName = escapeHtml(body.lastName ?? '');
+        const email = escapeHtml(body.email ?? '');
         const phone = body.phone ? escapeHtml(body.phone) : '';
         const timeline = body.timeline ? escapeHtml(body.timeline) : '';
         const preferredUnit = body.preferredUnit ? escapeHtml(body.preferredUnit) : '';
         const preferredContact = body.preferredContact ? escapeHtml(body.preferredContact) : '';
         const message = body.message ? escapeHtml(body.message) : '';
 
+        const channel = source === 'whatsapp' ? ' (WhatsApp)' : source === 'sms' ? ' (SMS)' : '';
         const subject = isHungarian
-            ? `Spanyolret Gardens - Uj erdeklodo: ${firstName} ${lastName}`
-            : `Spanyolret Gardens - New Lead: ${firstName} ${lastName}`;
+            ? `Spanyolret Gardens - Uj erdeklodo${channel}: ${firstName} ${lastName}`.trim()
+            : `Spanyolret Gardens - New Lead${channel}: ${firstName} ${lastName}`.trim();
 
         const html = `
             <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -140,9 +164,19 @@ export async function POST(request: Request) {
                             <td style="padding: 8px 0;">${firstName} ${lastName}</td>
                         </tr>
                         <tr>
+                            <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Channel</td>
+                            <td style="padding: 8px 0;">${source === 'form' ? 'Call back requested' : `${source === 'sms' ? 'SMS' : 'WhatsApp'} message opened (check your phone)`}</td>
+                        </tr>
+                        ${priority ? `
+                        <tr>
+                            <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Priority</td>
+                            <td style="padding: 8px 0;">${priority}</td>
+                        </tr>` : ''}
+                        ${email ? `
+                        <tr>
                             <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Email</td>
                             <td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #1a3a2a;">${email}</a></td>
-                        </tr>
+                        </tr>` : ''}
                         ${phone ? `
                         <tr>
                             <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Phone</td>
@@ -187,10 +221,10 @@ export async function POST(request: Request) {
         // it responds, so anything fired-and-forgotten here may never finish.
         const savedToCrm = await appendLeadToSheet({
             firstName: body.firstName,
-            lastName: body.lastName,
-            email: body.email,
+            lastName: body.lastName ?? '',
+            email: body.email ?? '',
             phone: body.phone,
-            preferredContact: body.preferredContact,
+            preferredContact: source === 'form' ? body.preferredContact : source,
             timeline: body.timeline,
             preferredUnit: body.preferredUnit,
             message: body.message,
@@ -200,6 +234,8 @@ export async function POST(request: Request) {
         // The OS buyer pipeline: a capture channel of its own, independent of the
         // Sheet and the email. Skipped while SYNPHOS_OS_URL / _LEADS_TOKEN are unset.
         const savedToOs = await postLeadToOs({
+            source,
+            priority,
             firstName: body.firstName,
             lastName: body.lastName,
             email: body.email,
@@ -216,9 +252,12 @@ export async function POST(request: Request) {
         // Server-side conversion signal — independent of the CRM write above
         // and the email below, so a failure in either does not take this down
         // with it, and vice versa.
-        await sendMetaConversionEvent(body, request).catch((e) =>
-            console.error('Meta CAPI error:', e)
-        );
+        // Only with the visitor's cookie consent (adConsent), like the Pixel.
+        if (body.adConsent === true) {
+            await sendMetaConversionEvent(body, request).catch((e) =>
+                console.error('Meta CAPI error:', e)
+            );
+        }
 
         // Email is a notification, not the record. Its failure must not discard
         // a lead the CRM write above already captured.

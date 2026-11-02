@@ -1,10 +1,11 @@
 'use client';
 
+import { OPEN_MESSAGE_EVENT } from '@/lib/lead-message';
 import { useState } from 'react';
 import Image from 'next/image';
 import { units } from '@/lib/data';
 import { uiTextsHu } from '@/lib/data-hu';
-import { formatArea, scrollToElement } from '@/lib/utils';
+import { formatArea } from '@/lib/utils';
 import GardenRibbon from '@/components/ui/GardenRibbon';
 import { useReveal } from '@/lib/useReveal';
 
@@ -87,7 +88,8 @@ export default function FloorPlansHu() {
                                         </span>
                                         <button
                                             type="button"
-                                            onClick={() => scrollToElement('lead-form')}
+                                            // Opens the form with this house chosen (the form scrolls itself into view).
+                                            onClick={() => window.dispatchEvent(new CustomEvent(OPEN_MESSAGE_EVENT, { detail: unit.status === 'available' ? unit.id : undefined }))}
                                             className="btn-quiet text-[0.9375rem] text-lawn"
                                         >
                                             Ár kérésre
