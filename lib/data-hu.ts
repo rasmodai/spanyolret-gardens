@@ -18,8 +18,9 @@ export const trustBarItemsHu = [
     { icon: 'building', value: '50+', label: 'Átadott projekt' },
     // Az alapítás évéből számolva, nem beégetve.
     { icon: 'calendar', value: `${new Date().getFullYear() - 2012}`, label: 'Éve építünk' },
-    // ⚠️ NEM ELLENŐRIZHETŐ — lásd developerStatsHu.
-    { icon: 'shield', value: '100%', label: 'Határidőre kész' },
+    // A "100% határidőre" 2026-11-02-án kikerült: az S-Patrik Bau írásban soha
+    // nem erősítette meg. Az átadás dátuma az árlistában szerepel.
+    { icon: 'shield', value: '2027. április', label: 'Kulcsátadás' },
     { icon: 'award', value: '30 cm', label: 'Válaszfalak' }
 ];
 
@@ -189,9 +190,6 @@ export const neighborhoodHighlightsHu = [
 export const developerStatsHu = [
     { value: '2012', label: 'Építünk azóta' },
     { value: '50+', label: 'Átadott projekt' },
-    // ⚠️ NEM ELLENŐRIZHETŐ — a "100% határidőre" sehol nem szerepel a műszaki
-    // dokumentációban, marketingszövegből ered. Írásos megerősítés vagy törlés.
-    { value: '100%', label: 'Határidőre kész' },
     // Az alapítás évéből számolva. Ne legyen beégetve: a korábbi '13' 2025
     // decemberében készült, és 2026 augusztusára már téves volt.
     { value: `${new Date().getFullYear() - 2012}`, label: 'Éve építünk' }
@@ -287,7 +285,7 @@ export const specsCategoriesHu = [
 
 export const includedInPriceHu = [
     'Kulcsrakész átadás (azonnal beköltözhető)',
-    '1 saját parkolóhely',
+    'Kültéri parkoló: az A1, A2 és B1 mellé kettő, a B3 mellé egy (egy ingyenes 2026. december 1-jéig beérkező foglaló esetén)',
     '6,6 m² terasz porcelán burkolattal',
     'Teljes kertépítés (fű, járda, kerítés)',
     'Minden elektromos és vízvezeték-szerelvény',
@@ -379,7 +377,7 @@ export const faqsHu = [
             },
             {
                 q: 'Mi történik, ha csúszik az építkezés?',
-                a: 'Az S-Patrik Bau 50+ projektnél 100%-os határidő-tartással büszkélkedhet. A szerződés tartalmazza a késedelmi feltételeket is, védve az érdekeidet.'
+                a: 'Az S-Patrik Bau 2012 óta több mint 50 projektet adott át. A kulcsátadás 2027 áprilisában esedékes, és a szerződés rögzíti a késedelem esetén követendő feltételeket, védve az érdekeidet.'
             },
             {
                 q: 'Kell ügyvéd a vásárláshoz?',
@@ -425,7 +423,7 @@ export const faqsHu = [
             },
             {
                 q: 'Hány parkoló jár?',
-                a: 'Minden lakáshoz 1 saját parkoló. További hely vásárolható 4 000 000 Ft-ért. Távirányítós kapu. Vége az utcai parkolásnak.'
+                a: 'Az A1, A2 és B1 mellé két, a B3 mellé egy kültéri parkolóhely tartozik, helyenként 4 000 000 Ft-tal az árban. 2026. december 1-jéig beérkező foglaló esetén egy hely ingyenes. Távirányítós kapu. Vége az utcai parkolásnak.'
             }
         ]
     },
@@ -516,7 +514,7 @@ export const uiTextsHu = {
         sold: 'Elkelt',
         requestDetails: 'Részletek kérése',
         noLongerAvailable: 'Már nem elérhető',
-        comparisonNote: 'Minden lakáshoz 6,60 m² terasz és 1 parkoló tartozik. Részletekért keressen minket.'
+        comparisonNote: 'Minden lakáshoz 6,60 m² terasz tartozik, és egy vagy két kültéri parkoló. Részletekért keressen minket.'
     },
     location: {
         badge: 'ELHELYEZKEDÉS',
@@ -535,7 +533,7 @@ export const uiTextsHu = {
         badge: 'KIVITELEZŐ',
         title: 'Építi: S-Patrik Bau',
         subtitle: '13 év prémium építés Budapesten',
-        description: 'Az S-Patrik Bau 2012 óta épít prémium lakóingatlanokat Budapesten. Több mint 50 átadott projekttel a minőségi kivitelezés, prémium alapanyagok és határidőre történő átadás a védjegyünk. Minden Spanyolrét Gardens otthon ugyanazzal a gondossággal épül, ami Budapest egyik legmegbízhatóbb kivitelezőjévé tett minket.',
+        description: 'Az S-Patrik Bau 2012 óta épít prémium lakóingatlanokat Budapesten. Több mint 50 átadott projekttel a minőségi kivitelezés, és prémium alapanyagok a védjegyünk. Minden Spanyolrét Gardens otthon ugyanazzal a gondossággal épül, ami Budapest egyik legmegbízhatóbb kivitelezőjévé tett minket.',
         promise: 'Amit ígérünk'
     },
     specs: {
