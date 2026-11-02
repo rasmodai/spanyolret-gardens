@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'A real garden. Not a balcony. | Spanyolrét Gardens',
         description:
-            'Six townhouses in Budapest XI. Private gardens from 102 to 202 m². Turnkey, landscaping and one parking space included. Keys April 2027.',
+            'Six townhouses in Budapest XI. Private gardens from 102 to 202 m². Turnkey, landscaping and outdoor parking included. Keys April 2027.',
         type: 'website',
         locale: 'en_US',
     },

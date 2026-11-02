@@ -40,7 +40,7 @@ export const units: Unit[] = [
         status: 'available',
         rooms: 5,
         bathrooms: 2,
-        parkingSpaces: 1
+        parkingSpaces: 2
     },
     {
         id: 'A2',
@@ -55,7 +55,7 @@ export const units: Unit[] = [
         status: 'available',
         rooms: 5,
         bathrooms: 2,
-        parkingSpaces: 1,
+        parkingSpaces: 2,
         highlight: 'Largest interior'
     },
     {
@@ -86,7 +86,7 @@ export const units: Unit[] = [
         status: 'available',
         rooms: 5,
         bathrooms: 2,
-        parkingSpaces: 1,
+        parkingSpaces: 2,
         highlight: 'Smallest garden'
     },
     {
@@ -131,10 +131,9 @@ export const trustBarItems = [
     // Derived, not hardcoded. The previous '13' was written in Dec 2025 and was
     // already wrong by Aug 2026.
     { icon: 'calendar', value: `${new Date().getFullYear() - 2012}`, label: 'Years building' },
-    // ⚠️ UNVERIFIED — "100% on-time delivery" appears nowhere in the technical
-    // spec; it originates in marketing copy. On a HUF 215M purchase this is a
-    // claim with legal weight. Confirm in writing with S-Patrik Bau or cut it.
-    { icon: 'shield', value: '100%', label: 'Delivered on time' },
+    // "100% on time" was cut on 2026-11-02: never confirmed in writing by
+    // S-Patrik Bau. The handover date is in the price list.
+    { icon: 'shield', value: 'April 2027', label: 'Keys handed over' },
     { icon: 'award', value: '30 cm', label: 'Party walls' }
 ];
 
@@ -331,8 +330,6 @@ export const neighborhoodHighlights = [
 export const developerStats = [
     { value: '2012', label: 'Building since' },
     { value: '50+', label: 'Projects finished' },
-    // ⚠️ UNVERIFIED — see trustBarItems. Confirm in writing or cut.
-    { value: '100%', label: 'Delivered on time' },
     { value: `${new Date().getFullYear() - 2012}`, label: 'Years building' }
 ];
 
@@ -426,7 +423,7 @@ export const specsCategories = [
 
 export const includedInPrice = [
     'Turnkey delivery (move-in ready)',
-    '1 dedicated parking space',
+    'Outdoor parking: two spaces with A1, A2 and B1, one with B3 (one free on a deposit by 1 December 2026)',
     '6.6 m² terrace with porcelain tiles',
     'Full landscaping (grass, paths, fencing)',
     'All electrical and plumbing fixtures',
@@ -518,7 +515,7 @@ export const faqs = [
             },
             {
                 q: 'What happens if construction is delayed?',
-                a: 'S-Patrik Bau has a 100% on-time delivery track record over 50+ projects. The contract includes provisions for any delays, protecting your interests.'
+                a: 'S-Patrik Bau has finished more than 50 projects since 2012. Keys are due in April 2027, and the contract sets out what happens in case of delay, protecting your interests.'
             }
         ]
     },
@@ -560,7 +557,7 @@ export const faqs = [
             },
             {
                 q: 'What about parking and cars?',
-                a: 'Each unit includes one dedicated parking space. Additional spaces available for 4M HUF. Remote-controlled gate for secure entry. No more street parking struggles.'
+                a: 'A1, A2 and B1 come with two outdoor parking spaces, B3 with one, at 4,000,000 HUF each in the price. On a reservation deposit received by 1 December 2026, one space is free. Remote-controlled gate for secure entry. No more street parking struggles.'
             }
         ]
     },

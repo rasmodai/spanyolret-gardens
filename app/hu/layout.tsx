@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Saját kert. Nem erkély. | Spanyolrét Gardens',
         description:
-            'Hat sorház Budapest XI. kerületében, 102–202 m² saját kerttel. Kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban. Kulcsátadás 2027 áprilisában.',
+            'Hat sorház Budapest XI. kerületében, 102–202 m² saját kerttel. Kulcsrakész átadás, teljes kertépítés és kültéri parkoló az árban. Kulcsátadás 2027 áprilisában.',
         type: 'website',
         locale: 'hu_HU',
     },

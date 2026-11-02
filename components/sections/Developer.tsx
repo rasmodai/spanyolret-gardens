@@ -32,7 +32,7 @@ export default function Developer() {
                     </div>
                 </div>
 
-                <dl className="mt-12 grid grid-cols-2 border-t border-line lg:grid-cols-4">
+                <dl className="mt-12 grid grid-cols-2 border-t border-line lg:grid-cols-3">
                     {developerStats.map((stat) => (
                         <div
                             key={stat.label}
