@@ -17,17 +17,17 @@ export default function Location({ copy, locale }: { copy: Copy; locale: Locale 
     const { location } = copy;
 
     return (
-        <section id="location" className="section-padding border-t border-line bg-paper">
+        <section id="location" className="section-airy border-t border-line bg-paper">
             <div className="section-container">
                 <div className="eyebrow">{location.eyebrow}</div>
 
-                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16" data-reveal>
                     <h2 className="display-l text-ink">{location.title}</h2>
                     <p className="lede self-end">{location.lede}</p>
                 </div>
 
                 <div className="mt-12 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
-                    <div>
+                    <div data-reveal>
                         <div className="h-[22rem] overflow-hidden border border-line lg:h-[26rem]">
                             <MapEmbed
                                 src={mapEmbedSrc}
@@ -53,7 +53,7 @@ export default function Location({ copy, locale }: { copy: Copy; locale: Locale 
                         </div>
                     </div>
 
-                    <div>
+                    <div data-reveal="2">
                         <h3 className="caption border-b border-line pb-3">{location.gettingAround}</h3>
                         <dl className="mb-10">
                             {location.transport.map((link) => (

@@ -25,18 +25,18 @@ export default function FAQ({ eyebrow, title, lede, groups }: FaqProps) {
     const [open, setOpen] = useState<string | null>(null);
 
     return (
-        <section id="faq" className="section-padding border-t border-line bg-paper">
+        <section id="faq" className="section-airy border-t border-line bg-paper">
             <div className="section-container">
                 <div className="eyebrow">{eyebrow}</div>
 
-                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16" data-reveal>
                     <h2 className="display-l text-ink">{title}</h2>
                     <p className="lede self-end">{lede}</p>
                 </div>
 
                 <div className="mt-12 grid gap-x-16 gap-y-10 lg:grid-cols-2">
                     {groups.map((group, groupIndex) => (
-                        <section key={group.title} aria-labelledby={`faq-${groupIndex}`}>
+                        <section key={group.title} aria-labelledby={`faq-${groupIndex}`} data-reveal={groupIndex % 2 ? '2' : '1'}>
                             <h3
                                 id={`faq-${groupIndex}`}
                                 className="caption border-b border-line pb-3"

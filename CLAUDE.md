@@ -12,16 +12,17 @@ Landing bilingue EN + HU pour les 6 maisons de Spanyolrét Gardens (Budapest XI.
 
 ## Décisions de Rémi (12/11/2026)
 - D1 Registre HU : **« Ön » partout** (`scripts/tutoiement.ts`, lancé par `npm test`).
-- D2 Sections resserrées comme City Gate : garder Galerie, Developer, Specs ; TrustBar, ProblemSolution, PropertyOverview, Benefits fusionnés dans « Pourquoi ici » (`WhyHere`) ; badge flottant « N of 6 still available » retiré.
+- D2 Sections resserrées comme City Gate : garder Galerie, Developer, Specs ; TrustBar, ProblemSolution, PropertyOverview, Benefits fusionnés dans « Pourquoi ici » (`WhyHere`, ramené à 4 cartes illustrées au lot 7 : chiffres de l'aperçu dans le hero, faits des avantages dans les blocs de `Specs`, mur de logos retiré) ; badge flottant « N of 6 still available » retiré.
 - D3 Indexation : indexable avec garde-fou (`lib/indexing.ts`), `ALLOW_INDEXING=true` posé en prod seulement, canonical + hreflang.
 - D4 Mixpanel : projet UE dédié à ce site, jeton en variable `NEXT_PUBLIC_MIXPANEL_TOKEN`, jamais en dur.
 
 ## Architecture
-- Un seul arbre de composants : `components/LandingPage.tsx` reçoit la langue et les textes ; ordre : Navbar, Hero, WhyHere, Gallery, FloorPlans (fiche par maison, `HouseSheet`), CtaBand, Pricing, Location, Developer, Specs, CtaBand, Process, FAQ, LeadForm, Footer, StickyActions.
+- Un seul arbre de composants : `components/LandingPage.tsx` reçoit la langue et les textes ; ordre : Navbar, Hero, WhyHere (4 cartes illustrées), Breath, Gallery (carrousel + visionneuse), FloorPlans (plan de masse interactif + fiche par maison, `HouseSheet`), CtaBand, Pricing, Breath, Location, Developer, Specs (6 blocs + liste repliée), CtaBand, Process (frise), FAQ, Breath, LeadForm, Footer, StickyActions ; `components/motion/PageMotion.tsx` (apparitions, parallaxe, frise) et `HeroCounters.tsx` ne rendent rien.
 - Tout le texte est dans `lib/copy/en.ts` et `lib/copy/hu.ts` (forme dans `lib/copy/types.ts`, valeurs dérivées dans `lib/copy/shared.ts`). Un changement de texte touche toujours les deux.
 - `lib/format.ts` : seul endroit qui formate prix, surfaces, dates. `lib/project-config.ts` : faits du projet. `lib/data.ts` : maisons.
 - `lib/data.ts` ne s'importe jamais depuis un fichier `'use client'` : le navigateur reçoit `lib/houses-view.ts` (chaînes d'affichage, aucun prix).
 - Lead : `app/api/lead/route.ts` + `lib/lead/*` (OS, Sheet, e-mail, Meta CAPI, limite par IP). Chaque canal est indépendant ; un canal sans configuration est sauté ; aucun canal de capture réussi = 503 et log `Lead not captured`, jamais un remerciement pour un lead perdu.
+- **Mouvement (lot 7)** : CSS + IntersectionObserver + rAF, aucune dépendance. Le HTML serveur porte l'état final ; JS ne pose un état de départ (`.pre`) que sous la ligne de flottaison, avec filet de sécurité ; `prefers-reduced-motion` = rien ne bouge. Un bloc qui doit apparaître reçoit `data-reveal` (ou `data-reveal="2"` pour le second pas). Détail : `DESIGN.md` → Motion → Lot 7. Les 9 rendus sont dans `lib/renders.ts`, la géométrie du plan dans `lib/site-plan.ts`.
 - Suivi : `lib/mixpanel.ts`, `lib/consent.ts`, `components/consent/*`. Mixpanel et le Pixel Meta ne partent qu'après acceptation du bandeau ; événements sans nom, e-mail ni téléphone.
 - SEO : `lib/indexing.ts`, `lib/metadata.ts`, `next.config.js` (en-tête), `app/robots.ts`, `app/sitemap.ts`. Pas de JSON-LD sur le site. `public/Spanyolret-gardens.pdf` (prix d'options) est noindex quoi qu'il arrive.
 

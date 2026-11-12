@@ -14,11 +14,11 @@ export default function Pricing({ copy }: { copy: Copy }) {
     const { pricing, price } = copy;
 
     return (
-        <section id="pricing" className="section-padding border-t border-line band-deep">
+        <section id="pricing" className="section-airy border-t border-line band-deep">
             <div className="section-container">
                 <div className="eyebrow">{pricing.eyebrow}</div>
 
-                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16" data-reveal>
                     <h2 className="display-l text-ink">{pricing.title}</h2>
                     <div className="self-end">
                         <p className="measure text-3xl text-ink md:text-4xl">{price.anchor}</p>
@@ -28,7 +28,7 @@ export default function Pricing({ copy }: { copy: Copy }) {
                 </div>
 
                 <div className="mt-14 grid gap-x-16 gap-y-10 lg:grid-cols-2">
-                    <div>
+                    <div data-reveal>
                         <h3 className="caption border-b border-line pb-3">{pricing.includedTitle}</h3>
                         <ul>
                             {pricing.included.map((item) => (
@@ -42,7 +42,7 @@ export default function Pricing({ copy }: { copy: Copy }) {
                         </ul>
                     </div>
 
-                    <div>
+                    <div data-reveal="2">
                         <h3 className="caption border-b border-line pb-3">{pricing.extrasTitle}</h3>
                         <dl>
                             {pricing.extras.map((extra) => (
@@ -61,7 +61,7 @@ export default function Pricing({ copy }: { copy: Copy }) {
                     </div>
                 </div>
 
-                <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-line pt-8">
+                <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-line pt-8" data-reveal>
                     <ScrollButton target="lead-form" className="btn btn-primary">
                         {pricing.cta}
                     </ScrollButton>

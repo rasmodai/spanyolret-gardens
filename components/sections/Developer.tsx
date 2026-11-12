@@ -15,11 +15,11 @@ export default function Developer({ copy }: { copy: Copy }) {
     const { developer } = copy;
 
     return (
-        <section id="developer" className="section-padding border-t border-line band-deep">
+        <section id="developer" className="section-airy border-t border-line band-deep">
             <div className="section-container">
                 <div className="eyebrow">{developer.eyebrow}</div>
 
-                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16" data-reveal>
                     <h2 className="display-l text-ink">{developer.title}</h2>
                     <div className="self-end">
                         <p className="lede">{developer.lede}</p>
@@ -29,7 +29,7 @@ export default function Developer({ copy }: { copy: Copy }) {
                     </div>
                 </div>
 
-                <dl className="mt-12 grid grid-cols-2 border-t border-line lg:grid-cols-3">
+                <dl className="mt-12 grid grid-cols-2 border-t border-line lg:grid-cols-3" data-reveal>
                     {developer.stats.map((stat) => (
                         <div
                             key={stat.label}
@@ -41,7 +41,7 @@ export default function Developer({ copy }: { copy: Copy }) {
                     ))}
                 </dl>
 
-                <div className="mt-12 grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                <div className="mt-12 grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16" data-reveal>
                     <div>
                         <Image
                             src="/espatrick-bau-logo.png"
