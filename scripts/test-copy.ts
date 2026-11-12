@@ -79,7 +79,7 @@ assert('privacy policy: Mixpanel named in both languages (providers, legal basis
 assert('FAQ: four groups each', en.faq.groups.length === 4 && hu.faq.groups.length === 4);
 assert('spec lists: same lines per category', en.specs.categories.every((category, i) => category.items.length === hu.specs.categories[i].items.length));
 
-const PLACEHOLDER_PATHS = /^(houses\.(summary|ribbon\.(ofLargest|aria)|plans\.(house|siteCaption)|sheet\.(openAria|askMessage|askCallBack|parking\.(one|other)))|developer\.architect|form\.(unitOption|message\.\w+)|footer\.(legalLine|architect))$/;
+const PLACEHOLDER_PATHS = /^(houses\.(summary|ribbon\.(ofLargest|aria)|plans\.(house|siteCaption)|sheet\.(openAria|askMessage|askCallBack|parking\.(one|other)))|developer\.architect|gallery\.ui\.enlarge|specs\.fullToggle|form\.(unitOption|message\.\w+)|footer\.(legalLine|architect))$/;
 for (const [name, copy] of [['en', en], ['hu', hu]] as const) {
     for (const [path, text] of strings(copy)) {
         if (/\{\w+\}/.test(text)) assert(`${name}: ${path} has a placeholder only where one is filled`, PLACEHOLDER_PATHS.test(path), text);

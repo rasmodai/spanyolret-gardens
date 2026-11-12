@@ -1,3 +1,5 @@
+import Breath from '@/components/sections/Breath';
+import PageMotion from '@/components/motion/PageMotion';
 import StickyActions from '@/components/StickyActions';
 import CtaBand from '@/components/sections/CtaBand';
 import Developer from '@/components/sections/Developer';
@@ -42,18 +44,22 @@ export default function LandingPage({ locale }: { locale: Locale }) {
             />
             <Hero copy={copy} />
             <WhyHere copy={copy} />
+            <Breath copy={copy} shot="midday" />
             <Gallery copy={copy} />
             <FloorPlans copy={copy} locale={locale} houses={houseRows(locale)} />
             <CtaBand id="after-houses" messaging={messaging} {...copy.ctaBands.afterHouses} />
             <Pricing copy={copy} />
+            <Breath copy={copy} shot="barbecue" tone="deep" />
             <Location copy={copy} locale={locale} />
             <Developer copy={copy} />
             <Specs copy={copy} />
             <CtaBand id="after-specs" messaging={messaging} {...copy.ctaBands.afterSpecs} />
             <Process copy={copy} />
             <FAQ {...copy.faq} />
+            <Breath copy={copy} shot="children" />
             <LeadForm copy={copy} locale={locale} unitOptions={houseOptions(locale)} />
             <Footer copy={copy} locale={locale} />
+            <PageMotion />
             <StickyActions copy={copy.stickyBar} messaging={messaging} phone={projectConfig.callNumber} />
         </main>
     );

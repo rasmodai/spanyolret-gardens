@@ -90,112 +90,37 @@ export const hu: Copy = {
         eyebrow: 'Miért itt',
         title: 'Senki nem tervezi, hogy hetven négyzetméteren nevel két gyereket.',
         lede: 'A munka miatt költözött ide, és jól alakult. Aztán megszületett a második gyerek, a home office a hálószoba sarka lett, és három utcával arrébb kezdett parkolni.',
-        problems: {
-            columnNow: 'A mostani hete',
-            columnHere: 'Ugyanaz a hét itt',
-            pairs: [
-                {
-                    problem: {
-                        title: 'Az iroda a hálószoba sarka',
-                        text: 'Mindig telefonál valaki. És mindig kérnek meg valaki mást, hogy legyen csendben.',
-                    },
-                    solution: {
-                        title: `${Math.round(shared.interiorRange.min)} m², öt szoba, két szint`,
-                        text: 'Egy szoba, ahol dolgozni lehet, becsukható ajtóval. Kamra, háztartási helyiség, gardrób.',
-                    },
-                },
-                {
-                    problem: {
-                        title: 'Az erkély nem a szabad ég alatt van',
-                        text: 'Egy ötévest nem küld ki az erkélyre, hogy közben elintézze a délelőttöt.',
-                    },
-                    solution: {
-                        title: `${gardenFrom} és ${gardenTo} m² közötti kert`,
-                        text: 'Kézi vetésű fű, körbekerítve, a nappaliból nyíló ajtóval. A teraszról az egészet belátja.',
-                    },
-                },
-                {
-                    problem: {
-                        title: 'Húsz perc parkolóhelyet keresni',
-                        text: 'Utána három utca gyalog, a bevásárlással és mindkét gyerekkel.',
-                    },
-                    solution: {
-                        title: 'Egy hely, kapu mögött, amit az autóból nyithat',
-                        text: 'Megérkezik, a kapu kinyílik, beáll. Ennyi az egész, minden nap.',
-                    },
-                },
-                {
-                    problem: {
-                        title: 'Évi 6 millió, és egyik forint sem az Öné',
-                        text: 'Havi 500 ezerrel egy ház jó részét kifizette. Csak nem a sajátját.',
-                    },
-                    solution: {
-                        title: 'A törlesztés olyanba megy, ami az Öné',
-                        text: 'Nem fogunk a budapesti piacról jóslatot mondani. De a pénz nem megy el többé.',
-                    },
-                },
-            ],
-        },
-        overview: {
-            title: 'Két épület. Hat ház. Hat különböző kert.',
-            lede: `Itt minden ház ugyanaz a ház: öt szoba két szinten, két fürdőszoba, ${terrace} terasz, egy vagy két parkolóhely. Egyedül a kert változik — és közel kétszeresen.`,
-            stats: [
-                { value: `${shared.houseCount}`, label: 'Sorház' },
-                { value: interior, label: 'Belső tér' },
-                { value: garden, label: 'Saját kert' },
-                { value: `${shared.rooms}`, label: 'Szoba' },
-                { value: terrace, label: 'Terasz' },
-                ...(keys ? [{ value: keys, label: 'Kulcsátadás' }] : []),
-            ],
-            cta: 'A hat kert',
-        },
-        benefits: {
-            title: 'Amit csak beköltözés után vesz észre.',
-            lede: 'Harminc centis válaszfalak. Nincs gázbekötés. Kapu, amit a vezetőülésből nyithat. Azok a dolgok, amikre már nem gondol, ha egyszer egyszerűen igazak.',
-            items: [
-                {
-                    title: 'Nincs gázszámla, mert nincs gáz',
-                    text: 'Egy Westen Auriga hőszivattyú viszi télen a padlófűtést, nyáron a hűtést.',
-                    highlight: 'Nincs gázbekötés',
-                },
-                {
-                    title: '30 cm tégla Ön és a szomszéd között',
-                    text: 'Silka hangszigetelő blokk a válaszfalakban. Ezért nem fogja hallani őket.',
-                    highlight: '30 cm',
-                },
-                {
-                    title: 'A napelem vezetékei már a helyükön',
-                    text: 'Védőcső fut a tetőig. Maga a napelem külön díjazású extra, nincs benne az árban.',
-                    highlight: 'Védőcső kiépítve',
-                },
-                {
-                    title: 'Szintenként egy termosztát',
-                    text: 'Heti programozású, SIEMENS vagy HONEYWELL. A földszintnek és az emeletnek nem kell egyetértenie.',
-                    highlight: 'Szintenként',
-                },
-                {
-                    title: 'MABISZ-minősített bejárati ajtó',
-                    text: 'Négy-nyolc pontos zárás, riasztó-előkészítés minden szobában, és egy kapu, amit az autóból nyithat.',
-                    highlight: 'Minősített',
-                },
-                {
-                    title: 'A burkolatokat még építés közben választhatja',
-                    text: 'Csempe, padló, festés. Ezt az egyet nem teheti meg, ha kész házat vesz.',
-                    highlight: 'Átadásig',
-                },
-                {
-                    title: 'A műszaki leírás, írásban',
-                    text: 'Kívül Wienerberger Porotherm, közte Silka, LEGRAND Valena szerelvények, háromrétegű üvegezés. A megnevezett márka olyan állítás, amin számon kérhet minket.',
-                    highlight: 'Megnevezve, nem sugallva',
-                },
-                {
-                    title: 'A kert az egész lényege',
-                    text: `${formatArea(shared.gardenRange.min, 'hu')}-től ${formatArea(shared.gardenRange.max, 'hu')}-ig. Kézi vetésű fű, 10–15 cm humusz, öntözés-előkészítés.`,
-                    highlight: `Akár ${formatArea(shared.gardenRange.max, 'hu')}`,
-                },
-            ],
-        },
-        brandsLabel: 'A műszaki leírásban megnevezve',
+        nowLabel: 'A mostani hete',
+        cards: [
+            {
+                shot: 'dusk',
+                now: 'Az iroda a hálószoba sarka',
+                title: `${Math.round(shared.interiorRange.min)} m², öt szoba, két szint`,
+                text: 'Egy szoba, ahol dolgozni lehet, becsukható ajtóval. Kamra, háztartási helyiség, gardrób.',
+                meta: null,
+            },
+            {
+                shot: 'lawn',
+                now: 'Az erkély nem a szabad ég alatt van',
+                title: `${gardenFrom} és ${gardenTo} m² közötti kert`,
+                text: 'Kézi vetésű fű, körbekerítve, a nappaliból nyíló ajtóval. A teraszról az egészet belátja.',
+                meta: null,
+            },
+            {
+                shot: 'walk',
+                now: 'Húsz perc parkolóhelyet keresni',
+                title: 'Parkolás kapu mögött, amit az autóból nyithat',
+                text: 'Megérkezik, a kapu kinyílik, beáll.',
+                meta: `Az ${twoSpaces} mellé két, a ${oneSpace} mellé egy kültéri parkolóhely tartozik.`,
+            },
+            {
+                shot: 'wine',
+                now: 'Évi 6 millió, és egyik forint sem az Öné',
+                title: 'A törlesztés olyanba megy, ami az Öné',
+                text: 'Havi 500 ezerrel egy ház jó részét kifizette. Csak nem a sajátját. Nem fogunk a budapesti piacról jóslatot mondani. De a pénz nem megy el többé.',
+                meta: null,
+            },
+        ],
     },
 
     gallery: {
@@ -225,13 +150,49 @@ export const hu: Copy = {
                 alt: 'Légi felvétel a két épületről és a hat kertről',
                 caption: 'Két épület, háromszor. Minden kert más méretű.',
             },
+            {
+                key: 'dusk',
+                alt: 'A két épület alkonyatkor, kivilágított ablakokkal, a kert felől nézve',
+                caption: 'A két épület alkonyatkor.',
+            },
+            {
+                key: 'wine',
+                alt: 'Egy pár borozik a teraszon este, mögöttük kivilágított nappali',
+                caption: 'Egy este a teraszon.',
+            },
+            {
+                key: 'path',
+                alt: 'Négytagú család sétál a ház előtti kikövezett ösvényen',
+                caption: 'A kerti ösvényen.',
+            },
+            {
+                key: 'walk',
+                alt: 'Négytagú család a kerti ösvényen, a homlokzat közelében',
+                caption: 'Séta a kertben.',
+            },
+            {
+                key: 'lawn',
+                alt: 'Két gyerek fut át a gyepen, mögöttük a ház',
+                caption: 'Gyerekek a gyepen.',
+            },
         ],
+        ui: {
+            region: 'Galéria, görgessen oldalra',
+            hint: 'Húzza, görgesse vagy használja a nyilakat · kattintson a nagyításhoz',
+            previousImage: 'Előző kép',
+            nextImage: 'Következő kép',
+            enlarge: 'Nagyítás: {alt}',
+            viewer: 'Képnézegető',
+            close: 'Bezárás',
+            previous: 'Előző',
+            next: 'Következő',
+        },
     },
 
     houses: {
-        eyebrow: 'Alaprajzok',
+        eyebrow: 'A hat kert',
         title: 'Hatszor ugyanaz a ház. A kert az, ami változik.',
-        lede: `Hatszor ugyanaz a ház: öt szoba, két szint, ${terrace} terasz. A kert az, ami változik — ${formatArea(shared.gardenRange.min, 'hu')}-től ${formatArea(shared.gardenRange.max, 'hu')}-ig a még szabad házaknál, közel kétszeres különbség.`,
+        lede: `Mindegyikben öt szoba két szinten, két fürdőszoba és ${terrace} terasz. A még szabad házaknál a kert ${formatArea(shared.gardenRange.min, 'hu')}-től ${formatArea(shared.gardenRange.max, 'hu')}-ig terjed, alább méretarányosan ábrázolva.`,
         columnHouse: 'Ház',
         columnGarden: 'Saját kert, méretarányosan',
         summary: '{interior} belső · {rooms} szoba · {terrace} terasz',
@@ -273,6 +234,9 @@ export const hu: Copy = {
         },
         plans: {
             sitePlan: 'Helyszínrajz',
+            sitePlanAlt: 'Helyszínrajz: két, egyenként három házból álló épület, minden háznak saját kerttel',
+            soldChip: 'elkelt',
+            siteHint: 'vigye fölé az egeret, vagy koppintson egy telekre',
             house: '{id} ház',
             groundFloor: 'Földszint',
             firstFloor: 'Emelet',
@@ -373,6 +337,69 @@ export const hu: Copy = {
         eyebrow: 'Műszaki leírás',
         title: 'Ami a műszaki leírásban szerepel.',
         lede: 'Az alábbi minden sora benne van a szerződéses dokumentációban. Azért tesszük közzé, mert egy írásban megnevezett márka olyan állítás, amin számon kérhet minket — és egy műszaki leírás jobb válasz, mint egy ígéret.',
+        highlights: [
+            {
+                key: 'walls',
+                figure: '30 cm',
+                label: 'Külső falak és válaszfalak',
+                items: [
+                    'Kívül Wienerberger Porotherm, közte Silka hangszigetelő tégla',
+                    'Hőszigetelés: 12 cm STO rendszer',
+                    'Tető: Lapos, zöldtető-előkészítés, 20-26 cm EPS szigetelés',
+                ],
+            },
+            {
+                key: 'climate',
+                figure: 'Nincs gáz',
+                label: 'Hőszivattyú, padlófűtés',
+                items: [
+                    'Hőszivattyú: Westen Auriga melegvíz-tárolóval',
+                    'Fan-coil hűtés minden szinten, szintenként SIEMENS/HONEYWELL termosztát',
+                    'Védőcső fut a tetőig. Maga a napelem külön díjazású extra, nincs benne az árban.',
+                ],
+            },
+            {
+                key: 'glazing',
+                figure: 'Háromrétegű',
+                label: 'Üvegezés, 6 kamrás profil',
+                items: [
+                    'VEKA 82 / Aluplast Neo ablakprofil, Roto NX vasalat',
+                    'Bejárati ajtó: MABISZ-minősített, 4-8 pontos zár',
+                    'Árnyékolás: Redőny-előkészítés',
+                ],
+            },
+            {
+                key: 'electrical',
+                figure: '4–10',
+                label: 'Konnektor szobánként',
+                items: [
+                    'Szerelvények: LEGRAND Valena sorozat',
+                    'TV/Internet: Csatlakozás minden szobában',
+                    'Mozgásérzékelő-előkészítés a riasztóhoz, alkonykapcsolós kültéri világítás',
+                ],
+            },
+            {
+                key: 'finishes',
+                figure: '3',
+                label: 'Festékszín az árban',
+                items: [
+                    'Lakóterekben prémium laminált padló, vizesblokkokban kerámia burkolat',
+                    'Terasz: Porcelán kőlap (max 60×60 cm)',
+                    'A burkolatokat még építés közben választhatja',
+                ],
+            },
+            {
+                key: 'garden',
+                figure: '10–15 cm',
+                label: 'Humusz, kézi vetésű fű',
+                items: [
+                    'Kerítés: Horganyzott (utca), drótháló (telkek)',
+                    'Kapu: Távirányítós gépjármű-behajtó',
+                    'Öntözés: Előkészítés felár ellenében',
+                ],
+            },
+        ],
+        fullToggle: 'A teljes műszaki leírás megnyitása ({count} sor)',
         included: 'Tartalmazza',
         categories: [
             {
@@ -564,8 +591,7 @@ export const hu: Copy = {
     leadForm: {
         eyebrow: 'Időpontfoglalás',
         title: 'Látogasson el a lakásokhoz',
-        ledeMessaging:
-            'Válaszoljon három rövid kérdésre, majd válassza a WhatsAppot vagy az SMS-t: az üzenet előre megírva nyílik meg, csak el kell küldenie.',
+        ledeMessaging: 'Válaszoljon néhány rövid kérdésre. Hozza a gyerekeket a látogatásra.',
         ledeNoMessaging:
             'Hozza a gyerekeket. Ők többet mondanak majd 300 m² fűről, mint mi. Egy látogatás, és nincs utánkövetés, hacsak nem kéri.',
         replyText: 'Budapesti munkaidőben egy órán belül. Azon kívül másnap reggel elsőként.',
