@@ -4,7 +4,7 @@ import { FormEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Input, { Checkbox, Select } from '@/components/ui/Input';
 import { readConsent } from '@/lib/consent';
-import { buildMessage, messageAppUrl, OPEN_MESSAGE_EVENT, PRIORITIES, type MessageChannel, type MessageCopy, type Priority } from '@/lib/lead-message';
+import { buildMessage, messageAppUrl, OPEN_MESSAGE_EVENT, PRIORITIES, type MessageChannel, type MessageCopy, type Priority } from '@/lib/lead/message';
 import { track } from '@/lib/mixpanel';
 import { whatsappDigits } from '@/lib/site';
 

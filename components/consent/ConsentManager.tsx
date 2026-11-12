@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { OPEN_SETTINGS_EVENT, useConsent, writeConsent, type ConsentChoice } from '@/lib/consent';
-import { metaPixelId, privacyPath } from '@/lib/site';
+import { privacyPath } from '@/lib/site';
 
 const COPY = {
     en: {
@@ -26,7 +26,7 @@ const COPY = {
 /* The cookie banner, and the only place the Meta Pixel is loaded: after
  * "Accept", never before. Both answers carry the same weight, and the site
  * works the same either way. */
-export default function ConsentManager() {
+export default function ConsentManager({ pixelId }: { pixelId: string | null }) {
     const pathname = usePathname() ?? '/';
     const locale = pathname === '/hu' || pathname.startsWith('/hu/') ? 'hu' : 'en';
     const text = COPY[locale];
@@ -49,9 +49,9 @@ export default function ConsentManager() {
 
     return (
         <>
-            {consent === 'accepted' && (
+            {pixelId && consent === 'accepted' && (
                 <Script id="meta-pixel" strategy="afterInteractive">
-                    {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${metaPixelId}');fbq('track','PageView');`}
+                    {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${pixelId}');fbq('track','PageView');`}
                 </Script>
             )}
 

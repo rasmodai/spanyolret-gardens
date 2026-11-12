@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { OPEN_MESSAGE_EVENT } from '@/lib/lead-message';
+import { OPEN_MESSAGE_EVENT } from '@/lib/lead/message';
 import { track } from '@/lib/mixpanel';
 import { whatsappDigits } from '@/lib/site';
 

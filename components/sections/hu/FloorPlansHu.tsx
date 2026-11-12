@@ -1,6 +1,6 @@
 'use client';
 
-import { OPEN_MESSAGE_EVENT } from '@/lib/lead-message';
+import { OPEN_MESSAGE_EVENT } from '@/lib/lead/message';
 import { units } from '@/lib/data';
 import { uiTextsHu } from '@/lib/data-hu';
 import { formatArea } from '@/lib/utils';

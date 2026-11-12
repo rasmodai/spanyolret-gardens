@@ -46,3 +46,6 @@ next-env.d.ts
 google_token.pickle
 *.pickle
 service-account*.json
+
+# Git worktrees (parallel branches, see the runbook)
+.worktrees/
