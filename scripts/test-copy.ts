@@ -143,7 +143,7 @@ if (projectConfig.parkingGift.enabled) {
     assert('the parking line carries its deadline', en.pricing.included.some((line) => line.includes('1 December 2026')) && hu.pricing.included.some((line) => /2026\. december 1-jéig/.test(line)));
 }
 assert('parking per house (EN)', en.pricing.included.some((line) => line.includes('two spaces with A1, A2 and B1, one with B3')));
-assert('parking per house (HU)', hu.pricing.included.some((line) => line.includes('az A1, A2 és B1 mellé kettő, a B3 mellé egy')));
+assert('parking per house (HU)', hu.pricing.included.some((line) => line.includes('az A1, A2 és B1 házhoz kettő, a B3 házhoz egy')));
 assert('keys date on the page', en.hero.facts.some((fact) => fact.value === 'April 2027') && hu.hero.facts.some((fact) => fact.value === '2027. április'));
 assert('headline (EN)', en.hero.titleFirst === 'A real garden.' && en.hero.titleSecond === 'Not a balcony.');
 assert('headline (HU)', hu.hero.titleFirst === 'Saját kert.' && hu.hero.titleSecond === 'Nem erkély.');
