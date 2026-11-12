@@ -7,9 +7,7 @@ export const OPEN_MESSAGE_EVENT = 'spanyolret:message-open';
 
 export type MessageChannel = 'whatsapp' | 'sms';
 
-/** Same keys as the Synphos OS buyer pipeline accepts. */
-export const PRIORITIES = ['outdoor', 'space', 'location', 'price', 'investment'] as const;
-export type Priority = (typeof PRIORITIES)[number];
+export { PRIORITIES, type Priority } from './types';
 
 export interface MessageCopy {
     intro: string;

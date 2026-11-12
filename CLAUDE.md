@@ -87,6 +87,12 @@ These rules apply to ALL work in this project. They override default behavior.
 
 ---
 
+## Lead channels (public repository)
+
+- No channel value in the code (Sheet id, e-mail sender and recipients, Pixel id, OS client name): everything goes through the environment, see `.env.example`. Names only, never values, in commits and pull requests.
+- Each lead channel (`lib/lead/*`: Synphos OS, Google Sheet, e-mail, Meta) is independent. A channel without configuration is skipped. No capture channel succeeding (OS, Sheet, e-mail) is a visible error (503), never a thank-you for a lost lead.
+- `npm test` runs `scripts/test-lead.ts` (no network): run it before any change to the lead route, the data or the privacy copy.
+
 ## Design System
 
 Always read DESIGN.md before making any visual or UI decision.

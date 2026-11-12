@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Fraunces, Instrument_Sans, IBM_Plex_Mono } from 'next/font/google';
 import MixpanelTracker from '@/components/MixpanelTracker';
 import ConsentManager from '@/components/consent/ConsentManager';
+import { validPixelId } from '@/lib/lead/meta-capi';
 import './globals.css';
 
 /* Fonts — see DESIGN.md → Typography.
@@ -41,6 +42,10 @@ const mono = IBM_Plex_Mono({
     display: 'swap',
     variable: '--font-mono',
 });
+
+/* The Meta Pixel id comes from the environment, never from the code (public
+ * repo). The Pixel loads only after cookie consent: see ConsentManager. */
+const pixelId = validPixelId(process.env.NEXT_PUBLIC_META_PIXEL_ID);
 
 export const metadata: Metadata = {
     title: 'Spanyolrét Gardens | Townhouses with 102–202 m² private gardens | Budapest XI.',
@@ -97,7 +102,7 @@ export default function RootLayout({
             </head>
             <body className="antialiased">
                 {/* Meta Pixel: loaded by the consent banner, only after "Accept". */}
-                <ConsentManager />
+                <ConsentManager pixelId={pixelId} />
                 <MixpanelTracker />
                 {children}
             </body>

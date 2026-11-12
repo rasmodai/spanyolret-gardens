@@ -7,9 +7,6 @@
 export const whatsappNumber: string | null = '+36 70 370 1479';
 export const whatsappDigits = whatsappNumber ? whatsappNumber.replace(/\D/g, '') : null;
 
-/** The Meta Pixel already used by this site. Loaded only after "Accept". */
-export const metaPixelId = '886458420654697';
-
 /** Data controller. Same company as City Gate Residences: S-Patrik Bau Kft.
  * Seat: public company registers (31/10/2026); e-mail: Brenda, 31/10/2026;
  * company number: this site's footer. */

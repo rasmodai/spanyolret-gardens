@@ -1,6 +1,6 @@
 'use client';
 
-import { OPEN_MESSAGE_EVENT } from '@/lib/lead-message';
+import { OPEN_MESSAGE_EVENT } from '@/lib/lead/message';
 import { units } from '@/lib/data';
 import { formatArea, getStatusLabel } from '@/lib/utils';
 import GardenRibbon from '@/components/ui/GardenRibbon';
