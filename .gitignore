@@ -49,3 +49,23 @@ service-account*.json
 
 # Git worktrees (parallel branches, see the runbook)
 .worktrees/
+
+# Working files kept next to the code on a laptop, never part of the site
+# (CRM and onboarding scripts, Apps Script exports, sales documents, project
+# context). Root-anchored, so the tracked scripts/ folder is not touched.
+# This repository is PUBLIC: a file added here by mistake is public for good.
+/Project Context/
+/*.py
+/apps-script-*.js
+*.docx
+*.xlsx
+*.csv
+
+# More credential shapes: OAuth clients and tokens, keys, any local env file.
+.env*.local
+client_secret*.json
+credentials*.json
+token*.json
+*.pem
+*.key
+*.p12
