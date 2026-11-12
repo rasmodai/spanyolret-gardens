@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "tsx scripts/test-lead.ts"
+    "test": "tsx scripts/test-lead.ts && tsx scripts/test-copy.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",
