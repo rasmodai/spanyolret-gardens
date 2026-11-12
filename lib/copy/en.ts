@@ -108,9 +108,9 @@ export const en: Copy = {
             },
             {
                 shot: 'wine',
-                now: '€18,000 a year, and none of it is yours',
+                now: '6 million HUF a year, and none of it is yours',
                 title: 'The payment goes into something you own',
-                text: 'At €1,500 a month you have paid for a good part of a house. Someone else owns it. We are not going to forecast the Budapest market for you. But the money stops leaving.',
+                text: 'At 500,000 HUF a month you have paid for a good part of a house. Someone else owns it. We are not going to forecast the Budapest market for you. But the money stops leaving.',
                 meta: null,
             },
         ],
