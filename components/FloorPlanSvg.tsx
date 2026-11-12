@@ -11,11 +11,13 @@ export default function FloorPlanSvg({
     locale,
     title,
     roomNames,
+    className = 'mx-auto block h-auto max-h-[70vh] w-full',
 }: {
     plan: FloorPlan;
     locale: 'en' | 'hu';
     title: string;
     roomNames: Record<RoomKind, string>;
+    className?: string;
 }) {
     const thin = { fill: 'none', vectorEffect: 'non-scaling-stroke' as const, strokeLinecap: 'round' as const };
     return (
@@ -23,7 +25,7 @@ export default function FloorPlanSvg({
             viewBox={`${-PAD} ${-PAD} ${plan.width + PAD * 2} ${plan.height + PAD * 2 + BAR}`}
             role="img"
             aria-label={title}
-            className="mx-auto block h-auto max-h-[70vh] w-full"
+            className={className}
         >
             {plan.terrace && <path d={plan.terrace} fill="rgb(var(--lawn-rgb) / 0.14)" />}
             <path d={plan.kitchen} {...thin} stroke="var(--line-strong)" strokeWidth={1} />

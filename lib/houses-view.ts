@@ -12,12 +12,17 @@ export interface HouseRow {
     /** "117.45 m² inside · 5 rooms · 6.60 m² terrace" */
     summary: string;
     highlight: string | null;
+    /** Accessible name of the row's "plan and details" button. */
+    openAria: string;
+    /** The sheet's facts, already formatted, in reading order. No price among them. */
+    facts: { label: string; value: string }[];
     ribbon: { area: string; percent: number; percentLabel: string; ariaLabel: string; gardenWord: string };
 }
 
 /** The six houses, smallest garden first: the bars read as one rising column. */
 export function houseRows(locale: Locale): HouseRow[] {
     const { houses } = getCopy(locale);
+    const { sheet } = houses;
     return [...units]
         .sort((a, b) => a.gardenArea - b.gardenArea)
         .map((unit) => {
@@ -33,6 +38,19 @@ export function houseRows(locale: Locale): HouseRow[] {
                     terrace: formatArea(unit.terraceArea, locale),
                 }),
                 highlight: unit.highlight ? houses.highlights[unit.highlight] : null,
+                openAria: fill(sheet.openAria, { id: unit.id }),
+                facts: [
+                    { label: sheet.facts.interior, value: formatArea(unit.totalInternal, locale) },
+                    { label: sheet.facts.groundFloor, value: formatArea(unit.groundFloor, locale) },
+                    { label: sheet.facts.firstFloor, value: formatArea(unit.firstFloor, locale) },
+                    { label: sheet.facts.terrace, value: formatArea(unit.terraceArea, locale) },
+                    { label: sheet.facts.garden, value: area },
+                    { label: sheet.facts.rooms, value: String(unit.rooms) },
+                    {
+                        label: sheet.facts.parking,
+                        value: fill(unit.parkingSpaces === 1 ? sheet.parking.one : sheet.parking.other, { count: unit.parkingSpaces }),
+                    },
+                ],
                 ribbon: {
                     area,
                     percent,

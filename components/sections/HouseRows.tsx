@@ -1,24 +1,31 @@
 'use client';
 
 import GardenRibbon from '@/components/ui/GardenRibbon';
-import { OPEN_MESSAGE_EVENT } from '@/lib/lead/message';
-import { track } from '@/lib/mixpanel';
 import type { HouseRow } from '@/lib/houses-view';
 
 /* The six houses as rows on a shared left edge, smallest garden first, so the
  * six bars read as one rising column. The rows arrive as display strings
  * (lib/houses-view.ts): no price, and nothing from lib/data.ts, ever reaches
- * the browser. */
+ * the browser. Each row opens the house's sheet (HouseSheet) and, while the
+ * house is available, takes the visitor to the form. */
 export default function HouseRows({
     houses,
     columnHouse,
     columnGarden,
     priceOnRequest,
+    openLabel,
+    onOpen,
+    onAsk,
 }: {
     houses: HouseRow[];
     columnHouse: string;
     columnGarden: string;
     priceOnRequest: string;
+    /** The button that opens the sheet of the house. */
+    openLabel: string;
+    onOpen: (id: string) => void;
+    /** The house is still available: take the visitor to the form with it chosen. */
+    onAsk: (id: string) => void;
 }) {
     return (
         <>
@@ -42,19 +49,22 @@ export default function HouseRows({
                     <div>
                         <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                             <span className="measure text-sm text-ink-soft">{house.summary}</span>
-                            <button
-                                type="button"
-                                // Opens the form with this house chosen (the form scrolls itself into view).
-                                onClick={() => {
-                                    if (house.available) track('House Enquiry Clicked', { house: house.id, channel: 'message' });
-                                    window.dispatchEvent(
-                                        new CustomEvent(OPEN_MESSAGE_EVENT, { detail: house.available ? house.id : undefined })
-                                    );
-                                }}
-                                className="btn-quiet text-[0.9375rem] text-lawn"
-                            >
-                                {priceOnRequest}
-                            </button>
+                            <span className="flex flex-wrap items-baseline gap-x-6 gap-y-1">
+                                <button
+                                    type="button"
+                                    aria-label={house.openAria}
+                                    onClick={() => onOpen(house.id)}
+                                    className="btn-quiet text-[0.9375rem]"
+                                >
+                                    {openLabel}
+                                </button>
+                                {/* A sold house has no request button: its sheet and plan stay open to read. */}
+                                {house.available && (
+                                    <button type="button" onClick={() => onAsk(house.id)} className="btn-quiet text-[0.9375rem] text-lawn">
+                                        {priceOnRequest}
+                                    </button>
+                                )}
+                            </span>
                         </div>
 
                         <GardenRibbon {...house.ribbon} muted={!house.available} />

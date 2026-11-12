@@ -1,5 +1,4 @@
-import HouseRows from '@/components/sections/HouseRows';
-import PlanViewer from '@/components/PlanViewer';
+import HouseExplorer from '@/components/sections/HouseExplorer';
 import type { Copy } from '@/lib/copy/types';
 import { fill, type Locale } from '@/lib/format';
 import type { HouseRow } from '@/lib/houses-view';
@@ -33,29 +32,30 @@ export default function FloorPlans({ copy, locale, houses }: { copy: Copy; local
                 </div>
 
                 <div className="mt-14">
-                    <HouseRows
+                    <HouseExplorer
                         houses={houses}
+                        locale={locale}
                         columnHouse={text.columnHouse}
                         columnGarden={text.columnGarden}
                         priceOnRequest={text.priceOnRequest}
+                        note={text.note}
+                        labels={{
+                            ...text.sheet,
+                            plans: {
+                                house: plans.house,
+                                groundFloor: plans.groundFloor,
+                                firstFloor: plans.firstFloor,
+                                planCaption: plans.planCaption,
+                                roomNames: plans.roomNames,
+                            },
+                        }}
+                        sitePlan={plans.sitePlan}
+                        siteCaption={fill(plans.siteCaption, { architect: projectConfig.architect })}
+                        messaging={projectConfig.whatsappNumber !== null}
+                        phone={projectConfig.callNumber}
                     />
 
-                    <p className="mt-4 max-w-[60ch] text-sm text-ink-soft">{text.note}</p>
                 </div>
-
-                <PlanViewer
-                    locale={locale}
-                    houseIds={houses.map((house) => house.id).sort()}
-                    copy={{
-                        sitePlan: plans.sitePlan,
-                        house: plans.house,
-                        groundFloor: plans.groundFloor,
-                        firstFloor: plans.firstFloor,
-                        siteCaption: fill(plans.siteCaption, { architect: projectConfig.architect }),
-                        planCaption: plans.planCaption,
-                        roomNames: plans.roomNames,
-                    }}
-                />
             </div>
         </section>
     );

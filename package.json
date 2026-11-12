@@ -6,9 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "tsx scripts/test-lead.ts && tsx scripts/test-copy.ts && tsx scripts/test-tracking.ts && tsx scripts/test-seo.ts"
+    "test": "tsx scripts/test-lead.ts && tsx scripts/test-copy.ts && tsx scripts/test-tracking.ts && tsx scripts/test-seo.ts && tsx scripts/test-sales.ts"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "1.3.1",
     "clsx": "^2.1.1",
     "mixpanel-browser": "^2.75.0",
     "next": "16.3.1",
