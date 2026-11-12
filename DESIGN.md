@@ -5,10 +5,10 @@
 
 ## Product Context
 
-- **What this is:** Sales landing page for Spanyolrét Gardens, a 6-unit new-build townhouse development in Budapest District XI (S-Patrik Bau Kft., delivery September 2026). The page converts high-intent visitors into booked site visits.
+- **What this is:** Sales landing page for Spanyolrét Gardens, a 6-unit new-build townhouse development in Budapest District XI (S-Patrik Bau Kft., keys April 2027). The page converts high-intent visitors into booked site visits.
 - **Who it's for:** Western expat families, 32–48, one to three children, currently renting 60–80 m² in central Budapest. English-first, limited Hungarian. Their blocking fear is Hungarian construction quality; their unmet need is private outdoor space.
 - **Space/industry:** Premium residential development. Direct visual peers: [Cordia](https://en.cordia.hu/) (volume developer portal), [Dorottya Residences](https://dorottyaresidences.hu/en/home/) (heritage-luxury), [MyBudapestHome](https://www.mybudapesthome.com/new-built) (expat agency portal).
-- **Project type:** Marketing site, bilingual (EN + HU), Next.js 14 App Router + Tailwind.
+- **Project type:** Marketing site, bilingual (EN + HU), Next.js 16 App Router + Tailwind.
 
 ## The Memorable Thing
 
@@ -230,20 +230,13 @@ One convention per locale. Never mix them, and never let one locale's formatter 
 | Anchor price | `From 216,616,000 HUF` | `216 616 000 Ft-tól` |
 | Date | `September 2026` | `2026. szeptember` — the period after the year is mandatory |
 
-### Known defects to fix at implementation time
+### Known defects: resolved (12/11/2026 revamp)
 
-Found by inspection on 2026-08-08. All of these break the bilingual contract:
+The defects found on 2026-08-08 (hardcoded English in shared helpers, default Tailwind status colours, mixed thousands separators, EN/HU delivery dates that disagreed) are gone: every figure and date goes through `lib/format.ts`, per locale, and `npm test` checks that EN and HU say the same thing.
 
-- **`lib/utils.ts` → `formatPriceHUF`** formats with `Intl.NumberFormat('hu-HU')` (space grouping) but appends the string `' HUF'`. That produces `240 000 000 HUF` — Hungarian grouping with an English currency code, correct in neither locale. It needs to be locale-aware.
-- **`lib/utils.ts` → `formatPriceShort`** hardcodes `'M HUF'` regardless of locale.
-- **`lib/utils.ts` → `getStatusLabel` and `getGardenSizeLabel`** return hardcoded English (`Available`, `Reserved`, `Sold`, `Compact garden`…). These are shared by both locales, so English leaks onto the Hungarian page.
-- **`lib/utils.ts` → `getStatusStyles`** returns default Tailwind palette classes (`bg-green-100 text-green-800`, `bg-yellow-100`, `bg-red-100`). None of those colors exist in this design system. Replace with tokens.
-- **`lib/data-hu.ts`** mixes thousands separators inside the same locale: `4.000.000 Ft` and `8.000 Ft/m²` use periods, while `Intl.NumberFormat('hu-HU')` emits spaces. Pick the space and apply it everywhere.
-- **Delivery date disagrees across locales.** EN says `Sept 2026` / `September 2026` (`data.ts:205`, `:458`); HU says `2026. ősz` / `2026 ősz` — autumn, not September (`data-hu.ts:81`, `:334`, `:458`). Two of the three HU occurrences are also missing the mandatory period after the year. Decide which is true, then say the same thing in both languages.
+### One component tree
 
-### Duplicated component trees
-
-`components/sections/` and `components/sections/hu/` are parallel copies (`Hero.tsx` / `HeroHu.tsx`, `FAQ.tsx` / `FAQHu.tsx`, and so on). Every token change, every anti-pattern removal, and every spacing fix has to land **twice**. When reviewing a change, check both trees before calling it done — a design system applied to only one locale is worse than none, because the two pages drift apart.
+There is **one** tree of components, `components/LandingPage.tsx`, fed by `lib/copy/en.ts` and `lib/copy/hu.ts`. The former parallel `components/sections/hu/*Hu.tsx` files and `lib/data-hu.ts` no longer exist. A text change still lands in both copy files; a layout change lands once and must be checked in both languages (short and long strings).
 
 ## Signature Patterns
 
@@ -302,10 +295,10 @@ Also banned generally: purple or violet gradients, three-column icon grids with 
 
 The buyer's blocking objection is trust. Anything that looks like borrowed or manufactured credibility does more damage here than a plain page ever would, because a family spending €500,000 checks.
 
-- **Brand logo walls must come from the technical spec, and an alternative is not a commitment.** `TrustBar.tsx` currently renders Wienerberger, VEKA, SIEMENS, LEGRAND and **BOSCH**. Bosch appears **zero times** in the PRD — remove it. VEKA and SIEMENS appear only as options (`6-chamber VEKA 82 or Aluplast Neo`, `SIEMENS or HONEYWELL thermostat`), so presenting them as settled is an overstatement. Show only what is contractually committed, or label the alternatives honestly.
+- **Brand logo walls must come from the technical spec, and an alternative is not a commitment.** The former `TrustBar` (removed in the 12/11/2026 revamp) rendered Wienerberger, VEKA, SIEMENS, LEGRAND and **BOSCH**. Bosch appears **zero times** in the technical specification and must not come back. VEKA and SIEMENS appear only as options (`6-chamber VEKA 82 or Aluplast Neo`, `SIEMENS or HONEYWELL thermostat`), so presenting them as settled is an overstatement. Show only what is contractually committed, or label the alternatives honestly.
 - **No stock photography of people.** No smiling agents, no generic happy families, no handshake-over-blueprints. The project has its own renders; if a shot does not exist, the answer is to commission it or leave the section without an image.
 - **No manufactured urgency.** No countdown timers, no "only 2 left", no pulsing availability dots, no fake recent-activity notifications. Six units is genuine scarcity — stating the number plainly is stronger than dressing it up, and dressing it up reads as a sales tactic to exactly this buyer.
-- **No default Tailwind palette classes.** `bg-green-100`, `text-red-800`, `bg-yellow-100` and friends are not in this system. Every color comes from a token. (`getStatusStyles` in `lib/utils.ts` currently violates this.)
+- **No default Tailwind palette classes.** `bg-green-100`, `text-red-800`, `bg-yellow-100` and friends are not in this system. Every color comes from a token. (`npm test` and review catch these.)
 - **No emoji anywhere in the UI**, including in FAQ answers and form confirmations.
 - **No testimonials with generic avatars or invented names.** A real named buyer with permission, or nothing.
 - **No unverifiable superlatives.** "The most exclusive", "unparalleled quality", "the finest". Every claim on this site should be traceable to the technical spec or to a fact the developer can produce on request.
@@ -316,14 +309,14 @@ Before shipping any section, ask: *would this element survive a buyer asking "ho
 
 ## Pricing Display Rule
 
-Decided 2026-08-08. This overrides the unit prices currently sitting in `lib/data.ts`, `lib/data-hu.ts`, and the PRD's 195–225M range. Those figures are stale.
+Decided 2026-08-08, implemented in the 12/11/2026 revamp. `lib/data.ts` no longer holds any price, and the PRD's 195–225M range is stale.
 
 **One number appears on the site, and only one:**
 
 > **From 216,616,000 HUF — turnkey, landscaping and one parking space included, on a reservation deposit received by 1 December 2026.**
 > HU: **216 616 000 Ft-tól — kulcsrakész átadás, teljes kertépítés és 1 saját parkolóhely az árban — 2026. december 1-jéig beérkező foglaló esetén.**
 
-*(The Hungarian is composed from strings already written by a native speaker in `lib/data-hu.ts` — `Kulcsrakész átadás`, `Teljes kertépítés`, `1 saját parkolóhely`. Have a native speaker confirm the assembled sentence before it ships.)*
+*(The wording is in `lib/copy/en.ts` and `lib/copy/hu.ts`; the deposit deadline is dropped from the qualifier once the offer is withdrawn in `lib/project-config.ts`. Brenda proofreads the Hungarian before it ships.)*
 
 - **The deadline is part of the qualifier, not a footnote.** 216,616,000 is unit B3's *promotional* price: it holds only for a reservation deposit received by 1 December 2026, and the promotion is a complimentary parking space worth 4,000,000. Without it the lowest price on the 2026-09 list is 246,050,000. A conditional price shown as permanent fails the same way "everything included" does — the buyer finds out later.
 - **The qualifier names what is included. It never claims everything is.** Optional extras — a second parking space, solar, irrigation, motorised shutters, the ceiling heating-cooling upgrade — are chargeable on top, so "everything included" would be misleading. Corrected 2026-08-08.
@@ -332,31 +325,17 @@ Decided 2026-08-08. This overrides the unit prices currently sitting in `lib/dat
 - **No per-unit prices anywhere.** Not in the unit comparison, not in the floor plans, not in cards, not in tooltips. Each unit shows **Price on request** / **Ár kérésre**, which is also the CTA hook into the lead form.
 - **This is a positioning decision, not a formatting one.** A high turnkey anchor plus price-on-request qualifies the buyer into a conversation instead of letting them self-disqualify on a number. Do not "helpfully" reintroduce a price range, a per-m² figure, or a "from 195M" line.
 
-### Implementation consequence — read before touching the code
+### Implementation consequence
 
-Per-unit prices live in `lib/data.ts` and `lib/data-hu.ts`, which are imported by client components (`Pricing.tsx`, `FloorPlans.tsx`, `Card.tsx`, `PriceDisplay.tsx`). **Removing them from the rendered output is not enough** — they ship in the JavaScript bundle and stay readable by anyone who opens devtools. The `price` and `priceEur` fields must come out of the client-side data entirely, not just out of the JSX.
-
-Stale `220M` strings, full list as of 2026-08-08 — the Hungarian side has three, not one:
-
-| File | Line | String |
-|------|------|--------|
-| `lib/data.ts` | 203 | `'220M HUF'`, label `Starting Price` |
-| `lib/data-hu.ts` | 79 | `'220M Ft'`, label `Induló ár` |
-| `lib/data-hu.ts` | 451 | `'220 millió Ft-tól'` |
-| `lib/data-hu.ts` | 484 | `'Már 220 millió Ft-tól.'` |
-| `components/sections/Hero.tsx` | 99 | `220 Million HUF` |
-| `components/sections/Pricing.tsx` | 60 | `Starting from` |
-| `components/sections/FloorPlans.tsx` | 92 | `Starting from 220 million HUF.` |
-
-`HeroHu.tsx:80` is only a `{/* Starting Price */}` comment marker — the Hungarian hero reads its figure from `data-hu.ts:451`.
+Per-unit prices are not in the code at all: `lib/data.ts` has no price field, and the browser only receives `lib/houses-view.ts` (display strings). Never add a `price` field to a unit, never import `lib/data.ts` from a `'use client'` file. The single anchor is `anchorPrice` in `lib/project-config.ts`; every house row and every house sheet reads "Price on request" / "Ár kérésre".
 
 ### Typographic treatment
 
-The anchor is the one figure allowed at display scale. Set it in Geist Mono with tabular figures, at `h3` size or larger, with the inclusive qualifier in `caption` directly beneath it. It never sits inside a badge, a pill, or a colored container.
+The anchor is the one figure allowed at display scale. Set it in IBM Plex Mono with tabular figures, at `h3` size or larger, with the inclusive qualifier in `caption` directly beneath it. It never sits inside a badge, a pill, or a colored container.
 
 ## Voice
 
-Typography and colour are defined here. **The words are defined in `Spanyolret_Gardens_Complete_PRD.md → §7.0 Voice`,** and that section is as binding as this file. Read it before writing any user-facing string, in either language.
+Typography and colour are defined here. **The words are defined in `docs/Spanyolret_Gardens_Complete_PRD.md → §7.0 Voice` (historical document: the voice rules hold, its figures and dates do not),** and that section is as binding as this file. Read it before writing any user-facing string, in either language.
 
 The short version, because it drives layout decisions too: numbers instead of adjectives, name the objection before the buyer does, no verbs of longing, short sentences, every claim traceable, no manufactured urgency. A design system that specifies a mono font for measured quantities only works if the copy actually contains measured quantities — the two decisions hold each other up.
 
@@ -367,6 +346,8 @@ Applied to the codebase 2026-08-08 over three passes.
 **Foundation.** Tokens in `tailwind.config.ts`, `globals.css` rewritten from 470 lines to the system above, Fraunces / Instrument Sans / IBM Plex Mono self-hosted through `next/font`, `lang="hu"` scoped in `app/hu/layout.tsx`, locale-aware formatters in `lib/utils.ts`, copy in both data files, both heroes, the garden ribbon, the pricing anchor, the availability badge, the brand wall.
 
 **Every section, both locales.** Navbar, TrustBar, ProblemSolution, PropertyOverview, Gallery, Benefits, FloorPlans, Pricing, Location, Developer, Specs, Process, FAQ, LeadForm, Footer. All on the grid-and-hairline rhythm: no centred stacks, no icons in circles, no pill badges, no tabs hiding evidence.
+
+**Revamp of 12/11/2026 (lots 2 to 5).** One tree for both languages (`components/LandingPage.tsx`, copy in `lib/copy/`). Section order: Navbar, Hero, WhyHere, Gallery, FloorPlans, CtaBand, Pricing, Location, Developer, Specs, CtaBand, Process, FAQ, LeadForm, Footer, plus the mobile StickyActions bar. `TrustBar`, `ProblemSolution`, `PropertyOverview`, `Benefits` and the floating availability badge are gone (their evidence is merged into `WhyHere`). Each house has a sheet (Radix dialog: plan and facts, no price, no request button for a sold house). `CtaBand` is the call-to-action band set twice on the page, after the houses and after the specs, with the call button only when `callNumber` is set. The thank-you pages (`/thank-you`, `/hu/koszonjuk`) follow the current design (same tokens and rhythm as the landing page). Visual rules (tokens, radius 0, no shadow, one accent) did not change.
 
 **Removed entirely.** `InteractiveSelector`, `InteractiveSelectorHu`, `demo.tsx` and the `react-icons` dependency they pulled in. `@studio-freight/lenis` — installed, never imported, pure bundle weight. 17 decorative orb and noise divs.
 
@@ -427,6 +408,9 @@ The poster is now generated from the cleaned video's own first frame, so it matc
 | 2026-10-30 | Anchor moved to 216,616,000 HUF, deposit deadline 1 December 2026 | The developer's 2026-10 price list puts the lowest unit at 216,616,000 promotional / 220,616,000 without. Garden sizes, unit status and the handover date still follow the old documents, pending the developer's answer. |
 | 2026-08-21 | Anchor moved to 242,050,000 HUF, with the deposit deadline in the qualifier | The developer's 2026-09 price list put the lowest unit at 242,050,000 promotional / 246,050,000 without. The old 240,000,000 anchor was below every price actually on sale. The figure is B3's promotional price and lapses with the 30 September 2026 deposit deadline, so the deadline travels with the number |
 | 2026-08-21 | Address is `Törökbálinti út`, from the developer's price list | Fourth version of this address, first from a primary source. See the provenance note in `lib/data.ts` |
+| 2026-11-12 | One component tree for EN and HU, copy in `lib/copy` | Two parallel trees drifted; a text change can no longer land in one language only. `npm test` checks EN = HU |
+| 2026-11-12 | Sections tightened (D2): evidence merged into `WhyHere`, floating badge removed | Same structure as City Gate Residences; fewer repeated claims, no manufactured scarcity |
+| 2026-11-12 | House sheet and two CTA bands; no price on any sheet | The anchor stays the only price; the sheet shows the plan and the facts and sends to the form |
 | 2026-08-08 | Components must survive ±40% string-length swing | Measured on real strings: Hungarian ranges from −43% to +28% against English. "Leave room for expansion" is the wrong rule — it also contracts hard |
 | 2026-08-08 | Remove BOSCH from the brand wall | Appears zero times in the PRD. VEKA and SIEMENS appear only as "or" alternatives and must not be shown as commitments |
 | 2026-08-08 | PRD aligned to the 240M anchor; §7 Copy Bank rewritten | Prices, dates, meta description and JSON-LD all carried the stale 195–225M range. Copy voice now lives in PRD §7.0 and is binding alongside this file |

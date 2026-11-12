@@ -4,23 +4,21 @@ import { useState } from 'react';
 import { useConsent } from '@/lib/consent';
 import { track } from '@/lib/mixpanel';
 
-const COPY = {
-    en: {
-        show: 'Show the map',
-        note: 'The map is served by Google Maps, which may set its own cookies. It loads only when you click, or if you accepted cookies.',
-    },
-    hu: {
-        show: 'Térkép megjelenítése',
-        note: 'A térképet a Google Térkép szolgáltatja, amely saját sütiket helyezhet el. Csak kattintásra töltődik be, vagy ha elfogadtad a sütiket.',
-    },
-};
-
 /* Google Maps sets its own cookies, so the iframe loads only after accepted
  * cookies or a click. Until then, a plain hairline grid (decorative, not a map). */
-export default function MapEmbed({ src, title, locale }: { src: string; title: string; locale: 'en' | 'hu' }) {
+export default function MapEmbed({
+    src,
+    title,
+    locale,
+    text,
+}: {
+    src: string;
+    title: string;
+    locale: 'en' | 'hu';
+    text: { show: string; note: string };
+}) {
     const consent = useConsent();
     const [clicked, setClicked] = useState(false);
-    const text = COPY[locale];
 
     if (clicked || consent === 'accepted') {
         return (

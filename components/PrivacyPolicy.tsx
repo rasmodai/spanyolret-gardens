@@ -1,6 +1,9 @@
 import ConsentSettingsButton from '@/components/consent/ConsentSettingsButton';
 import { privacyCopy } from '@/lib/privacy-copy';
-import { privacyController as controller, privacyPolicyDate } from '@/lib/site';
+import { formatDate } from '@/lib/format';
+import { projectConfig } from '@/lib/project-config';
+
+const controller = projectConfig.privacyController;
 
 export default function PrivacyPolicy({ locale }: { locale: 'en' | 'hu' }) {
     const t = privacyCopy[locale];
@@ -53,7 +56,7 @@ export default function PrivacyPolicy({ locale }: { locale: 'en' | 'hu' }) {
                     <p className="mt-3 leading-relaxed">{t.complaint}</p>
                 </section>
 
-                <p className="mt-10 text-sm text-ink-soft">{t.updated} {privacyPolicyDate[locale]}</p>
+                <p className="mt-10 text-sm text-ink-soft">{t.updated} {formatDate(projectConfig.privacyPolicyDate, locale)}</p>
                 <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
                     <a href={t.backHref} className="btn-quiet">{t.back}</a>
                     <ConsentSettingsButton label={t.cookieSettings} />

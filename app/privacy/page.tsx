@@ -1,8 +1,7 @@
-import type { Metadata } from 'next';
 import PrivacyPolicy from '@/components/PrivacyPolicy';
-import { privacyCopy } from '@/lib/privacy-copy';
+import { privacyMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = { title: privacyCopy.en.metaTitle };
+export const metadata = privacyMetadata('en');
 
 export default function PrivacyPage() {
     return <PrivacyPolicy locale="en" />;

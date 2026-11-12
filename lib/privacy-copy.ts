@@ -1,6 +1,6 @@
 /* The privacy policy, EN and HU. Says what the site actually does, nothing more.
- * Adapted from City Gate Residences (same controller, same team, same tools),
- * minus Mixpanel, which this site does not load. */
+ * Adapted from City Gate Residences (same controller, same team, same tools,
+ * Mixpanel included: loaded only after the cookie banner's "Accept"). */
 
 export interface PrivacySection {
     title: string;
@@ -46,6 +46,7 @@ export const privacyCopy = {
                 items: [
                     'To answer your enquiry and arrange a visit: your consent, given with the required box (GDPR Article 6(1)(a)), and steps taken at your request before a possible contract (Article 6(1)(b)).',
                     'To measure our advertising: your consent, given with the cookie banner (Article 6(1)(a)). Only if you accepted, and then send the form, a hashed form of your name, phone number and email address, with your IP address and browser details, is sent to Meta to count the enquiry as a result of our ads (Meta Conversions API).',
+                    'To measure visits: your consent, given with the cookie banner (Article 6(1)(a)).',
                     'To protect the form against abuse: our legitimate interest (Article 6(1)(f)).',
                 ],
             },
@@ -65,7 +66,8 @@ export const privacyCopy = {
                     'Google: storage of enquiries in Google Sheets, and the map (Google Maps), only as described below;',
                     'Neon: hosting of the database of our internal sales tool;',
                     'WhatsApp (Meta Platforms): only if you choose to write to us on WhatsApp;',
-                    'Meta Platforms: advertising measurement, only as described above.',
+                    'Meta Platforms: advertising measurement, only as described above;',
+                    'Mixpanel: visit statistics, only after you accept cookies.',
                 ],
             },
             {
@@ -76,7 +78,7 @@ export const privacyCopy = {
                 title: 'Cookies and browser storage',
                 paragraphs: [
                     'Without your agreement, the site stores only two things in your browser: your light or dark display choice and your cookie choice. Neither is sent to us.',
-                    'Only if you click "Accept" on the cookie banner is the Meta Pixel loaded (cookies such as _fbp and _fbc). You can change your choice at any time with the "Cookie settings" link at the bottom of the page.',
+                    'Only if you click "Accept" on the cookie banner: the Meta Pixel (cookies such as _fbp and _fbc) and Mixpanel (an identifier stored in your browser) are loaded. You can change your choice at any time with the "Cookie settings" link at the bottom of every page.',
                     'The Google Maps map is loaded from Google only if you accepted cookies or clicked "Show the map". Google then receives your IP address and browser details and may set its own cookies, under its own terms.',
                 ],
             },
@@ -136,6 +138,7 @@ export const privacyCopy = {
                 items: [
                     'Érdeklődésének megválaszolása és a látogatás egyeztetése: az Ön hozzájárulása, amelyet a kötelező jelölőnégyzettel ad meg (GDPR 6. cikk (1) bekezdés a) pont), valamint az Ön kérésére, egy esetleges szerződés megkötését megelőzően tett lépések (6. cikk (1) bekezdés b) pont).',
                     'Hirdetéseink mérése: az Ön hozzájárulása, amelyet a sütikről szóló sávban ad meg (6. cikk (1) bekezdés a) pont). Csak ha elfogadta, és ezután elküldi az űrlapot, nevének, telefonszámának és e-mail-címének hash formáját, IP-címével és böngészőjének adataival együtt, elküldjük a Metának, hogy az érdeklődést hirdetéseink eredményeként számolja el (Meta Conversions API).',
+                    'Látogatások mérése: az Ön hozzájárulása, amelyet a sütikről szóló sávban ad meg (6. cikk (1) bekezdés a) pont).',
                     'Az űrlap védelme a visszaélésekkel szemben: jogos érdekünk (6. cikk (1) bekezdés f) pont).',
                 ],
             },
@@ -155,7 +158,8 @@ export const privacyCopy = {
                     'Google: az érdeklődések tárolása Google Táblázatokban, valamint a térkép (Google Térkép), kizárólag az alább leírtak szerint;',
                     'Neon: belső értékesítési rendszerünk adatbázisának tárhelye;',
                     'WhatsApp (Meta Platforms): csak ha Ön úgy dönt, hogy WhatsAppon ír nekünk;',
-                    'Meta Platforms: hirdetések mérése, kizárólag a fent leírt módon.',
+                    'Meta Platforms: hirdetések mérése, kizárólag a fent leírt módon;',
+                    'Mixpanel: látogatási statisztika, kizárólag a sütik elfogadása után.',
                 ],
             },
             {
@@ -166,7 +170,7 @@ export const privacyCopy = {
                 title: 'Sütik és böngészőben tárolt adatok',
                 paragraphs: [
                     'Hozzájárulása nélkül az oldal csak két dolgot tárol a böngészőjében: a világos vagy sötét megjelenésre vonatkozó választását és a sütikkel kapcsolatos döntését. Egyiket sem küldjük el magunknak.',
-                    'Csak ha a sütikről szóló sávban az „Elfogadom” gombra kattint, akkor töltődik be a Meta Pixel (például _fbp és _fbc sütik). Döntését bármikor módosíthatja az oldal alján a „Süti-beállítások” hivatkozással.',
+                    'Csak ha a sütikről szóló sávban az „Elfogadom” gombra kattint, akkor töltődik be a Meta Pixel (például _fbp és _fbc sütik) és a Mixpanel (a böngészőben tárolt azonosító). Döntését bármikor módosíthatja minden oldal alján a „Süti-beállítások” hivatkozással.',
                     'A Google Térkép csak akkor töltődik be a Google-tól, ha elfogadta a sütiket, vagy a „Térkép megjelenítése” gombra kattintott. Ekkor a Google megkapja IP-címét és böngészőadatait, és saját sütiket helyezhet el, a saját feltételei szerint.',
                 ],
             },

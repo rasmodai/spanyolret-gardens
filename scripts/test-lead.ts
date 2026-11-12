@@ -5,7 +5,8 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import * as data from '../lib/data';
-import * as dataHu from '../lib/data-hu';
+import { en } from '../lib/copy/en';
+import { hu } from '../lib/copy/hu';
 import { privacyCopy } from '../lib/privacy-copy';
 import { validPixelId } from '../lib/lead/meta-capi';
 import { wasCaptured } from '../lib/lead/types';
@@ -79,7 +80,6 @@ async function main() {
     assert('A3 and B2 sold, the other four available',
         data.units.filter((unit) => unit.status === 'sold').map((unit) => unit.id).join() === 'A3,B2'
         && data.units.filter((unit) => unit.status === 'available').length === 4);
-    assert('Hungarian data shares the same units', dataHu.units === data.units);
 
     console.log('what must not be published');
     const source = readFileSync(join(__dirname, '../lib/data.ts'), 'utf8');
@@ -88,13 +88,13 @@ async function main() {
     assert('Unit type found', unitFields.includes('totalInternal'));
     assert('no price field in the Unit type', !/price|huf|\bar\b|prix/i.test(unitFields), unitFields);
     assert('no price key on any unit at runtime', data.units.every((unit) => !Object.keys(unit).some((key) => /price|huf/i.test(key))));
-    const everything = JSON.stringify(data) + JSON.stringify(dataHu) + JSON.stringify(privacyCopy);
+    const everything = JSON.stringify(data) + JSON.stringify(en) + JSON.stringify(hu) + JSON.stringify(privacyCopy);
     assert('no "100 %" claim', !/100 ?%/.test(everything));
     assert('no BOSCH', !/bosch/i.test(everything));
     assert('no 242 050 000 anchor', !/242[ ,. ]?050[ ,. ]?000/.test(everything));
     assert('single price anchor is the 216 616 000 one',
-        data.pricing.anchor === 'From 216,616,000 HUF' && JSON.stringify(dataHu).includes('216 616 000 Ft'));
-    assert('per-house price is not published', data.pricing.perUnit === 'Price on request');
+        en.price.anchor === 'From 216,616,000\u00a0HUF' && /216[\s\u00a0]616[\s\u00a0]000[\s\u00a0]Ft-tól/.test(hu.price.anchor));
+    assert('per-house price is not published', en.houses.priceOnRequest === 'Price on request' && hu.houses.priceOnRequest === 'Ár kérésre');
 
     console.log('lead route, nothing configured');
     clearEnv();
@@ -379,7 +379,7 @@ async function main() {
 
     console.log('nothing hardcoded');
     const read = (path: string) => readFileSync(join(__dirname, '..', path), 'utf8');
-    const leadSources = ['app/api/lead/route.ts', 'app/layout.tsx', 'lib/site.ts', 'components/consent/ConsentManager.tsx',
+    const leadSources = ['app/api/lead/route.ts', 'app/layout.tsx', 'lib/project-config.ts', 'components/consent/ConsentManager.tsx',
         'lib/lead/email.ts', 'lib/lead/google-sheets.ts', 'lib/lead/meta-capi.ts', 'lib/lead/synphos-os.ts', 'lib/lead/rate-limit.ts'];
     for (const path of leadSources) {
         const code = read(path);

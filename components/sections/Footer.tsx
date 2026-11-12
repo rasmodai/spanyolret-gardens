@@ -1,105 +1,86 @@
-'use client';
-
 import Image from 'next/image';
 import ConsentSettingsButton from '@/components/consent/ConsentSettingsButton';
-import { privacyPath, whatsappNumber } from '@/lib/site';
-import { scrollToElement } from '@/lib/utils';
+import ScrollButton from '@/components/ui/ScrollButton';
+import type { Copy } from '@/lib/copy/types';
 import { siteAddress } from '@/lib/data';
+import { fill, type Locale } from '@/lib/format';
+import { projectConfig } from '@/lib/project-config';
 
 /* Was: a dark gradient over two 500px blurred orbs, social icons in rounded
  * squares with hover:scale-110, and a newsletter block. Rewritten as a plain
  * colophon on the anthracite band — which is what a footer on a document is.
  *
- * ⚠️ The phone number and email below look like placeholders (+36 1 234 5678).
- * Verify them with S-Patrik Bau before this goes live: a dead number on the
- * contact block undoes everything the rest of the page is trying to establish.
+ * Every contact line comes from lib/project-config.ts, and a null value removes
+ * its line: a dead number or a placeholder in the contact block would undo
+ * everything the rest of the page is trying to establish.
  */
+export default function Footer({ copy, locale }: { copy: Copy; locale: Locale }) {
+    const { footer } = copy;
+    const { developer, contactEmail, contactPhone } = projectConfig;
 
-const companyDetails = {
-    name: 'S-Patrik Bau Kft.',
-    email: 'info@spatrikbau.com',
-    // Brenda's number, the buyers' contact (see lib/site.ts). Was a placeholder.
-    phone: whatsappNumber ?? '',
-    address: siteAddress.full,
-    taxNumber: '24304559213',
-    registrationNumber: '13 09 220814',
-    website: 'spatrikbau.com',
-};
-
-const quickLinks = [
-    { href: 'property-overview', label: 'Overview' },
-    { href: 'floor-plans', label: 'The six gardens' },
-    { href: 'specs', label: 'Specification' },
-    { href: 'location', label: 'Location' },
-    { href: 'faq', label: 'Questions' },
-];
-
-export default function Footer() {
     return (
-        <footer className="band-frame">
+        <footer id="footer" className="band-frame">
             <div className="section-container py-16">
                 <div className="grid gap-10 border-b border-onmedia/20 pb-12 md:grid-cols-[1.2fr_1fr_1fr]">
                     <div>
                         <p className="font-display text-2xl text-onmedia">Spanyolrét Gardens</p>
                         <p className="mt-3 max-w-[34ch] text-[0.9375rem] leading-relaxed text-[color:var(--on-frame-soft)]">
-                            Six townhouses with private gardens of 102 to 202 m², in Budapest&rsquo;s XI.
-                            District. Keys April 2027.
+                            {footer.tagline}
                         </p>
-                        <button
-                            type="button"
-                            onClick={() => scrollToElement('lead-form')}
-                            className="btn btn-ghost-inv mt-6"
-                        >
-                            Book a viewing
-                        </button>
+                        <ScrollButton target="lead-form" className="btn btn-ghost-inv mt-6">
+                            {footer.cta}
+                        </ScrollButton>
                     </div>
 
-                    <nav aria-label="Footer">
-                        <p className="caption !text-[color:var(--on-frame-soft)]">On this page</p>
+                    <nav aria-label={footer.ariaLabel}>
+                        <p className="caption !text-[color:var(--on-frame-soft)]">{footer.onThisPage}</p>
                         <ul className="mt-4">
-                            {quickLinks.map((link) => (
-                                <li key={link.href}>
-                                    <button
-                                        type="button"
-                                        onClick={() => scrollToElement(link.href)}
+                            {footer.links.map((link) => (
+                                <li key={link.id}>
+                                    <ScrollButton
+                                        target={link.id}
                                         className="inline-flex min-h-[44px] items-center border-b border-transparent text-[0.9375rem] text-onmedia transition-colors duration-short hover:border-clay"
                                     >
                                         {link.label}
-                                    </button>
+                                    </ScrollButton>
                                 </li>
                             ))}
                         </ul>
                     </nav>
 
                     <div>
-                        <p className="caption !text-[color:var(--on-frame-soft)]">Contact</p>
+                        <p className="caption !text-[color:var(--on-frame-soft)]">{footer.contact}</p>
                         <dl className="mt-4 space-y-3 text-[0.9375rem]">
                             <div>
-                                <dt className="sr-only">Address</dt>
-                                <dd className="text-onmedia">{companyDetails.address}</dd>
+                                <dt className="sr-only">{footer.address}</dt>
+                                <dd className="text-onmedia">{siteAddress.full}</dd>
                             </div>
-                            <div>
-                                <dt className="sr-only">Email</dt>
-                                <dd>
-                                    <a
-                                        href={`mailto:${companyDetails.email}`}
-                                        className="measure border-b border-clay text-onmedia transition-colors duration-short hover:border-paper"
-                                    >
-                                        {companyDetails.email}
-                                    </a>
-                                </dd>
-                            </div>
-                            <div>
-                                <dt className="sr-only">Phone</dt>
-                                <dd>
-                                    <a
-                                        href={`tel:${companyDetails.phone.replace(/\s/g, '')}`}
-                                        className="measure border-b border-clay text-onmedia transition-colors duration-short hover:border-paper"
-                                    >
-                                        {companyDetails.phone}
-                                    </a>
-                                </dd>
-                            </div>
+                            {contactEmail && (
+                                <div>
+                                    <dt className="sr-only">{footer.email}</dt>
+                                    <dd>
+                                        <a
+                                            href={`mailto:${contactEmail}`}
+                                            className="measure border-b border-clay text-onmedia transition-colors duration-short hover:border-paper"
+                                        >
+                                            {contactEmail}
+                                        </a>
+                                    </dd>
+                                </div>
+                            )}
+                            {contactPhone && (
+                                <div>
+                                    <dt className="sr-only">{footer.phone}</dt>
+                                    <dd>
+                                        <a
+                                            href={`tel:${contactPhone.replace(/\s/g, '')}`}
+                                            className="measure border-b border-clay text-onmedia transition-colors duration-short hover:border-paper"
+                                        >
+                                            {contactPhone}
+                                        </a>
+                                    </dd>
+                                </div>
+                            )}
                         </dl>
                     </div>
                 </div>
@@ -108,22 +89,27 @@ export default function Footer() {
                     <div>
                         <Image
                             src="/espatrick-bau-logo.png"
-                            alt={companyDetails.name}
+                            alt={developer.name}
                             width={140}
                             height={42}
                             className="h-8 w-auto object-contain opacity-80"
                         />
                         <p className="caption mt-4 !text-[color:var(--on-frame-soft)]">
-                            {companyDetails.name} · Tax {companyDetails.taxNumber} · Reg{' '}
-                            {companyDetails.registrationNumber}
+                            {fill(footer.legalLine, {
+                                name: developer.name,
+                                tax: developer.taxNumber,
+                                registration: projectConfig.privacyController.registrationNumber,
+                            })}
                         </p>
                     </div>
                     <p className="caption !text-[color:var(--on-frame-soft)]">
-                        Architect: JRT Stúdió Kft.
+                        {fill(footer.architect, { name: projectConfig.architect })}
                     </p>
                     <div className="flex w-full flex-wrap gap-x-6 gap-y-1 text-[0.9375rem]">
-                        <a href={privacyPath.en} className="btn-quiet !text-onmedia">Privacy policy</a>
-                        <ConsentSettingsButton label="Cookie settings" className="btn-quiet !text-onmedia" />
+                        <a href={projectConfig.privacyPath[locale]} className="btn-quiet !text-onmedia">
+                            {footer.privacy}
+                        </a>
+                        <ConsentSettingsButton label={footer.cookieSettings} className="btn-quiet !text-onmedia" />
                     </div>
                 </div>
             </div>

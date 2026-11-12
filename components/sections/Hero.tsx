@@ -1,8 +1,6 @@
-'use client';
-
-import { pricing } from '@/lib/data';
-import { scrollToElement } from '@/lib/utils';
 import HeroMedia from '@/components/ui/HeroMedia';
+import ScrollButton from '@/components/ui/ScrollButton';
+import type { Copy } from '@/lib/copy/types';
 
 /* The first viewport is a poster, not a document. See DESIGN.md → Layout.
  *
@@ -16,14 +14,9 @@ import HeroMedia from '@/components/ui/HeroMedia';
  * brightness we do not control.
  */
 
-const FACTS = [
-    { value: '6', label: 'Townhouses' },
-    { value: '117–120 m²', label: 'Inside' },
-    { value: '102–202 m²', label: 'Private garden' },
-    { value: 'April 2027', label: 'Keys' },
-];
+export default function Hero({ copy }: { copy: Copy }) {
+    const { hero, price } = copy;
 
-export default function Hero() {
     return (
         <section
             id="hero"
@@ -46,25 +39,24 @@ export default function Hero() {
             <div className="absolute inset-x-0 top-0 border-b border-onmedia/20">
                 <div className="section-container flex items-center justify-between py-4 text-onmedia">
                     <span className="whitespace-nowrap font-display text-base tracking-tight">Spanyolrét Gardens</span>
-                    <span className="caption hidden !text-onmedia/70 sm:inline">Budapest XI. · April 2027</span>
+                    <span className="caption hidden !text-onmedia/70 sm:inline">{hero.place}</span>
                 </div>
             </div>
 
             <div className="section-container relative pb-10 pt-32 text-onmedia md:pb-14">
                 <div className="max-w-[48rem]">
                     <h1 className="display-xl animate-rise">
-                        A real garden.
+                        {hero.titleFirst}
                         <br />
-                        Not a balcony.
+                        {hero.titleSecond}
                     </h1>
 
                     <p className="mt-5 max-w-[46ch] text-[1.0625rem] text-onmedia/80 md:text-lg">
-                        Six townhouses in Budapest&rsquo;s XI. District, in two buildings of three.
-                        Five rooms over two floors, and a garden that runs from 102 to 202 m².
+                        {hero.lede}
                     </p>
 
                     <dl className="mt-7 grid grid-cols-2 border-t border-onmedia/25 sm:grid-cols-4">
-                        {FACTS.map((f) => (
+                        {hero.facts.map((f) => (
                             <div key={f.label} className="border-r border-onmedia/15 py-3.5 pr-5 last:border-r-0">
                                 <dd className="measure whitespace-nowrap text-lg md:text-xl">{f.value}</dd>
                                 <dt className="caption mt-1 !text-onmedia/60">{f.label}</dt>
@@ -75,25 +67,17 @@ export default function Hero() {
                     {/* The one public figure, and it never travels without its
                      * qualifier. DESIGN.md → Pricing Display Rule. */}
                     <div className="mt-7">
-                        <p className="measure text-2xl md:text-3xl">{pricing.anchor}</p>
-                        <p className="caption mt-1.5 !text-onmedia/70">{pricing.anchorQualifier}</p>
+                        <p className="measure text-2xl md:text-3xl">{price.anchor}</p>
+                        <p className="caption mt-1.5 !text-onmedia/70">{price.qualifier}</p>
                     </div>
 
                     <div className="mt-7 flex flex-wrap gap-3.5">
-                        <button
-                            type="button"
-                            onClick={() => scrollToElement('lead-form')}
-                            className="btn btn-primary"
-                        >
-                            Book a viewing
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => scrollToElement('floor-plans')}
-                            className="btn btn-ghost-inv"
-                        >
-                            See the six gardens
-                        </button>
+                        <ScrollButton target="lead-form" className="btn btn-primary">
+                            {hero.ctaPrimary}
+                        </ScrollButton>
+                        <ScrollButton target="floor-plans" className="btn btn-ghost-inv">
+                            {hero.ctaSecondary}
+                        </ScrollButton>
                     </div>
                 </div>
             </div>

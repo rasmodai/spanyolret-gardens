@@ -1,33 +1,31 @@
 import type { FloorPlan, RoomKind } from '@/lib/floorplans';
+import { formatArea } from '@/lib/format';
 
 const PAD = 30;
 const BAR = 90;
 
-export const ROOM_NAMES: Record<'en' | 'hu', Record<RoomKind, string>> = {
-    en: {
-        entrance: 'Entrance', shower: 'Shower', living: 'Living room', bedroom: 'Bedroom', kitchenDining: 'Kitchen-dining',
-        pantry: 'Pantry', stairs: 'Stairs', hallway: 'Landing', wc: 'WC', wardrobe: 'Wardrobe', utility: 'Utility',
-        bathroom: 'Bathroom', terrace: 'Terrace',
-    },
-    hu: {
-        entrance: 'Előszoba', shower: 'Zuhanyzó', living: 'Nappali', bedroom: 'Szoba', kitchenDining: 'Konyha-étkező',
-        pantry: 'Kamra', stairs: 'Lépcső', hallway: 'Közlekedő', wc: 'WC', wardrobe: 'Gardrób', utility: 'Háztartási',
-        bathroom: 'Fürdőszoba', terrace: 'Terasz',
-    },
-};
-
 /* One level of one townhouse, from the permit drawing. Units are centimetres,
  * so the 2 m bar is exact. Colours are tokens: the plan follows the theme. */
-export default function FloorPlanSvg({ plan, locale, title }: { plan: FloorPlan; locale: 'en' | 'hu'; title: string }) {
-    const names = ROOM_NAMES[locale];
-    const nf = new Intl.NumberFormat(locale === 'hu' ? 'hu-HU' : 'en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+export default function FloorPlanSvg({
+    plan,
+    locale,
+    title,
+    roomNames,
+    className = 'mx-auto block h-auto max-h-[70vh] w-full',
+}: {
+    plan: FloorPlan;
+    locale: 'en' | 'hu';
+    title: string;
+    roomNames: Record<RoomKind, string>;
+    className?: string;
+}) {
     const thin = { fill: 'none', vectorEffect: 'non-scaling-stroke' as const, strokeLinecap: 'round' as const };
     return (
         <svg
             viewBox={`${-PAD} ${-PAD} ${plan.width + PAD * 2} ${plan.height + PAD * 2 + BAR}`}
             role="img"
             aria-label={title}
-            className="mx-auto block h-auto max-h-[70vh] w-full"
+            className={className}
         >
             {plan.terrace && <path d={plan.terrace} fill="rgb(var(--lawn-rgb) / 0.14)" />}
             <path d={plan.kitchen} {...thin} stroke="var(--line-strong)" strokeWidth={1} />
@@ -39,9 +37,9 @@ export default function FloorPlanSvg({ plan, locale, title }: { plan: FloorPlan;
             <g textAnchor="middle" style={{ paintOrder: 'stroke', fontVariantNumeric: 'tabular-nums' }} stroke="var(--paper)" strokeWidth={7} strokeLinejoin="round">
                 {plan.labels.map((label, i) => (
                     <text key={i} x={label.x} y={label.y + 6}>
-                        <tspan fill="var(--ink)" fontSize={24} fontWeight={600}>{names[label.kind]}</tspan>
+                        <tspan fill="var(--ink)" fontSize={24} fontWeight={600}>{roomNames[label.kind]}</tspan>
                         <tspan x={label.x} dy={27} fill="var(--ink-soft)" fontSize={20} className="font-mono">
-                            {nf.format(label.m2)} m²
+                            {formatArea(label.m2, locale)}
                         </tspan>
                     </text>
                 ))}

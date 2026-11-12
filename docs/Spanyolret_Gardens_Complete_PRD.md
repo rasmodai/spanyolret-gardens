@@ -1,3 +1,5 @@
+> **HISTORICAL DOCUMENT (moved to `docs/` on 12/11/2026). Do not rely on it for any fact.** It dates from the first version of the site: the delivery date, the anchor price (242,050,000 HUF), the per-house prices of §2 and the structured-data block of §11 are all superseded. The source of truth is the code: `lib/data.ts` (houses), `lib/project-config.ts` (project facts), `lib/copy/` (wording), `CLAUDE.md` and `DESIGN.md`. This repository is public: never copy a per-house price from this file onto the site.
+
 # Spanyolrét Gardens — Complete PRD
 ## Landing Page & Sales System Product Requirements Document
 

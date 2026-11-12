@@ -1,7 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { faqs } from '@/lib/data';
+import { track } from '@/lib/mixpanel';
+
+export interface FaqProps {
+    eyebrow: string;
+    title: string;
+    lede: string;
+    groups: { title: string; items: { q: string; a: string }[] }[];
+}
 
 /* Was: rounded-2xl cards with shadows, a chevron in a coloured circle, and a
  * gradient category header.
@@ -12,44 +19,44 @@ import { faqs } from '@/lib/data';
  *
  * DESIGN.md → §7.0: the awkward questions go first. If this list ever opens
  * with parking rather than construction quality and the foreign-purchase
- * process, the ordering in lib/data.ts is wrong, not this component.
+ * process, the ordering in lib/copy is wrong, not this component.
  */
-export default function FAQ() {
+export default function FAQ({ eyebrow, title, lede, groups }: FaqProps) {
     const [open, setOpen] = useState<string | null>(null);
 
     return (
         <section id="faq" className="section-padding border-t border-line bg-paper">
             <div className="section-container">
-                <div className="eyebrow">Questions</div>
+                <div className="eyebrow">{eyebrow}</div>
 
                 <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
-                    <h2 className="display-l text-ink">The questions people actually ask.</h2>
-                    <p className="lede self-end">
-                        If yours is not here, ask it on the form below and you will get a straight answer,
-                        including the ones where the answer is &ldquo;we do not know yet&rdquo;.
-                    </p>
+                    <h2 className="display-l text-ink">{title}</h2>
+                    <p className="lede self-end">{lede}</p>
                 </div>
 
                 <div className="mt-12 grid gap-x-16 gap-y-10 lg:grid-cols-2">
-                    {faqs.map((group) => (
-                        <section key={group.category} aria-labelledby={`faq-${group.category}`}>
+                    {groups.map((group, groupIndex) => (
+                        <section key={group.title} aria-labelledby={`faq-${groupIndex}`}>
                             <h3
-                                id={`faq-${group.category}`}
+                                id={`faq-${groupIndex}`}
                                 className="caption border-b border-line pb-3"
                             >
-                                {group.category}
+                                {group.title}
                             </h3>
 
                             <dl>
-                                {group.questions.map((item) => {
-                                    const id = `${group.category}-${item.q}`;
+                                {group.items.map((item) => {
+                                    const id = `${groupIndex}-${item.q}`;
                                     const isOpen = open === id;
                                     return (
                                         <div key={id} className="border-b border-line">
                                             <dt>
                                                 <button
                                                     type="button"
-                                                    onClick={() => setOpen(isOpen ? null : id)}
+                                                    onClick={() => {
+                                                        track('FAQ Toggled', { question: item.q.slice(0, 100) });
+                                                        setOpen(isOpen ? null : id);
+                                                    }}
                                                     aria-expanded={isOpen}
                                                     className="flex w-full items-baseline justify-between gap-5 py-4 text-left transition-colors duration-short hover:text-lawn"
                                                 >
