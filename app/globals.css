@@ -474,3 +474,431 @@ video {
 @media (prefers-reduced-motion: reduce) {
   .dialog-overlay[data-state='open'], .dialog-panel[data-state='open'] { animation: none; }
 }
+
+/* --- Lot 7: mise en scène ----------------------------------------------
+ *
+ * Same rule as everything above: motion never gates content. The server
+ * renders the final state of every element. What starts hidden (below the
+ * fold only) is set by components/motion/PageMotion.tsx once an observer is
+ * known to run, with a safety net, and released before printing. Under
+ * prefers-reduced-motion nothing moves and nothing is hidden. */
+:root {
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Hero: the title rises line by line, once. A CSS animation, not a JS state:
+ * the markup is the final state, the animation always ends there. */
+.hero-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.hero-line > span {
+  display: block;
+  animation: line-rise 900ms var(--ease) var(--d, 0ms) both;
+}
+
+.hero-in {
+  animation: hero-in 600ms var(--ease) var(--d, 0ms) both;
+}
+
+@keyframes line-rise {
+  from { transform: translateY(108%); }
+  to { transform: none; }
+}
+
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Soft appearance on scroll. */
+[data-reveal].pre {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+[data-reveal].in {
+  transition: opacity 420ms var(--ease) var(--rd, 0ms), transform 420ms var(--ease) var(--rd, 0ms);
+}
+
+[data-reveal='2'] {
+  --rd: 90ms;
+}
+
+/* Sections a little more open than the default rhythm (72 / 104 px). */
+.section-airy {
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+}
+
+@media (min-width: 768px) {
+  .section-airy {
+    padding-top: 6.5rem;
+    padding-bottom: 6.5rem;
+  }
+}
+
+/* Full-width band with a light parallax: the picture is 120 % of the frame and
+ * moves by --py, set on scroll. */
+.band {
+  position: relative;
+  height: clamp(240px, 36vw, 440px);
+  overflow: hidden;
+  background: var(--paper-deep);
+}
+
+.band-img {
+  position: absolute;
+  left: 0;
+  top: -10%;
+  width: 100%;
+  max-width: none;
+  height: 120%;
+  object-fit: cover;
+  will-change: transform;
+  transform: translate3d(0, var(--py, 0px), 0);
+}
+
+/* Why here: four illustrated cards. */
+.why-grid {
+  display: grid;
+  gap: 2.5rem 2rem;
+}
+
+@media (min-width: 760px) {
+  .why-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.why-card {
+  border-top: 1px solid var(--line-strong);
+}
+
+.why-photo {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--paper-deep);
+}
+
+/* Gallery carousel. */
+.gal-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  padding-left: max(20px, calc((100% - 1116px) / 2));
+  padding-right: max(20px, calc((100% - 1116px) / 2));
+  scroll-padding-left: max(20px, calc((100% - 1116px) / 2));
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+@media (min-width: 640px) {
+  .gal-track {
+    gap: 24px;
+    padding-left: max(32px, calc((100% - 1116px) / 2));
+    padding-right: max(32px, calc((100% - 1116px) / 2));
+    scroll-padding-left: max(32px, calc((100% - 1116px) / 2));
+  }
+}
+
+.gal-track::-webkit-scrollbar {
+  display: none;
+}
+
+.gal-track.drag {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
+.gal-slide {
+  flex: 0 0 min(82vw, 680px);
+  scroll-snap-align: start;
+}
+
+.gal-slide button {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: var(--paper);
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.gal-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.gal-prog {
+  position: relative;
+  height: 2px;
+  margin-top: 28px;
+  background: var(--line);
+}
+
+.gal-prog i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20%;
+  height: 2px;
+  background: var(--lawn);
+  transition: transform 120ms linear;
+}
+
+.gal-arrow {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--ink);
+  transition: border-color 140ms ease;
+}
+
+.gal-arrow:hover {
+  border-color: var(--ink);
+}
+
+/* Full-screen viewer: a dark surface in both themes, like the hero. */
+dialog.lb {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  background: #101214;
+  color: #f6f4ef;
+}
+
+dialog.lb::backdrop {
+  background: #101214;
+}
+
+.lb-in {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding: max(12px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+
+.lb-photo-box {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.lb-photo-box img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.lb-btn {
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid rgb(246 244 239 / 0.4);
+  background: transparent;
+  color: #f6f4ef;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lb-btn:hover {
+  border-color: #f6f4ef;
+}
+
+/* The site plan: a polygon per plot, a chip per house. */
+.plan {
+  position: relative;
+  aspect-ratio: 1400 / 890;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.plan > img,
+.plan > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.plan polygon {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 3;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+  transition: fill 140ms ease, stroke 140ms ease;
+}
+
+.plan.has-on polygon:not(.on) {
+  fill: rgb(255 255 255 / 0.55);
+}
+
+.plan polygon.on {
+  fill: rgb(63 107 46 / 0.34);
+  stroke: #3f6b2e;
+}
+
+.plan-chip {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 3px 6px;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  font: 500 11px/1.2 var(--font-mono), ui-monospace, monospace;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+/* The chip looks 22 px tall; the target under the finger is 44. */
+.plan-chip::after {
+  content: '';
+  position: absolute;
+  inset: -12px -8px;
+}
+
+.plan-chip.sold {
+  border-color: var(--ink-soft);
+  color: var(--ink-soft);
+}
+
+.plan-chip.on {
+  background: var(--lawn);
+  border-color: var(--lawn);
+  color: var(--on-lawn);
+}
+
+/* Process: a line that draws as the section scrolls into view. Vertical on a
+ * phone, horizontal from 1040 px. Without JS (or with reduced motion) the line
+ * is drawn in full: JS only adds `.armed`. */
+.tl {
+  position: relative;
+  display: grid;
+  gap: 0;
+}
+
+.tl-step {
+  position: relative;
+  padding: 0 0 2rem 2.25rem;
+  --sp: 1;
+}
+
+.tl-step:last-child {
+  padding-bottom: 0;
+}
+
+.tl-dot {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  background: var(--lawn);
+  border: 2px solid var(--lawn);
+}
+
+.tl-step:not(:last-child)::before,
+.tl-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 18px;
+  width: 2px;
+  height: calc(100% - 12px);
+}
+
+.tl-step:not(:last-child)::before {
+  background: var(--line-strong);
+}
+
+.tl-step:not(:last-child)::after {
+  background: var(--lawn);
+  transform-origin: top;
+  transform: scaleY(var(--sp));
+}
+
+.tl.armed .tl-dot {
+  background: var(--paper);
+  border-color: var(--line-strong);
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.tl.armed .tl-step.on .tl-dot {
+  background: var(--lawn);
+  border-color: var(--lawn);
+}
+
+@media (min-width: 1040px) {
+  .tl {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0 1.5rem;
+    padding-top: 2.25rem;
+  }
+
+  .tl-step {
+    padding: 0;
+  }
+
+  .tl-dot {
+    top: -36px;
+  }
+
+  .tl-step:not(:last-child)::before,
+  .tl-step:not(:last-child)::after {
+    left: 12px;
+    top: -31px;
+    width: calc(100% + 12px);
+    height: 2px;
+  }
+
+  .tl-step:not(:last-child)::after {
+    transform-origin: left;
+    transform: scaleX(var(--sp));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-line > span,
+  .hero-in {
+    animation: none;
+  }
+
+  .band-img {
+    transform: none !important;
+  }
+
+  [data-reveal].pre {
+    opacity: 1;
+    transform: none;
+  }
+}
