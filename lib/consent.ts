@@ -3,15 +3,17 @@
 import { useSyncExternalStore } from 'react';
 
 /* The visitor's cookie choice. Nothing that sets a cookie or tracks behaviour
- * (Meta Pixel, Google Maps) loads before 'accepted'. Stored in localStorage, which
+ * (Meta Pixel, Mixpanel, Google Maps) loads before 'accepted'. Stored in localStorage, which
  * never leaves the browser. If storage is blocked, the choice holds for the
- * page's lifetime and the banner asks again on the next visit. */
+ * page's lifetime and the banner asks again on the next visit.
+ * v2: the first choices (v1) were given before Mixpanel existed on this site,
+ * so they do not cover it: everyone is asked again once. */
 
 export type ConsentChoice = 'accepted' | 'refused';
 /** 'pending' on the server and during hydration, 'unset' once we know there is no choice. */
 export type ConsentState = ConsentChoice | 'unset' | 'pending';
 
-const STORAGE_KEY = 'spanyolret-consent-v1';
+const STORAGE_KEY = 'spanyolret-consent-v2';
 const CHANGE_EVENT = 'spanyolret:consent-change';
 export const OPEN_SETTINGS_EVENT = 'spanyolret:consent-open';
 
