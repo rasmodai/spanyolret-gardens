@@ -6,8 +6,8 @@ import { track, registerSuperProperties, setUserPropertiesOnce, timeEvent } from
 
 // ─── Sections to observe for visibility tracking ───
 const SECTION_IDS = [
-    'hero', 'trust-bar', 'problem-solution', 'property-overview',
-    'gallery', 'benefits', 'floor-plans', 'location',
+    'hero', 'why-here',
+    'gallery', 'floor-plans', 'location',
     'developer', 'specs', 'process', 'faq', 'lead-form', 'footer'
 ];
 

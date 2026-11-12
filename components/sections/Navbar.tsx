@@ -14,14 +14,16 @@ import ThemeToggle from '@/components/ui/ThemeToggle';
  * poster has done its job.
  */
 
-const navLinks = [
-    { label: 'Overview', href: '#property-overview' },
-    { label: 'Gallery', href: '#gallery' },
-    { label: 'The six gardens', href: '#floor-plans' },
-    { label: 'Location', href: '#location' },
-];
+export interface NavbarProps {
+    ariaLabel: string;
+    backToTop: string;
+    links: { id: string; label: string }[];
+    cta: string;
+    themeDark: string;
+    themeLight: string;
+}
 
-export default function Navbar() {
+export default function Navbar({ ariaLabel, backToTop, links, cta, themeDark, themeLight }: NavbarProps) {
     const [isVisible, setIsVisible] = useState(false);
     const [activeSection, setActiveSection] = useState('');
 
@@ -29,7 +31,7 @@ export default function Navbar() {
         const handleScroll = () => {
             setIsVisible(window.scrollY > window.innerHeight * 0.7);
 
-            for (const section of navLinks.map((l) => l.href.slice(1)).reverse()) {
+            for (const section of links.map((l) => l.id).reverse()) {
                 const el = document.getElementById(section);
                 if (el && el.getBoundingClientRect().top <= 150) {
                     setActiveSection(section);
@@ -40,11 +42,11 @@ export default function Navbar() {
 
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [links]);
 
     return (
         <nav
-            aria-label="Section navigation"
+            aria-label={ariaLabel}
             className={`fixed inset-x-0 top-0 z-50 border-b border-line bg-paper transition-[opacity,transform] duration-medium ease-enter ${
                 isVisible ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-full opacity-0'
             }`}
@@ -54,7 +56,7 @@ export default function Navbar() {
                     type="button"
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     className="-my-2 flex min-h-[44px] items-center gap-3 py-2"
-                    aria-label="Back to top"
+                    aria-label={backToTop}
                 >
                     <Image
                         src="/espatrick-bau-logo.png"
@@ -66,13 +68,13 @@ export default function Navbar() {
                 </button>
 
                 <div className="hidden items-center gap-7 md:flex">
-                    {navLinks.map((link) => {
-                        const isActive = activeSection === link.href.slice(1);
+                    {links.map((link) => {
+                        const isActive = activeSection === link.id;
                         return (
                             <button
-                                key={link.href}
+                                key={link.id}
                                 type="button"
-                                onClick={() => scrollToElement(link.href.slice(1))}
+                                onClick={() => scrollToElement(link.id)}
                                 className={`tab-link ${
                                     isActive
                                         ? 'border-clay !text-ink'
@@ -86,13 +88,13 @@ export default function Navbar() {
                 </div>
 
                 <div className="flex items-center gap-6">
-                    <ThemeToggle />
+                    <ThemeToggle dark={themeDark} light={themeLight} />
                     <button
                         type="button"
                         onClick={() => scrollToElement('lead-form')}
                         className="btn btn-primary !px-5 !py-2.5 !text-sm"
                     >
-                        Book a viewing
+                        {cta}
                     </button>
                 </div>
             </div>

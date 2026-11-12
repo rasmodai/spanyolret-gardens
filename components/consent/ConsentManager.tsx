@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { OPEN_SETTINGS_EVENT, useConsent, writeConsent, type ConsentChoice } from '@/lib/consent';
-import { privacyPath } from '@/lib/site';
+import { projectConfig } from '@/lib/project-config';
 
 const COPY = {
     en: {
@@ -64,7 +64,7 @@ export default function ConsentManager({ pixelId }: { pixelId: string | null }) 
                     <div className="section-container flex flex-col gap-4 py-4 md:flex-row md:items-center md:justify-between md:gap-8">
                         <p className="max-w-[72ch] text-sm leading-relaxed">
                             {text.text}{' '}
-                            <a href={privacyPath[locale]} className="underline">{text.privacyLink}</a>
+                            <a href={projectConfig.privacyPath[locale]} className="underline">{text.privacyLink}</a>
                         </p>
                         <div className="flex shrink-0 gap-3">
                             <button type="button" onClick={() => choose('refused')} className="btn btn-ghost flex-1 md:flex-none">

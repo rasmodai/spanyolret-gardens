@@ -1,7 +1,7 @@
-'use client';
-
 import Image from 'next/image';
-import { developerStats, qualityPromises } from '@/lib/data';
+import type { Copy } from '@/lib/copy/types';
+import { fill } from '@/lib/format';
+import { projectConfig } from '@/lib/project-config';
 
 /* Was: a centred card with the logo in a rounded white box, four stat tiles
  * with gradient icons, and the line "we don't just build homes — we build
@@ -11,29 +11,26 @@ import { developerStats, qualityPromises } from '@/lib/data';
  * than a claim: ask for addresses and go and look. That costs nothing and it
  * answers the buyer's actual objection.
  */
-export default function Developer() {
+export default function Developer({ copy }: { copy: Copy }) {
+    const { developer } = copy;
+
     return (
         <section id="developer" className="section-padding border-t border-line band-deep">
             <div className="section-container">
-                <div className="eyebrow">The builder</div>
+                <div className="eyebrow">{developer.eyebrow}</div>
 
                 <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
-                    <h2 className="display-l text-ink">The people who will actually build it.</h2>
+                    <h2 className="display-l text-ink">{developer.title}</h2>
                     <div className="self-end">
-                        <p className="lede">
-                            S-Patrik Bau has been building in Budapest since 2012 and has finished more than
-                            fifty projects. Ask us for addresses — several are a short drive from Spanyolrét,
-                            and standing in front of a building somebody has lived in for six years tells you
-                            more than anything on this page.
-                        </p>
+                        <p className="lede">{developer.lede}</p>
                         <p className="mt-4 text-sm text-ink-soft">
-                            Architect on record: JRT Stúdió Kft.
+                            {fill(developer.architect, { name: projectConfig.architect })}
                         </p>
                     </div>
                 </div>
 
                 <dl className="mt-12 grid grid-cols-2 border-t border-line lg:grid-cols-3">
-                    {developerStats.map((stat) => (
+                    {developer.stats.map((stat) => (
                         <div
                             key={stat.label}
                             className="border-b border-r border-line px-4 py-6 last:border-r-0 sm:px-5"
@@ -48,7 +45,7 @@ export default function Developer() {
                     <div>
                         <Image
                             src="/espatrick-bau-logo.png"
-                            alt="S-Patrik Bau"
+                            alt={projectConfig.developer.name}
                             width={180}
                             height={54}
                             className="h-10 w-auto object-contain"
@@ -56,7 +53,7 @@ export default function Developer() {
                     </div>
 
                     <ul>
-                        {qualityPromises.map((promise) => (
+                        {developer.promises.map((promise) => (
                             <li
                                 key={promise}
                                 className="border-b border-line py-3 text-[0.9375rem] text-ink-soft first:border-t first:border-line md:first:border-t-0 md:first:pt-0"

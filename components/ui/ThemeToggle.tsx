@@ -15,7 +15,7 @@ type Theme = 'light' | 'dark';
 
 const STORAGE_KEY = 'spanyolret-theme';
 
-export default function ThemeToggle({ locale = 'en' }: { locale?: 'en' | 'hu' }) {
+export default function ThemeToggle({ dark, light }: { dark: string; light: string }) {
     const [theme, setTheme] = useState<Theme | null>(null);
 
     useEffect(() => {
@@ -32,17 +32,9 @@ export default function ThemeToggle({ locale = 'en' }: { locale?: 'en' | 'hu' })
     };
 
     // Render nothing until the effect has resolved, so the button label never
-    // disagrees with what the visitor is actually looking at.
+    // disagrees with what the visitor is actually looking at. The label names
+    // the theme the button switches to.
     if (theme === null) return null;
-
-    const label =
-        theme === 'dark'
-            ? locale === 'hu'
-                ? 'Világos'
-                : 'Light'
-            : locale === 'hu'
-              ? 'Sötét'
-              : 'Dark';
 
     return (
         <button
@@ -51,7 +43,7 @@ export default function ThemeToggle({ locale = 'en' }: { locale?: 'en' | 'hu' })
             aria-pressed={theme === 'dark'}
             className="tab-link border-transparent hover:!text-ink"
         >
-            {label}
+            {theme === 'dark' ? light : dark}
         </button>
     );
 }
