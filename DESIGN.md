@@ -188,14 +188,31 @@ Added 2026-08-08. The distinction that makes this compatible with a minimal syst
 
 | Device | What it is | Why it is not decoration |
 |--------|-----------|--------------------------|
-| `reveal-mask` | Photographs uncover left to right, 720ms | A print being pulled out from under a sheet. Replaces the fade every other site uses. |
-| `reveal-unroll` | Drawings unroll from the bottom, 900ms | A plan being unrolled on a table. Slower, because a drawing rewards being read. |
-| `plan-swap` | The plan wipes in on every tab change, 520ms | The sheet is being changed, not the pixels. |
+| `reveal-mask` | Photographs uncover left to right, 720ms | A print being pulled out from under a sheet. Replaces the fade every other site uses. *No longer used since lot 7 (the CSS stays).* |
+| `reveal-unroll` | Drawings unroll from the bottom, 900ms | A plan being unrolled on a table. Slower, because a drawing rewards being read. *No longer used since lot 7 (the CSS stays).* |
+| `plan-swap` | The plan wipes in on every tab change, 520ms | The sheet is being changed, not the pixels. *No longer used since lot 7 (the CSS stays).* |
 | `scale-sticky` | The ribbon scale header stays while the six bars scroll | Without it you lose the reference the bars are measured against halfway down — the one thing the ribbon exists to provide. |
 
-**The hard rule, learned on this project: motion must never gate content.** Every element's base state is visible; `useReveal()` only ever *adds* a class. The previous system had 28 elements sitting at `opacity: 0` waiting for an IntersectionObserver that did not always fire, which rendered whole sections blank on anchor navigation. Verified after the rebuild: 0 elements start hidden, 0 are clipped before the observer runs.
+**The hard rule, learned on this project: motion must never gate content.** Every element's base state is visible; the motion only ever *adds* a class (lot 7: `components/motion/PageMotion.tsx`, see below). The previous system had 28 elements sitting at `opacity: 0` waiting for an IntersectionObserver that did not always fire, which rendered whole sections blank on anchor navigation. Verified after the rebuild: 0 elements start hidden, 0 are clipped before the observer runs.
 
-`lib/useReveal.ts` returns early under `prefers-reduced-motion: reduce` rather than merely shortening the duration — a clip-path wipe is exactly the kind of motion that causes vestibular discomfort, and the content is already in its final state.
+`PageMotion` returns early under `prefers-reduced-motion: reduce` rather than merely shortening the duration, and the hero animations are switched off in CSS: the content is already in its final state.
+
+### Lot 7 — mise en scène (12/11/2026)
+
+Added after the verdict "no motion design, nothing but text". Still CSS + IntersectionObserver + requestAnimationFrame, no library, still never gating content. The server renders the final state of everything; what starts hidden is set by JS **below the fold only**, once an observer is known to run, with a 1.5 s safety net and a `beforeprint` release. Reduced motion, a hidden tab or no IntersectionObserver: nothing moves, nothing is hidden.
+
+| Device | What it does | Where |
+|--------|--------------|-------|
+| Hero lines | The two lines of the title rise one after the other, 900 ms, once. CSS animation (`.hero-line`, `.hero-in`): the markup is the final state. The scrim under the title is denser (`.94 → .12`) so the title reads over the video. | `Hero.tsx`, `globals.css` |
+| Hero counters | The key figures (6 · 117–120 m² · 102–202 m² · year) count up to their value in 1.1 s; the year counts from seven years earlier. Same width start to end. | `components/motion/HeroCounters.tsx` |
+| `data-reveal` | Opacity 0 → 1 + `translateY(12px)`, 420 ms, once; `data-reveal="2"` is the second step (90 ms later), never more than two. | `components/motion/PageMotion.tsx` |
+| `.band` / `.band-img` | Full-width render (garden at midday after "Why here", family barbecue after Pricing, children running after the FAQ) at 120 % of its frame, moved by ±10 % of the frame height as it scrolls. | `Breath.tsx` |
+| Garden ribbons | Rendered at their true length by the server; emptied by JS only below the fold, filled on arrival, 600 ms. | `GardenRibbon.tsx` |
+| Site plan | A polygon and a chip per plot (`lib/site-plan.ts`); pointer, finger or focus on a plot highlights its row, and the other way round. The plot dims the others. | `HouseExplorer.tsx`, `HouseRows.tsx` |
+| Timeline | The line of the process draws as the section scrolls (vertical on a phone, horizontal from 1040 px); drawn in full without JS. | `Process.tsx`, `PageMotion` |
+| Carousel | Nine renders, `scroll-snap`, mouse drag, arrows, focusable strip, progress bar; a click opens a native `<dialog>` viewer (arrows, Escape). | `GalleryCarousel.tsx` |
+
+**Specification blocks.** Six blocks (a line icon in `--lawn-inv`, the figure that matters in mono, three lines) and the full thirty lines folded in a native `<details>`. **Why here** is four cards (render, "your week now", what it is here); the former overview figures live in the hero and the former benefits list in the specification blocks.
 
 ## Localization — EN + HU
 
@@ -347,7 +364,7 @@ Applied to the codebase 2026-08-08 over three passes.
 
 **Every section, both locales.** Navbar, TrustBar, ProblemSolution, PropertyOverview, Gallery, Benefits, FloorPlans, Pricing, Location, Developer, Specs, Process, FAQ, LeadForm, Footer. All on the grid-and-hairline rhythm: no centred stacks, no icons in circles, no pill badges, no tabs hiding evidence.
 
-**Revamp of 12/11/2026 (lots 2 to 5).** One tree for both languages (`components/LandingPage.tsx`, copy in `lib/copy/`). Section order: Navbar, Hero, WhyHere, Gallery, FloorPlans, CtaBand, Pricing, Location, Developer, Specs, CtaBand, Process, FAQ, LeadForm, Footer, plus the mobile StickyActions bar. `TrustBar`, `ProblemSolution`, `PropertyOverview`, `Benefits` and the floating availability badge are gone (their evidence is merged into `WhyHere`). Each house has a sheet (Radix dialog: plan and facts, no price, no request button for a sold house). `CtaBand` is the call-to-action band set twice on the page, after the houses and after the specs, with the call button only when `callNumber` is set. The thank-you pages (`/thank-you`, `/hu/koszonjuk`) follow the current design (same tokens and rhythm as the landing page). Visual rules (tokens, radius 0, no shadow, one accent) did not change.
+**Revamp of 12/11/2026 (lots 2 to 5).** One tree for both languages (`components/LandingPage.tsx`, copy in `lib/copy/`). Section order (lot 7 adds three full-width `Breath` bands): Navbar, Hero, WhyHere, Breath (midday), Gallery (carousel), FloorPlans, CtaBand, Pricing, Breath (barbecue), Location, Developer, Specs, CtaBand, Process, FAQ, Breath (children), LeadForm, Footer, plus the mobile StickyActions bar and the invisible `PageMotion`. `TrustBar`, `ProblemSolution`, `PropertyOverview`, `Benefits` and the floating availability badge are gone (their evidence is merged into `WhyHere`). Each house has a sheet (Radix dialog: plan and facts, no price, no request button for a sold house). `CtaBand` is the call-to-action band set twice on the page, after the houses and after the specs, with the call button only when `callNumber` is set. The thank-you pages (`/thank-you`, `/hu/koszonjuk`) follow the current design (same tokens and rhythm as the landing page). Visual rules (tokens, radius 0, no shadow, one accent) did not change.
 
 **Removed entirely.** `InteractiveSelector`, `InteractiveSelectorHu`, `demo.tsx` and the `react-icons` dependency they pulled in. `@studio-freight/lenis` — installed, never imported, pure bundle weight. 17 decorative orb and noise divs.
 

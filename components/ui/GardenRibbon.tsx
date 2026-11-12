@@ -19,6 +19,10 @@ import { useEffect, useRef, useState } from 'react';
  * The fill animation is the one piece of motion in the system that carries
  * information rather than decoration, so it survives the ban on entrance
  * animation flourishes — but it still respects prefers-reduced-motion.
+ *
+ * The server renders the bar at its true length. Only once the page is in the
+ * browser, and only if the bar is below the fold, it is emptied (`armed`) and
+ * filled when it comes into view: content never waits for an observer.
  */
 
 export interface GardenRibbonProps {
@@ -33,17 +37,18 @@ export interface GardenRibbonProps {
 
 export default function GardenRibbon({ area, percent, percentLabel, ariaLabel, gardenWord, muted = false }: GardenRibbonProps) {
     const ref = useRef<HTMLDivElement>(null);
+    // armed: emptied, waiting to come into view. filled: has come into view.
+    const [armed, setArmed] = useState(false);
     const [filled, setFilled] = useState(false);
 
     useEffect(() => {
         const node = ref.current;
         if (!node) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (!('IntersectionObserver' in window) || document.visibilityState !== 'visible') return;
+        if (node.getBoundingClientRect().top < window.innerHeight) return;
 
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            setFilled(true);
-            return;
-        }
-
+        setArmed(true);
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -56,6 +61,8 @@ export default function GardenRibbon({ area, percent, percentLabel, ariaLabel, g
         observer.observe(node);
         return () => observer.disconnect();
     }, []);
+
+    const waiting = armed && !filled;
 
     return (
         <div ref={ref}>
@@ -70,8 +77,8 @@ export default function GardenRibbon({ area, percent, percentLabel, ariaLabel, g
                 <div
                     className={muted ? 'absolute inset-y-0 left-0 bg-ink-soft' : 'absolute inset-y-0 left-0 bg-lawn'}
                     style={{
-                        width: filled ? `${percent}%` : '0%',
-                        transition: 'width 600ms cubic-bezier(0.22, 0.61, 0.36, 1)',
+                        width: waiting ? '0%' : `${percent}%`,
+                        transition: waiting ? 'none' : 'width 600ms cubic-bezier(0.22, 0.61, 0.36, 1)',
                     }}
                 />
             </div>

@@ -1,104 +1,53 @@
-import ScrollButton from '@/components/ui/ScrollButton';
-import { LegrandLogo, WienerbergerLogo } from '@/components/ui/BrandLogos';
+import Image from 'next/image';
 import type { Copy } from '@/lib/copy/types';
+import { renders } from '@/lib/renders';
 
 /* One section where there were four (problem and solution, overview, benefits,
- * trust bar): the buyer's week now against the same week here, the six figures
- * of the development, the things you only notice after moving in, and the
- * brands the specification commits to. Nothing was dropped: the trust bar's
- * figures are in the overview strip, the builder section and the benefits.
+ * trust bar), then one wall of text. Now four cards, each a picture and the
+ * buyer's week now against the same week here: the facts that were in the
+ * benefits list are in the specification blocks (Specs), the figures of the
+ * overview are in the hero.
  *
- * Content must never depend on an animation running: no reveal state here. */
+ * Content must never depend on an animation running: the cards are rendered
+ * as they are; PageMotion only softens their appearance below the fold. */
 export default function WhyHere({ copy }: { copy: Copy }) {
-    const { whyHere } = copy;
-    const { problems, overview, benefits } = whyHere;
+    const { whyHere, gallery } = copy;
 
     return (
         <section id="why-here" className="section-padding border-t border-line bg-paper">
             <div className="section-container">
                 <div className="eyebrow">{whyHere.eyebrow}</div>
 
-                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16" data-reveal>
                     <h2 className="display-l text-ink">{whyHere.title}</h2>
                     <p className="lede self-end">{whyHere.lede}</p>
                 </div>
 
-                {/* ---- The week now, against the week here ---------------- */}
-                <div className="mt-14">
-                    <div className="hidden grid-cols-2 gap-x-16 border-b border-line pb-3 md:grid">
-                        <p className="caption">{problems.columnNow}</p>
-                        <p className="caption !text-lawn">{problems.columnHere}</p>
-                    </div>
-
-                    <dl>
-                        {problems.pairs.map(({ problem, solution }) => (
-                            <div key={problem.title} className="grid gap-x-16 gap-y-6 border-b border-line py-7 md:grid-cols-2">
-                                <div>
-                                    <dt className="font-display text-lg leading-snug text-ink-soft">{problem.title}</dt>
-                                    <dd className="mt-2 max-w-[42ch] text-[0.9375rem] leading-relaxed text-ink-soft">{problem.text}</dd>
+                <div className="why-grid mt-12 md:mt-16">
+                    {whyHere.cards.map((card, i) => {
+                        const render = renders[card.shot];
+                        const alt = gallery.shots.find((shot) => shot.key === card.shot)?.alt ?? '';
+                        return (
+                            <article key={card.title} className="why-card" data-reveal={i % 2 ? '2' : '1'}>
+                                <div className="why-photo">
+                                    <Image
+                                        src={render.src}
+                                        alt={alt}
+                                        width={render.width}
+                                        height={render.height}
+                                        sizes="(max-width: 760px) 100vw, 560px"
+                                        className="h-full w-full object-cover"
+                                    />
                                 </div>
-                                <div className="border-l border-line pl-6 md:border-l-0 md:pl-0">
-                                    <dt className="font-display text-lg leading-snug text-ink">{solution.title}</dt>
-                                    <dd className="mt-2 max-w-[42ch] text-[0.9375rem] leading-relaxed text-ink-soft">{solution.text}</dd>
-                                </div>
-                            </div>
-                        ))}
-                    </dl>
-                </div>
-
-                {/* ---- The development in six figures ---------------------- */}
-                <div className="mt-16 grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
-                    <h3 className="font-display text-2xl leading-snug text-ink">{overview.title}</h3>
-                    <p className="self-end text-[1.0625rem] leading-relaxed text-ink-soft">{overview.lede}</p>
-                </div>
-
-                <dl className="mt-10 grid grid-cols-2 border-t border-line md:grid-cols-3 lg:grid-cols-6">
-                    {overview.stats.map((stat) => (
-                        <div key={stat.label} className="border-b border-r border-line px-4 py-6 last:border-r-0 sm:px-5">
-                            <dd className="measure text-xl text-ink md:text-2xl">{stat.value}</dd>
-                            <dt className="caption mt-2">{stat.label}</dt>
-                        </div>
-                    ))}
-                </dl>
-
-                <div className="mt-8">
-                    <ScrollButton target="floor-plans" className="btn btn-ghost">
-                        {overview.cta}
-                    </ScrollButton>
-                </div>
-
-                {/* ---- What you only notice after you move in -------------- */}
-                <div className="mt-16 grid gap-8 border-t border-line pt-10 md:grid-cols-[1fr_1.1fr] md:gap-16">
-                    <h3 className="font-display text-2xl leading-snug text-ink">{benefits.title}</h3>
-                    <p className="self-end text-[1.0625rem] leading-relaxed text-ink-soft">{benefits.lede}</p>
-                </div>
-
-                <ol className="mt-10 border-t border-line">
-                    {benefits.items.map((benefit, i) => (
-                        <li
-                            key={benefit.title}
-                            className="grid gap-x-6 gap-y-2 border-b border-line py-6 md:grid-cols-[3rem_1fr_minmax(0,22rem)] md:items-baseline"
-                        >
-                            <span className="measure text-sm text-ink-soft">{String(i + 1).padStart(2, '0')}</span>
-                            <h4 className="font-display text-xl leading-snug text-ink">{benefit.title}</h4>
-                            <p className="text-[0.9375rem] leading-relaxed text-ink-soft">
-                                {benefit.text}
-                                <span className="measure ml-2 whitespace-nowrap text-ink">{benefit.highlight}</span>
-                            </p>
-                        </li>
-                    ))}
-                </ol>
-
-                {/* Only the brands the technical specification commits to. VEKA
-                  * and SIEMENS are "or" options there, so they are named in the
-                  * specification and not shown as settled; BOSCH is nowhere. */}
-                <div className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-4">
-                    <p className="caption">{whyHere.brandsLabel}</p>
-                    <div className="flex items-center gap-8 opacity-70">
-                        <WienerbergerLogo className="h-6 w-auto" />
-                        <LegrandLogo className="h-6 w-auto" />
-                        <span className="measure text-sm text-ink-soft">Silka</span>
-                    </div>
+                                <p className="mt-[1.125rem] text-[0.9375rem] leading-snug text-ink-soft">
+                                    <span className="caption">{whyHere.nowLabel}</span> · {card.now}
+                                </p>
+                                <h3 className="mt-2 font-display text-[1.375rem] leading-tight text-ink">{card.title}</h3>
+                                <p className="mt-2 max-w-[46ch] text-[0.9375rem] leading-relaxed text-ink-soft">{card.text}</p>
+                                {card.meta && <p className="caption mt-3 !text-ink">{card.meta}</p>}
+                            </article>
+                        );
+                    })}
                 </div>
             </div>
         </section>

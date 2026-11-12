@@ -83,112 +83,37 @@ export const en: Copy = {
         eyebrow: 'Why here',
         title: 'Nobody plans to raise two children in seventy square metres.',
         lede: 'You moved here for the work and it went well. Then the second child arrived, the home office became the corner of the bedroom, and you started parking three streets away.',
-        problems: {
-            columnNow: 'Your week now',
-            columnHere: 'The same week here',
-            pairs: [
-                {
-                    problem: {
-                        title: 'The office is the corner of the bedroom',
-                        text: 'Someone is always on a call. Someone else is always being asked to be quiet.',
-                    },
-                    solution: {
-                        title: `${Math.round(shared.interiorRange.min)} m², five rooms, two floors`,
-                        text: 'A room to work in with a door that shuts. A pantry, a utility room, a walk-in wardrobe.',
-                    },
-                },
-                {
-                    problem: {
-                        title: 'A balcony is not outside',
-                        text: 'You cannot send a five-year-old out to a balcony and get on with your morning.',
-                    },
-                    solution: {
-                        title: `Between ${gardenFrom} and ${gardenTo} m² of garden`,
-                        text: 'Hand-sown grass, fenced, with a door from the living room. You can see all of it from the terrace.',
-                    },
-                },
-                {
-                    problem: {
-                        title: 'Twenty minutes looking for a space',
-                        text: 'Then three streets to walk, with the shopping and both children.',
-                    },
-                    solution: {
-                        title: 'One space, behind a gate you open from the car',
-                        text: 'You arrive, the gate opens, you park. That is the whole of it, every day.',
-                    },
-                },
-                {
-                    problem: {
-                        title: '€18,000 a year, and none of it is yours',
-                        text: 'At €1,500 a month you have paid for a good part of a house. Someone else owns it.',
-                    },
-                    solution: {
-                        title: 'The payment goes into something you own',
-                        text: 'We are not going to forecast the Budapest market for you. But the money stops leaving.',
-                    },
-                },
-            ],
-        },
-        overview: {
-            title: 'Two buildings. Six houses. Six different gardens.',
-            lede: `Every house here is the same house: five rooms over two floors, two bathrooms, a ${terrace} terrace, one or two parking spaces. The garden is the only thing that changes, and it changes by nearly twice.`,
-            stats: [
-                { value: `${shared.houseCount}`, label: 'Townhouses' },
-                { value: interior, label: 'Inside' },
-                { value: garden, label: 'Private garden' },
-                { value: `${shared.rooms}`, label: 'Rooms' },
-                { value: terrace, label: 'Terrace' },
-                ...(keys ? [{ value: keys, label: 'Keys' }] : []),
-            ],
-            cta: 'See the six gardens',
-        },
-        benefits: {
-            title: 'The parts you only notice after you move in.',
-            lede: 'Thirty-centimetre party walls. No gas connection. A gate you open from the driver’s seat. The things you stop thinking about once they are simply true.',
-            items: [
-                {
-                    title: 'No gas bill, because there is no gas',
-                    text: 'A Westen Auriga heat pump runs the underfloor heating in winter and the cooling in summer.',
-                    highlight: 'No gas connection',
-                },
-                {
-                    title: '30 cm of brick between you and next door',
-                    text: 'Silka sound-insulating block on the party walls. It is the reason you will not hear them.',
-                    highlight: '30 cm',
-                },
-                {
-                    title: 'The pipework for solar is already in',
-                    text: 'Protective conduit runs to the roof. The panels themselves are a chargeable extra, not included.',
-                    highlight: 'Conduit installed',
-                },
-                {
-                    title: 'A thermostat per floor',
-                    text: 'Programmable weekly, SIEMENS or HONEYWELL. Upstairs and downstairs do not have to agree.',
-                    highlight: 'Per floor',
-                },
-                {
-                    title: 'MABISZ-certified entrance door',
-                    text: 'Four to eight point locking, alarm wiring prepared in every room, and a gate you open from the car.',
-                    highlight: 'Certified',
-                },
-                {
-                    title: 'Choose the finishes while it is still being built',
-                    text: 'Tiles, flooring, paint. This is the one thing you cannot do when you buy a house that is already finished.',
-                    highlight: 'Until completion',
-                },
-                {
-                    title: 'The specification, in writing',
-                    text: 'Wienerberger Porotherm outside, Silka between, LEGRAND Valena fittings, triple glazing. Named brands are a claim we can be held to.',
-                    highlight: 'Named, not implied',
-                },
-                {
-                    title: 'The garden is the whole point',
-                    text: `From ${formatArea(shared.gardenRange.min, 'en')} to ${formatArea(shared.gardenRange.max, 'en')}. Hand-sown grass, 10–15 cm of topsoil, irrigation pipework prepared.`,
-                    highlight: `Up to ${formatArea(shared.gardenRange.max, 'en')}`,
-                },
-            ],
-        },
-        brandsLabel: 'Named in the specification',
+        nowLabel: 'Your week now',
+        cards: [
+            {
+                shot: 'dusk',
+                now: 'The office is the corner of the bedroom',
+                title: `${Math.round(shared.interiorRange.min)} m², five rooms, two floors`,
+                text: 'A room to work in with a door that shuts. A pantry, a utility room, a walk-in wardrobe.',
+                meta: null,
+            },
+            {
+                shot: 'lawn',
+                now: 'A balcony is not outside',
+                title: `Between ${gardenFrom} and ${gardenTo} m² of garden`,
+                text: 'Hand-sown grass, fenced, with a door from the living room. You can see all of it from the terrace.',
+                meta: null,
+            },
+            {
+                shot: 'walk',
+                now: 'Twenty minutes looking for a space',
+                title: 'Parking behind a gate you open from the car',
+                text: 'You arrive, the gate opens, you park.',
+                meta: `Two outdoor spaces come with ${twoSpaces}, one with ${oneSpace}.`,
+            },
+            {
+                shot: 'wine',
+                now: '€18,000 a year, and none of it is yours',
+                title: 'The payment goes into something you own',
+                text: 'At €1,500 a month you have paid for a good part of a house. Someone else owns it. We are not going to forecast the Budapest market for you. But the money stops leaving.',
+                meta: null,
+            },
+        ],
     },
 
     gallery: {
@@ -218,13 +143,49 @@ export const en: Copy = {
                 alt: 'Aerial view of the two buildings and the six garden plots',
                 caption: 'Two buildings of three. Every garden is a different size.',
             },
+            {
+                key: 'dusk',
+                alt: 'The two buildings at dusk, windows lit, seen from the garden',
+                caption: 'The two buildings at dusk.',
+            },
+            {
+                key: 'wine',
+                alt: 'A couple drinking wine on the terrace in the evening, the lit living room behind',
+                caption: 'An evening on the terrace.',
+            },
+            {
+                key: 'path',
+                alt: 'A family of four walking on the paved path in front of the house',
+                caption: 'On the garden path.',
+            },
+            {
+                key: 'walk',
+                alt: 'A family of four on the garden path, near the façade',
+                caption: 'A walk in the garden.',
+            },
+            {
+                key: 'lawn',
+                alt: 'Two children running across the lawn, the house behind',
+                caption: 'Children on the lawn.',
+            },
         ],
+        ui: {
+            region: 'Gallery, scroll sideways',
+            hint: 'Drag, scroll or use the arrows · click to enlarge',
+            previousImage: 'Previous image',
+            nextImage: 'Next image',
+            enlarge: 'Enlarge: {alt}',
+            viewer: 'Image viewer',
+            close: 'Close',
+            previous: 'Previous',
+            next: 'Next',
+        },
     },
 
     houses: {
         eyebrow: 'The six gardens',
         title: 'Same house six times. The garden is what changes.',
-        lede: `Five rooms, two floors and a ${terrace} terrace in every one of them. On the four still available, the garden runs from ${formatArea(shared.gardenRange.min, 'en')} to ${formatArea(shared.gardenRange.max, 'en')} — nearly twice the difference, drawn to scale below.`,
+        lede: `Five rooms over two floors, two bathrooms and a ${terrace} terrace in every one. On the four still available, the garden runs from ${formatArea(shared.gardenRange.min, 'en')} to ${formatArea(shared.gardenRange.max, 'en')}, drawn to scale below.`,
         columnHouse: 'Unit',
         columnGarden: 'Private garden, to scale',
         summary: '{interior} inside · {rooms} rooms · {terrace} terrace',
@@ -266,6 +227,9 @@ export const en: Copy = {
         },
         plans: {
             sitePlan: 'Site plan',
+            sitePlanAlt: 'Site plan: two buildings of three houses, each with its own garden plot',
+            soldChip: 'sold',
+            siteHint: 'hover or tap a plot',
             house: 'House {id}',
             groundFloor: 'Ground floor',
             firstFloor: 'First floor',
@@ -367,6 +331,69 @@ export const en: Copy = {
         eyebrow: 'Specification',
         title: 'What is written in the technical description.',
         lede: 'Every line below is in the contract documentation. We publish it because naming a brand in writing is a claim you can hold us to, and a specification is a better answer than a promise.',
+        highlights: [
+            {
+                key: 'walls',
+                figure: '30 cm',
+                label: 'External and party walls',
+                items: [
+                    'Wienerberger Porotherm outside, Silka sound-insulating brick between',
+                    'Thermal insulation: 12cm STO system',
+                    'Roof: Flat, green roof ready, 20-26cm EPS insulation',
+                ],
+            },
+            {
+                key: 'climate',
+                figure: 'No gas',
+                label: 'Heat pump, underfloor heating',
+                items: [
+                    'Heat pump: Westen Auriga with hot water storage',
+                    'Fan-coil cooling on each floor, SIEMENS/HONEYWELL thermostat per floor',
+                    'Protective conduit runs to the roof. The solar panels themselves are a chargeable extra, not included in the price.',
+                ],
+            },
+            {
+                key: 'glazing',
+                figure: 'Triple-glazed',
+                label: 'Glazing, 6-chamber profile',
+                items: [
+                    'VEKA 82 / Aluplast Neo window profile, Roto NX hardware',
+                    'Entrance door: MABISZ certified, 4-8 point locking',
+                    'Shading: Roller shutter preparation included',
+                ],
+            },
+            {
+                key: 'electrical',
+                figure: '4–10',
+                label: 'Sockets per room',
+                items: [
+                    'Fittings: LEGRAND Valena series',
+                    'TV/Internet: Connection in every room',
+                    'Motion sensor preparation for the alarm, twilight-controlled outdoor lighting',
+                ],
+            },
+            {
+                key: 'finishes',
+                figure: '3',
+                label: 'Paint colors included',
+                items: [
+                    'Premium laminate flooring in the living areas, ceramic tiles in the wet rooms',
+                    'Terrace: Porcelain stoneware tiles (max 60×60cm)',
+                    'You choose the finishes while it is still being built',
+                ],
+            },
+            {
+                key: 'garden',
+                figure: '10–15 cm',
+                label: 'Topsoil, hand-sown grass',
+                items: [
+                    'Fence: Galvanized (street), wire mesh (plots)',
+                    'Gate: Remote-controlled vehicle access',
+                    'Irrigation: Optional preparation',
+                ],
+            },
+        ],
+        fullToggle: 'Read the full specification ({count} lines)',
         included: 'Included',
         categories: [
             {
@@ -554,8 +581,7 @@ export const en: Copy = {
     leadForm: {
         eyebrow: 'Book a viewing',
         title: 'Come and stand in the garden.',
-        ledeMessaging:
-            'Answer three short questions, then choose WhatsApp or SMS: your message opens already written, you only have to send it. Bring the children to the visit.',
+        ledeMessaging: 'Answer a few short questions. Bring the children to the visit.',
         ledeNoMessaging:
             'Bring the children. They will tell you more about 300 m² of grass than we can. One visit, and no follow-up unless you ask for it.',
         replyText: 'Within the hour during Budapest office hours. Otherwise first thing tomorrow.',

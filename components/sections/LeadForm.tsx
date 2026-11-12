@@ -17,11 +17,11 @@ export default function LeadForm({
     const { leadForm } = copy;
 
     return (
-        <section id="lead-form" className="section-padding band-frame">
+        <section id="lead-form" className="section-airy band-frame">
             <div className="section-container relative z-10">
                 <div className="mx-auto max-w-4xl">
                     <div className="grid gap-10 lg:grid-cols-2">
-                        <div className="text-onmedia">
+                        <div className="text-onmedia" data-reveal>
                             <div className="caption mb-6 flex items-center gap-4 !text-[color:var(--on-frame-soft)]">
                                 {leadForm.eyebrow}
                                 <span className="h-px flex-1 bg-onmedia/20" />
@@ -48,7 +48,7 @@ export default function LeadForm({
                             </dl>
                         </div>
 
-                        <div className="bg-paper p-6 text-ink md:p-8">
+                        <div className="bg-paper p-6 text-ink md:p-8" data-reveal="2">
                             <LeadFormCore
                                 copy={copy.form}
                                 lang={locale}

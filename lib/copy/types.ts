@@ -87,6 +87,12 @@ export interface HouseSheetCopy {
     callRevealed: string;
 }
 
+/** The nine renders, in gallery order. */
+export type GalleryShotKey =
+    | 'midday' | 'children' | 'barbecue' | 'aerial' | 'dusk' | 'wine' | 'path' | 'walk' | 'lawn';
+
+export type SpecIconKey = 'walls' | 'climate' | 'glazing' | 'electrical' | 'finishes' | 'garden';
+
 export interface BandCopy {
     title: string;
     text: string;
@@ -124,34 +130,42 @@ export interface Copy {
     };
     /** The one public price, and its qualifier: they never travel apart. */
     price: { anchor: string; qualifier: string };
-    /** The single "why here" section: the four former sections (problem / solution, overview, benefits, trust bar) in one. */
+    /** The "why here" section: the buyer's week now against the same week here, four illustrated cards. */
     whyHere: {
         eyebrow: string;
         title: string;
         lede: string;
-        problems: {
-            columnNow: string;
-            columnHere: string;
-            pairs: { problem: TextBlock; solution: TextBlock }[];
-        };
-        overview: {
+        /** The small label before each card's "now" line. */
+        nowLabel: string;
+        cards: {
+            /** Which render the card shows (its alt text is that shot's, in `gallery.shots`). */
+            shot: GalleryShotKey;
+            /** What the buyer's week is now. */
+            now: string;
             title: string;
-            lede: string;
-            stats: LabelledValue[];
-            cta: string;
-        };
-        benefits: {
-            title: string;
-            lede: string;
-            items: { title: string; text: string; highlight: string }[];
-        };
-        brandsLabel: string;
+            text: string;
+            /** A line of fine print under the text, or null. */
+            meta: string | null;
+        }[];
     };
     gallery: {
         eyebrow: string;
         title: string;
         lede: string;
-        shots: { key: 'midday' | 'children' | 'barbecue' | 'aerial'; alt: string; caption: string }[];
+        shots: { key: GalleryShotKey; alt: string; caption: string }[];
+        ui: {
+            /** The scrollable strip, for screen readers. */
+            region: string;
+            hint: string;
+            previousImage: string;
+            nextImage: string;
+            /** `{alt}` is replaced: the accessible name of a picture's button. */
+            enlarge: string;
+            viewer: string;
+            close: string;
+            previous: string;
+            next: string;
+        };
     };
     houses: {
         eyebrow: string;
@@ -175,6 +189,12 @@ export interface Copy {
         };
         plans: {
             sitePlan: string;
+            /** What the site plan shows, for screen readers. */
+            sitePlanAlt: string;
+            /** The word on the chip of a sold plot, after the house id. */
+            soldChip: string;
+            /** What to do with the plan: follows the caption. */
+            siteHint: string;
             /** `{id}` is replaced. */
             house: string;
             groundFloor: string;
@@ -231,6 +251,10 @@ export interface Copy {
         eyebrow: string;
         title: string;
         lede: string;
+        /** Six blocks: an icon, a key figure and three lines each. The full list stays below. */
+        highlights: { key: SpecIconKey; figure: string; label: string; items: string[] }[];
+        /** `{count}` is replaced by the number of lines of the full specification. */
+        fullToggle: string;
         /** Label of a line that has no "term: value" form. */
         included: string;
         categories: { id: string; title: string; items: string[] }[];

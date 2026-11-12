@@ -1,3 +1,4 @@
+import HeroCounters from '@/components/motion/HeroCounters';
 import HeroMedia from '@/components/ui/HeroMedia';
 import ScrollButton from '@/components/ui/ScrollButton';
 import type { Copy } from '@/lib/copy/types';
@@ -14,6 +15,25 @@ import type { Copy } from '@/lib/copy/types';
  * brightness we do not control.
  */
 
+/* "117–120 m²": each whole number is wrapped so it can count up to its value
+ * (components/motion/HeroCounters.tsx). A year counts up from seven years
+ * earlier, not from zero. The text itself is the final state. */
+function Figure({ value }: { value: string }) {
+    return (
+        <>
+            {value.split(/(\d+)/).map((part, i) =>
+                /^\d+$/.test(part) ? (
+                    <span key={i} data-count={part} data-from={Number(part) >= 1000 ? String(Number(part) - 7) : undefined}>
+                        {part}
+                    </span>
+                ) : (
+                    part
+                )
+            )}
+        </>
+    );
+}
+
 export default function Hero({ copy }: { copy: Copy }) {
     const { hero, price } = copy;
 
@@ -27,12 +47,12 @@ export default function Hero({ copy }: { copy: Copy }) {
                 src="/assets/renders/hero.mp4"
             />
 
-            {/* One scrim. Not four. */}
+            {/* One scrim. Not four. Dense under the title, so that it reads over the video. */}
             <div
                 className="absolute inset-0"
                 style={{
                     background:
-                        'linear-gradient(to top, rgba(22,25,27,.92) 0%, rgba(22,25,27,.86) 30%, rgba(22,25,27,.58) 55%, rgba(22,25,27,.18) 78%, rgba(22,25,27,0) 100%)',
+                        'linear-gradient(to top, rgba(18,20,22,.94) 0%, rgba(18,20,22,.88) 28%, rgba(18,20,22,.6) 52%, rgba(18,20,22,.2) 76%, rgba(18,20,22,.12) 100%)',
                 }}
             />
 
@@ -45,20 +65,27 @@ export default function Hero({ copy }: { copy: Copy }) {
 
             <div className="section-container relative pb-10 pt-32 text-onmedia md:pb-14">
                 <div className="max-w-[48rem]">
-                    <h1 className="display-xl animate-rise">
-                        {hero.titleFirst}
-                        <br />
-                        {hero.titleSecond}
+                    {/* The two lines rise one after the other, once (CSS only: the
+                      * markup is the final state). */}
+                    <h1 className="display-xl">
+                        <span className="hero-line">
+                            <span>{hero.titleFirst}</span>
+                        </span>
+                        <span className="hero-line">
+                            <span style={{ ['--d' as string]: '140ms' }}>{hero.titleSecond}</span>
+                        </span>
                     </h1>
 
-                    <p className="mt-5 max-w-[46ch] text-[1.0625rem] text-onmedia/80 md:text-lg">
+                    <p className="hero-in mt-5 max-w-[46ch] text-[1.0625rem] text-onmedia/80 md:text-lg" style={{ ['--d' as string]: '420ms' }}>
                         {hero.lede}
                     </p>
 
-                    <dl className="mt-7 grid grid-cols-2 border-t border-onmedia/25 sm:grid-cols-4">
+                    <dl className="hero-in mt-7 grid grid-cols-2 border-t border-onmedia/25 sm:grid-cols-4" style={{ ['--d' as string]: '560ms' }}>
                         {hero.facts.map((f) => (
                             <div key={f.label} className="border-r border-onmedia/15 py-3.5 pr-5 last:border-r-0">
-                                <dd className="measure whitespace-nowrap text-lg md:text-xl">{f.value}</dd>
+                                <dd className="measure whitespace-nowrap text-lg md:text-xl">
+                                    <Figure value={f.value} />
+                                </dd>
                                 <dt className="caption mt-1 !text-onmedia/60">{f.label}</dt>
                             </div>
                         ))}
@@ -66,12 +93,12 @@ export default function Hero({ copy }: { copy: Copy }) {
 
                     {/* The one public figure, and it never travels without its
                      * qualifier. DESIGN.md → Pricing Display Rule. */}
-                    <div className="mt-7">
+                    <div className="hero-in mt-7" style={{ ['--d' as string]: '680ms' }}>
                         <p className="measure text-2xl md:text-3xl">{price.anchor}</p>
                         <p className="caption mt-1.5 !text-onmedia/70">{price.qualifier}</p>
                     </div>
 
-                    <div className="mt-7 flex flex-wrap gap-3.5">
+                    <div className="hero-in mt-7 flex flex-wrap gap-3.5" style={{ ['--d' as string]: '780ms' }}>
                         <ScrollButton target="lead-form" className="btn btn-primary">
                             {hero.ctaPrimary}
                         </ScrollButton>
@@ -81,6 +108,8 @@ export default function Hero({ copy }: { copy: Copy }) {
                     </div>
                 </div>
             </div>
+
+            <HeroCounters />
         </section>
     );
 }
