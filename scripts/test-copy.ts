@@ -13,6 +13,7 @@ import { formatDate, formatPrice } from '../lib/format';
 import { houseOptions, houseRows } from '../lib/houses-view';
 import { privacyCopy } from '../lib/privacy-copy';
 import { projectConfig } from '../lib/project-config';
+import { tutoiement } from './tutoiement';
 
 let pass = 0;
 let fail = 0;
@@ -78,7 +79,7 @@ assert('privacy policy: Mixpanel named in both languages (providers, legal basis
 assert('FAQ: four groups each', en.faq.groups.length === 4 && hu.faq.groups.length === 4);
 assert('spec lists: same lines per category', en.specs.categories.every((category, i) => category.items.length === hu.specs.categories[i].items.length));
 
-const PLACEHOLDER_PATHS = /^(houses\.(summary|ribbon\.(ofLargest|aria)|plans\.(house|siteCaption))|developer\.architect|form\.(unitOption|message\.\w+)|footer\.(legalLine|architect))$/;
+const PLACEHOLDER_PATHS = /^(houses\.(summary|ribbon\.(ofLargest|aria)|plans\.(house|siteCaption)|sheet\.(openAria|askMessage|askCallBack|parking\.(one|other)))|developer\.architect|form\.(unitOption|message\.\w+)|footer\.(legalLine|architect))$/;
 for (const [name, copy] of [['en', en], ['hu', hu]] as const) {
     for (const [path, text] of strings(copy)) {
         if (/\{\w+\}/.test(text)) assert(`${name}: ${path} has a placeholder only where one is filled`, PLACEHOLDER_PATHS.test(path), text);
@@ -89,24 +90,6 @@ for (const [name, copy] of [['en', en], ['hu', hu]] as const) {
 // 2. Hungarian is written in "Ön", never "te" ----------------------------------
 
 console.log('Hungarian: no tutoiement');
-const TE_WORDS = [
-    'te', 'tied', 'tiéd', 'tiéd', 'neked', 'veled', 'téged', 'nálad', 'tőled', 'hozzád', 'számodra', 'szerinted', 'érted',
-    'légy', 'gyere', 'jöjj', 'nézd', 'kérd', 'hozd', 'tedd', 'vedd', 'add', 'válassz', 'keress', 'írj', 'hívj', 'kérdezz',
-    'jelentkezz', 'döntsd', 'képzeld', 'töltsd', 'ismerd', 'fedezd', 'hallgasd', 'próbáld', 'ellenőrizd', 'olvasd',
-];
-// The possessive of "te" (-d, -id: "az igényeid", "a foglalásod", "kérdésedet") on a word of five letters or more.
-const TE_SUFFIX = /^\p{L}{3,}(?:(?:ed|ad|od|öd)(?:et|at|ot|öt|nek|nak|ban|ben|ra|re|ról|ről|hoz|hez|höz|tól|től|ért|val|vel|on|en|ön)?|(?:eid|aid|oid|öid)\p{L}*)$/u;
-// The second person singular of a verb that can: "választhatsz", "megbízhatsz", "megtudsz", "beköltözöl".
-const TE_VERB = /(?:hatsz|hetsz|^megtudsz|^beköltözöl|^megbízol)$/u;
-// Words that end that way without being addressed to "te".
-const NOT_TE = new Set(['szabad', 'szabadon', 'terjed', 'negyed', 'egyed', 'szaladnak', 'munkaidőben']);
-function tutoiement(text: string): string[] {
-    const words = text.toLocaleLowerCase('hu').match(/\p{L}+/gu) ?? [];
-    const hits = words.filter((word) => TE_WORDS.includes(word));
-    for (const word of words) if (TE_VERB.test(word) && !hits.includes(word)) hits.push(word);
-    for (const word of words) if (TE_SUFFIX.test(word) && !NOT_TE.has(word) && !hits.includes(word)) hits.push(word);
-    return hits;
-}
 for (const sample of ['Nézd meg az építkezést', 'az igényeidet', 'számodra', 'Kérd el a címeket', 'Hozd a gyerekeket', 'Válassz', 'töltsd le', 'a foglalásod', 'hogy a kivitelezést magad nézhesd meg', 'választhatsz', 'megtudsz']) {
     assert(`the detector catches "${sample}"`, tutoiement(sample).length > 0);
 }
@@ -117,6 +100,8 @@ for (const [path, text] of strings(hu)) {
     const hits = tutoiement(text);
     assert(`hu: ${path} is in "Ön"`, hits.length === 0, `${hits.join()} in "${text}"`);
 }
+assert('hu: the thank-you pages, the house sheet and the bands are in the scanned tree',
+    ['thankYou.', 'houses.sheet.', 'ctaBands.'].every((prefix) => strings(hu).some(([path]) => path.startsWith(prefix))));
 for (const [name, tree] of [['cookie banner', consentCopy.hu], ['privacy policy', privacyCopy.hu]] as const) {
     for (const [path, text] of strings(tree)) {
         const hits = tutoiement(text);

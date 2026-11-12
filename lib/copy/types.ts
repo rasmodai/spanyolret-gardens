@@ -5,8 +5,8 @@ import type { Priority } from '../lead/types';
  * contains text: it receives a `Copy` (or a slice of it). en.ts and hu.ts both
  * satisfy this type, and scripts/test-copy.ts checks they have the same keys.
  *
- * Out of this tree on purpose: the privacy page (lib/privacy-copy.ts), the
- * cookie banner and the thank-you pages, which are other lots of the revamp. */
+ * Out of this tree on purpose: the privacy page (lib/privacy-copy.ts) and the
+ * cookie banner (lib/consent-copy.ts). */
 
 export interface TextBlock {
     title: string;
@@ -55,6 +55,45 @@ export interface FormCopy {
     errors: { firstName: string; phone: string; consent: string };
     message: MessageCopy;
     thankYouPath: string;
+}
+
+/** The sheet of one house (dialog): plan, facts, and the ways to ask. Nothing about price. */
+export interface HouseSheetCopy {
+    /** The row's button that opens the sheet. */
+    open: string;
+    /** `{id}` is replaced: the accessible name of that button. */
+    openAria: string;
+    close: string;
+    previous: string;
+    next: string;
+    zoomIn: string;
+    zoomOut: string;
+    facts: {
+        interior: string;
+        groundFloor: string;
+        firstFloor: string;
+        terrace: string;
+        garden: string;
+        rooms: string;
+        parking: string;
+    };
+    /** `{count}` is replaced. */
+    parking: { one: string; other: string };
+    /** `{id}` is replaced. The first button: opens the message (or, without a messaging number, the call-back request). */
+    askMessage: string;
+    askCallBack: string;
+    /** The button that shows the number, and what follows the number once it is shown. Only rendered when a call number exists. */
+    callNow: string;
+    callRevealed: string;
+}
+
+export interface BandCopy {
+    title: string;
+    text: string;
+    /** Goes to the form. */
+    primary: string;
+    /** Opens the message (only when a messaging number is set). */
+    message: string;
 }
 
 export interface Copy {
@@ -123,6 +162,7 @@ export interface Copy {
         /** `{interior}`, `{rooms}` and `{terrace}` are replaced. */
         summary: string;
         priceOnRequest: string;
+        sheet: HouseSheetCopy;
         statuses: { available: string; reserved: string; sold: string };
         highlights: Record<HighlightKey, string>;
         note: string;
@@ -240,5 +280,21 @@ export interface Copy {
         privacy: string;
         cookieSettings: string;
     };
-    stickyBar: { ariaLabel: string; viewing: string; message: string };
+    /** Two short bands that bring the visitor back to the form between long sections. */
+    ctaBands: { afterHouses: BandCopy; afterSpecs: BandCopy };
+    stickyBar: { ariaLabel: string; viewing: string; message: string; call: string };
+    /** What the visitor sees after the call-back form. */
+    thankYou: {
+        metaTitle: string;
+        title: string;
+        text: string;
+        next: string[];
+        brochureLead: string;
+        brochureButton: string;
+        faster: string;
+        /** The message that WhatsApp / SMS open already written. */
+        message: string;
+        back: string;
+        backHref: string;
+    };
 }
