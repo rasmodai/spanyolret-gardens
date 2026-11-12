@@ -189,7 +189,7 @@ export const en: Copy = {
         columnHouse: 'Unit',
         columnGarden: 'Private garden, to scale',
         summary: '{interior} inside · {rooms} rooms · {terrace} terrace',
-        priceOnRequest: 'Price on request',
+        interested: 'I’m interested',
         sheet: {
             open: 'Plan and details',
             openAria: 'Open the plan and details of house {id}',
@@ -268,7 +268,7 @@ export const en: Copy = {
         ],
         extrasNote:
             'Optional extras are priced separately and listed below. We put them here rather than at contract stage, because finding out later is how people end up feeling sold to.',
-        cta: 'Ask us the price',
+        cta: 'I’m interested',
         scheduleNote:
             'Payment schedule and financing are set out in the reservation documents. We will walk you through both before you commit to anything.',
     },
@@ -667,7 +667,7 @@ export const en: Copy = {
         afterHouses: {
             title: 'Which house is yours?',
             text: 'Ask for the price of any house, without obligation.',
-            primary: 'Ask for the price',
+            primary: 'I’m interested',
             message: 'Write to us',
         },
         afterSpecs: {

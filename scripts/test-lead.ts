@@ -94,7 +94,7 @@ async function main() {
     assert('no 242 050 000 anchor', !/242[ ,. ]?050[ ,. ]?000/.test(everything));
     assert('single price anchor is the 216 616 000 one',
         en.price.anchor === 'From 216,616,000\u00a0HUF' && /216[\s\u00a0]616[\s\u00a0]000[\s\u00a0]Ft-tól/.test(hu.price.anchor));
-    assert('per-house price is not published', en.houses.priceOnRequest === 'Price on request' && hu.houses.priceOnRequest === 'Ár kérésre');
+    assert('per-house price is not published', en.houses.interested === 'I’m interested' && hu.houses.interested === 'Érdekel');
 
     console.log('lead route, nothing configured');
     clearEnv();

@@ -175,7 +175,8 @@ export interface Copy {
         columnGarden: string;
         /** `{interior}`, `{rooms}` and `{terrace}` are replaced. */
         summary: string;
-        priceOnRequest: string;
+        /** The button on each available house that takes the visitor to the form (no price is ever shown). */
+        interested: string;
         sheet: HouseSheetCopy;
         statuses: { available: string; reserved: string; sold: string };
         highlights: Record<HighlightKey, string>;

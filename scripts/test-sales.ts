@@ -76,7 +76,7 @@ for (const locale of ['en', 'hu'] as const) {
         const row = rows.find((candidate) => candidate.id === unit.id)!;
         const html = sheet(locale, unit.id, { drawings: true, phone: FAKE_PHONE });
         const text = textOf(html);
-        assert(`${locale} ${unit.id}: the sheet states no price`, !/price|huf|\bft\b|\bár\b|\bárat\b|millió/i.test(text.replace(/\bPrice on request\b/g, '')) && !BIG_NUMBER.test(text), text.slice(0, 80));
+        assert(`${locale} ${unit.id}: the sheet states no price`, !/price|huf|\bft\b|\bár\b|\bárat\b|millió/i.test(text) && !BIG_NUMBER.test(text), text.slice(0, 80));
         assert(`${locale} ${unit.id}: seven facts, none empty`, row.facts.length === 7 && row.facts.every((fact) => fact.label && fact.value));
         const byLabel = (label: string) => row.facts.find((fact) => fact.label === label)?.value ?? '';
         assert(`${locale} ${unit.id}: interior, floors, terrace and garden come from the data`,
@@ -112,10 +112,10 @@ console.log('house rows');
 for (const locale of ['en', 'hu'] as const) {
     const copy = locale === 'hu' ? hu : en;
     const html = renderToStaticMarkup(
-        h(HouseRows, { houses: houseRows(locale), columnHouse: 'x', columnGarden: 'y', priceOnRequest: copy.houses.priceOnRequest, openLabel: copy.houses.sheet.open, onOpen: noop, onAsk: noop })
+        h(HouseRows, { houses: houseRows(locale), columnHouse: 'x', columnGarden: 'y', interested: copy.houses.interested, openLabel: copy.houses.sheet.open, onOpen: noop, onAsk: noop })
     );
     assert(`${locale}: six "plan and details" buttons (sold houses included)`, count(html, `>${copy.houses.sheet.open}<`) === 6);
-    assert(`${locale}: "${copy.houses.priceOnRequest}" on the four available houses only`, count(html, `>${copy.houses.priceOnRequest}<`) === 4);
+    assert(`${locale}: "${copy.houses.interested}" on the four available houses only`, count(html, `>${copy.houses.interested}<`) === 4);
 }
 
 // 3. The call button: nothing while there is no number ------------------------------

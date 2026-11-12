@@ -196,7 +196,7 @@ export const hu: Copy = {
         columnHouse: 'Ház',
         columnGarden: 'Saját kert, méretarányosan',
         summary: '{interior} belső · {rooms} szoba · {terrace} terasz',
-        priceOnRequest: 'Ár kérésre',
+        interested: 'Érdekel',
         sheet: {
             open: 'Alaprajz és adatok',
             openAria: 'Alaprajz és adatok megnyitása: {id} ház',
@@ -274,7 +274,7 @@ export const hu: Copy = {
             { item: 'Kerti öntözőrendszer', price: 'Egyedi árajánlat' },
         ],
         extrasNote: `Ezek egyike sincs benne a ${anchor}-os összegben. Azért itt soroljuk fel őket, és nem a szerződésnél, mert az utólag kiderülő tételektől érzi úgy az ember, hogy valamit ráerőltettek.`,
-        cta: 'Kérem az árat',
+        cta: 'Érdekel',
         scheduleNote:
             'A fizetési ütemezést és a finanszírozást a foglalási dokumentumok rögzítik. Mindkettőt végigvesszük Önnel, mielőtt bármit aláír.',
     },
@@ -677,7 +677,7 @@ export const hu: Copy = {
         afterHouses: {
             title: 'Melyik ház az Öné?',
             text: 'Kérje el bármelyik ház árát, kötelezettség nélkül.',
-            primary: 'Kérem az árat',
+            primary: 'Érdekel',
             message: 'Üzenetet írok',
         },
         afterSpecs: {
