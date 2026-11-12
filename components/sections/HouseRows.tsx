@@ -16,6 +16,8 @@ export default function HouseRows({
     openLabel,
     onOpen,
     onAsk,
+    activeId = null,
+    onActive,
 }: {
     houses: HouseRow[];
     columnHouse: string;
@@ -26,6 +28,9 @@ export default function HouseRows({
     onOpen: (id: string) => void;
     /** The house is still available: take the visitor to the form with it chosen. */
     onAsk: (id: string) => void;
+    /** The house under the pointer or focus, here or on the site plan. */
+    activeId?: string | null;
+    onActive?: (id: string | null) => void;
 }) {
     return (
         <>
@@ -37,7 +42,14 @@ export default function HouseRows({
             {houses.map((house) => (
                 <article
                     key={house.id}
-                    className="grid gap-x-6 gap-y-3 border-b border-line py-6 md:grid-cols-[4rem_1fr] md:items-center"
+                    data-house={house.id}
+                    onMouseEnter={() => onActive?.(house.id)}
+                    onMouseLeave={() => onActive?.(null)}
+                    onFocus={() => onActive?.(house.id)}
+                    onBlur={() => onActive?.(null)}
+                    className={`grid gap-x-6 gap-y-3 border-b border-l-2 border-line py-6 pl-3 pr-3 transition-colors duration-short md:grid-cols-[4rem_1fr] md:items-center ${
+                        activeId === house.id ? 'border-l-lawn bg-paper-deep' : 'border-l-transparent'
+                    }`}
                 >
                     <div className="flex items-baseline gap-3 md:block">
                         <h3 className={`font-display text-2xl leading-none ${house.available ? 'text-ink' : 'text-ink-soft'}`}>

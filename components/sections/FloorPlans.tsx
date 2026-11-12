@@ -26,7 +26,7 @@ export default function FloorPlans({ copy, locale, houses }: { copy: Copy; local
             <div className="section-container">
                 <div className="eyebrow">{text.eyebrow}</div>
 
-                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16">
+                <div className="grid gap-8 md:grid-cols-[1fr_1.1fr] md:gap-16" data-reveal>
                     <h2 className="display-l text-ink">{text.title}</h2>
                     <p className="lede self-end">{text.lede}</p>
                 </div>
@@ -50,11 +50,13 @@ export default function FloorPlans({ copy, locale, houses }: { copy: Copy; local
                             },
                         }}
                         sitePlan={plans.sitePlan}
+                        sitePlanAlt={plans.sitePlanAlt}
+                        siteHint={plans.siteHint}
+                        soldChip={plans.soldChip}
                         siteCaption={fill(plans.siteCaption, { architect: projectConfig.architect })}
                         messaging={projectConfig.whatsappNumber !== null}
                         phone={projectConfig.callNumber}
                     />
-
                 </div>
             </div>
         </section>
