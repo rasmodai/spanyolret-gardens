@@ -1,4 +1,5 @@
 import StickyActions from '@/components/StickyActions';
+import CtaBand from '@/components/sections/CtaBand';
 import Developer from '@/components/sections/Developer';
 import FAQ from '@/components/sections/FAQ';
 import FloorPlans from '@/components/sections/FloorPlans';
@@ -27,6 +28,7 @@ import { projectConfig } from '@/lib/project-config';
 export default function LandingPage({ locale }: { locale: Locale }) {
     const copy = getCopy(locale);
     const { nav } = copy;
+    const messaging = projectConfig.whatsappNumber !== null;
 
     return (
         <main className={locale === 'hu' ? 'wrap-compound' : undefined}>
@@ -42,15 +44,17 @@ export default function LandingPage({ locale }: { locale: Locale }) {
             <WhyHere copy={copy} />
             <Gallery copy={copy} />
             <FloorPlans copy={copy} locale={locale} houses={houseRows(locale)} />
+            <CtaBand id="after-houses" messaging={messaging} {...copy.ctaBands.afterHouses} />
             <Pricing copy={copy} />
             <Location copy={copy} locale={locale} />
             <Developer copy={copy} />
             <Specs copy={copy} />
+            <CtaBand id="after-specs" messaging={messaging} {...copy.ctaBands.afterSpecs} />
             <Process copy={copy} />
             <FAQ {...copy.faq} />
             <LeadForm copy={copy} locale={locale} unitOptions={houseOptions(locale)} />
             <Footer copy={copy} locale={locale} />
-            <StickyActions copy={copy.stickyBar} messaging={projectConfig.whatsappNumber !== null} />
+            <StickyActions copy={copy.stickyBar} messaging={messaging} phone={projectConfig.callNumber} />
         </main>
     );
 }

@@ -5,15 +5,19 @@ import { OPEN_MESSAGE_EVENT } from '@/lib/lead/message';
 import { track } from '@/lib/mixpanel';
 import { scrollToElement } from '@/lib/utils';
 
-/* Phones only: two actions within thumb reach, once the hero is past, and out
+/* Phones only: the actions within thumb reach (the viewing, the message and,
+ * only once a call number exists, the call), once the hero is past, and out
  * of the way while the form itself is on screen. */
 export default function StickyActions({
     copy,
     messaging,
+    phone,
 }: {
-    copy: { ariaLabel: string; viewing: string; message: string };
+    copy: { ariaLabel: string; viewing: string; message: string; call: string };
     /** A messaging number is set: the second button opens the message form. */
     messaging: boolean;
+    /** A number a buyer may call (callNumber). Null: no call button. */
+    phone: string | null;
 }) {
     const [visible, setVisible] = useState(false);
     const t = copy;
@@ -58,6 +62,16 @@ export default function StickyActions({
                 <button type="button" tabIndex={visible ? 0 : -1} onClick={message} className="btn btn-ghost !px-4">
                     {t.message}
                 </button>
+            )}
+            {phone && (
+                <a
+                    href={`tel:${phone.replace(/\s/g, '')}`}
+                    tabIndex={visible ? 0 : -1}
+                    onClick={() => track('Sticky CTA', { action: 'call' })}
+                    className="btn btn-ghost !px-4"
+                >
+                    {t.call}
+                </a>
             )}
         </nav>
     );
