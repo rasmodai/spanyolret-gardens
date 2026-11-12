@@ -46,7 +46,7 @@ export default function LeadFormCore({
         const onOpen = (event: Event) => {
             const unit = (event as CustomEvent<string | undefined>).detail;
             if (typeof unit === 'string') setForm((previous) => ({ ...previous, unit }));
-            track('Message Form Opened', { language: lang, from: typeof unit === 'string' ? `unit-${unit}` : 'shortcut' });
+            track('WhatsApp Opened', { language: lang, from: typeof unit === 'string' ? `house-${unit}` : 'shortcut' });
             requestAnimationFrame(() => root.current?.closest('section')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
         };
         window.addEventListener(OPEN_MESSAGE_EVENT, onOpen);
@@ -58,7 +58,7 @@ export default function LeadFormCore({
         setErrors((previous) => ({ ...previous, [field]: undefined }));
         if (!started.current) {
             started.current = true;
-            track('Form Started', { form: 'lead', language: lang });
+            track('Form Started', { language: lang });
         }
     };
 
@@ -70,7 +70,7 @@ export default function LeadFormCore({
         if (!form.consent) next.consent = copy.errors.consent;
         setErrors(next);
         if (Object.keys(next).length > 0) {
-            track('Form Validation Failed', { form: 'lead', language: lang });
+            track('Form Validation Failed', { language: lang });
             return;
         }
         setSending(channel);
@@ -129,16 +129,17 @@ export default function LeadFormCore({
         try {
             const response = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
             if (response.status === 429) {
+                track('Form Rate Limited', { language: lang });
                 setFailure(copy.rateLimited);
                 setSending(null);
                 return;
             }
             if (!response.ok) throw new Error('Submission failed');
             pixelLead();
-            track('Lead Submitted', { form: 'lead', language: lang, timeline: form.timeline, preferred_unit: form.unit, priority: form.priority });
+            track('Lead Submitted', { language: lang, timeline: form.timeline, preferred_unit: form.unit, priority: form.priority });
             router.push(copy.thankYouPath);
         } catch {
-            track('Form Submit Failed', { form: 'lead', language: lang });
+            track('Form Submit Failed', { language: lang });
             setFailure(copy.failure);
             setSending(null);
         }

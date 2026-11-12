@@ -19,7 +19,7 @@ export default function Footer({ copy, locale }: { copy: Copy; locale: Locale })
     const { developer, contactEmail, contactPhone } = projectConfig;
 
     return (
-        <footer className="band-frame">
+        <footer id="footer" className="band-frame">
             <div className="section-container py-16">
                 <div className="grid gap-10 border-b border-onmedia/20 pb-12 md:grid-cols-[1.2fr_1fr_1fr]">
                     <div>

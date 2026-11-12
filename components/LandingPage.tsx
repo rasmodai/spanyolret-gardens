@@ -50,7 +50,7 @@ export default function LandingPage({ locale }: { locale: Locale }) {
             <FAQ {...copy.faq} />
             <LeadForm copy={copy} locale={locale} unitOptions={houseOptions(locale)} />
             <Footer copy={copy} locale={locale} />
-            <StickyActions locale={locale} copy={copy.stickyBar} messaging={projectConfig.whatsappNumber !== null} />
+            <StickyActions copy={copy.stickyBar} messaging={projectConfig.whatsappNumber !== null} />
         </main>
     );
 }

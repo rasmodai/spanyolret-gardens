@@ -5,6 +5,7 @@ import Image from 'next/image';
 import FloorPlanSvg from '@/components/FloorPlanSvg';
 import type { FloorPlan, RoomKind } from '@/lib/floorplans';
 import { fill } from '@/lib/format';
+import { track } from '@/lib/mixpanel';
 import { useReveal } from '@/lib/useReveal';
 
 type View = 'site' | string;
@@ -47,7 +48,16 @@ export default function PlanViewer({ copy, locale, houseIds }: { copy: PlanViewe
         <div className="mt-16 border-t border-line pt-10">
             <div className="flex flex-wrap items-center gap-x-6 sm:gap-x-8">
                 {(['site', ...houseIds] as View[]).map((id) => (
-                    <button key={id} type="button" aria-pressed={view === id} onClick={() => setView(id)} className={tab(view === id)}>
+                    <button
+                        key={id}
+                        type="button"
+                        aria-pressed={view === id}
+                        onClick={() => {
+                            if (id !== 'site' && id !== view) track('House Plan Opened', { house: id });
+                            setView(id);
+                        }}
+                        className={tab(view === id)}
+                    >
                         {id === 'site' ? copy.sitePlan : id}
                     </button>
                 ))}

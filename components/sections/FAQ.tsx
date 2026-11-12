@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { track } from '@/lib/mixpanel';
 
 export interface FaqProps {
     eyebrow: string;
@@ -52,7 +53,10 @@ export default function FAQ({ eyebrow, title, lede, groups }: FaqProps) {
                                             <dt>
                                                 <button
                                                     type="button"
-                                                    onClick={() => setOpen(isOpen ? null : id)}
+                                                    onClick={() => {
+                                                        track('FAQ Toggled', { question: item.q.slice(0, 100) });
+                                                        setOpen(isOpen ? null : id);
+                                                    }}
                                                     aria-expanded={isOpen}
                                                     className="flex w-full items-baseline justify-between gap-5 py-4 text-left transition-colors duration-short hover:text-lawn"
                                                 >

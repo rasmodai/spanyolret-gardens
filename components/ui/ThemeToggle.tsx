@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { track } from '@/lib/mixpanel';
 
 type Theme = 'light' | 'dark';
 
@@ -27,6 +28,7 @@ export default function ThemeToggle({ dark, light }: { dark: string; light: stri
     const toggle = () => {
         const next: Theme = theme === 'dark' ? 'light' : 'dark';
         setTheme(next);
+        track('Theme Toggled', { theme: next });
         document.documentElement.setAttribute('data-theme', next);
         window.localStorage.setItem(STORAGE_KEY, next);
     };

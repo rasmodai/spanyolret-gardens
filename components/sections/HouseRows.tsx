@@ -2,6 +2,7 @@
 
 import GardenRibbon from '@/components/ui/GardenRibbon';
 import { OPEN_MESSAGE_EVENT } from '@/lib/lead/message';
+import { track } from '@/lib/mixpanel';
 import type { HouseRow } from '@/lib/houses-view';
 
 /* The six houses as rows on a shared left edge, smallest garden first, so the
@@ -44,11 +45,12 @@ export default function HouseRows({
                             <button
                                 type="button"
                                 // Opens the form with this house chosen (the form scrolls itself into view).
-                                onClick={() =>
+                                onClick={() => {
+                                    if (house.available) track('House Enquiry Clicked', { house: house.id, channel: 'message' });
                                     window.dispatchEvent(
                                         new CustomEvent(OPEN_MESSAGE_EVENT, { detail: house.available ? house.id : undefined })
-                                    )
-                                }
+                                    );
+                                }}
                                 className="btn-quiet text-[0.9375rem] text-lawn"
                             >
                                 {priceOnRequest}
