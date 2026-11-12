@@ -356,7 +356,7 @@ The anchor is the one figure allowed at display scale. Set it in Geist Mono with
 
 ## Voice
 
-Typography and colour are defined here. **The words are defined in `Spanyolret_Gardens_Complete_PRD.md → §7.0 Voice`,** and that section is as binding as this file. Read it before writing any user-facing string, in either language.
+Typography and colour are defined here. **The words are defined in `docs/Spanyolret_Gardens_Complete_PRD.md → §7.0 Voice` (historical document: the voice rules hold, its figures and dates do not),** and that section is as binding as this file. Read it before writing any user-facing string, in either language.
 
 The short version, because it drives layout decisions too: numbers instead of adjectives, name the objection before the buyer does, no verbs of longing, short sentences, every claim traceable, no manufactured urgency. A design system that specifies a mono font for measured quantities only works if the copy actually contains measured quantities — the two decisions hold each other up.
 
