@@ -6,10 +6,12 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
 import { join } from 'path';
 import { availableUnits, siteAddress, units } from '../lib/data';
+import { consentCopy } from '../lib/consent-copy';
 import { en } from '../lib/copy/en';
 import { hu } from '../lib/copy/hu';
 import { formatDate, formatPrice } from '../lib/format';
 import { houseOptions, houseRows } from '../lib/houses-view';
+import { privacyCopy } from '../lib/privacy-copy';
 import { projectConfig } from '../lib/project-config';
 
 let pass = 0;
@@ -64,6 +66,15 @@ function compare(path: string, a: unknown, b: unknown, problems: string[]) {
 const problems: string[] = [];
 compare('', en, hu, problems);
 assert('same keys, same list lengths', problems.length === 0, problems.join(' | '));
+// The cookie banner and the privacy policy live outside lib/copy: same rule.
+for (const [name, tree] of [['cookie banner', consentCopy], ['privacy policy', privacyCopy]] as const) {
+    const gaps: string[] = [];
+    compare('', tree.en, tree.hu, gaps);
+    assert(`${name}: same keys in EN and HU`, gaps.length === 0, gaps.join(' | '));
+}
+assert('privacy policy: Mixpanel named in both languages (providers, legal basis, cookies)',
+    (['en', 'hu'] as const).every((l) => strings(privacyCopy[l]).filter(([, text]) => /Mixpanel/.test(text)).length >= 2)
+    && strings(consentCopy.en).concat(strings(consentCopy.hu)).filter(([, text]) => /Mixpanel/.test(text)).length === 2);
 assert('FAQ: four groups each', en.faq.groups.length === 4 && hu.faq.groups.length === 4);
 assert('spec lists: same lines per category', en.specs.categories.every((category, i) => category.items.length === hu.specs.categories[i].items.length));
 
@@ -105,6 +116,12 @@ for (const sample of ['Nézze meg az építkezést', 'az igényeit', 'az Ön sz�
 for (const [path, text] of strings(hu)) {
     const hits = tutoiement(text);
     assert(`hu: ${path} is in "Ön"`, hits.length === 0, `${hits.join()} in "${text}"`);
+}
+for (const [name, tree] of [['cookie banner', consentCopy.hu], ['privacy policy', privacyCopy.hu]] as const) {
+    for (const [path, text] of strings(tree)) {
+        const hits = tutoiement(text);
+        assert(`hu ${name}: ${path} is in "Ön"`, hits.length === 0, `${hits.join()} in "${text}"`);
+    }
 }
 
 // 3. The facts that must not move -----------------------------------------------
