@@ -58,6 +58,14 @@ export interface FormCopy {
 }
 
 export interface Copy {
+    /** Search and sharing: the page title and description, and the Open Graph card. */
+    meta: {
+        title: string;
+        description: string;
+        ogTitle: string;
+        ogDescription: string;
+        ogLocale: string;
+    };
     nav: {
         ariaLabel: string;
         backToTop: string;

@@ -31,6 +31,17 @@ const parkingAnswer =
     'Remote-controlled gate for secure entry. No more street parking struggles.';
 
 export const en: Copy = {
+    /* No price in the description: the anchor may not appear without its
+     * qualifier (deposit deadline included), which does not fit in the ~160
+     * characters a search result shows (DESIGN.md → Pricing Display Rule). */
+    meta: {
+        title: `Spanyolrét Gardens | Townhouses with ${garden} private gardens | Budapest XI.`,
+        description: `Six new-build townhouses in Budapest’s XI. District. Five rooms, ${interior} inside, and a private garden of ${gardenFrom} to ${gardenTo} m² — not a balcony.${keys ? ` Keys ${keys}.` : ''}`,
+        ogTitle: 'A real garden. Not a balcony. | Spanyolrét Gardens',
+        ogDescription: `Six townhouses in Budapest XI. Private gardens from ${gardenFrom} to ${gardenTo} m². Turnkey, landscaping and outdoor parking included.${keys ? ` Keys ${keys}.` : ''}`,
+        ogLocale: 'en_US',
+    },
+
     nav: {
         ariaLabel: 'Section navigation',
         backToTop: 'Back to top',

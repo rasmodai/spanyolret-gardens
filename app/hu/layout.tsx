@@ -1,23 +1,3 @@
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-    title: 'Spanyolrét Gardens | Sorházak 102–202 m² saját kerttel | Budapest XI.',
-    // Ár nélkül, mint az angol változatban: az ártól elválaszthatatlan a
-    // 2026. december 1-jei foglalási határidő, és a kettő együtt nem fér bele
-    // abba a ~160 karakterbe, amit a Google megjelenít.
-    description:
-        'Hat új építésű sorház Budapest XI. kerületében. Öt szoba, 117 m² belső tér és 102–202 m² saját kert — nem erkély. Kulcsátadás 2027 áprilisában.',
-    keywords:
-        'új építésű sorház Budapest, sorház kerttel Budapest, családi ház Budapest, ingatlan XI. kerület, eladó sorház Spanyolrét',
-    openGraph: {
-        title: 'Saját kert. Nem erkély. | Spanyolrét Gardens',
-        description:
-            'Hat sorház Budapest XI. kerületében, 102–202 m² saját kerttel. Kulcsrakész átadás, teljes kertépítés és kültéri parkoló az árban. Kulcsátadás 2027 áprilisában.',
-        type: 'website',
-        locale: 'hu_HU',
-    },
-};
-
 export default function HungarianLayout({
     children,
 }: {

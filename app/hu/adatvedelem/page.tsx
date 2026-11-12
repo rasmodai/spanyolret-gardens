@@ -1,8 +1,7 @@
-import type { Metadata } from 'next';
 import PrivacyPolicy from '@/components/PrivacyPolicy';
-import { privacyCopy } from '@/lib/privacy-copy';
+import { privacyMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = { title: privacyCopy.hu.metaTitle };
+export const metadata = privacyMetadata('hu');
 
 export default function AdatvedelemPage() {
     return <PrivacyPolicy locale="hu" />;

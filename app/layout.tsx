@@ -3,6 +3,7 @@ import { Fraunces, Instrument_Sans, IBM_Plex_Mono } from 'next/font/google';
 import MixpanelTracker from '@/components/MixpanelTracker';
 import ConsentManager from '@/components/consent/ConsentManager';
 import { validPixelId } from '@/lib/lead/meta-capi';
+import { rootMetadata } from '@/lib/metadata';
 import './globals.css';
 
 /* Fonts — see DESIGN.md → Typography.
@@ -47,25 +48,7 @@ const mono = IBM_Plex_Mono({
  * repo). The Pixel loads only after cookie consent: see ConsentManager. */
 const pixelId = validPixelId(process.env.NEXT_PUBLIC_META_PIXEL_ID);
 
-export const metadata: Metadata = {
-    title: 'Spanyolrét Gardens | Townhouses with 102–202 m² private gardens | Budapest XI.',
-    /* No price here. The anchor may not appear without its qualifier, and since
-     * 2026-08-21 that qualifier includes the 1 December deposit deadline —
-     * which does not fit a description Google truncates near 160 characters.
-     * DESIGN.md: if the layout has no room for the qualifier, the layout is
-     * wrong, not the rule. The number lives on the page, where it has room. */
-    description:
-        "Six new-build townhouses in Budapest's XI. District. Five rooms, 117 m² inside, and a private garden of 102 to 202 m² — not a balcony. Keys April 2027.",
-    keywords:
-        'new build townhouse Budapest, townhouse with garden Budapest, family home Budapest, expat property Budapest, property for sale XI district',
-    openGraph: {
-        title: 'A real garden. Not a balcony. | Spanyolrét Gardens',
-        description:
-            'Six townhouses in Budapest XI. Private gardens from 102 to 202 m². Turnkey, landscaping and outdoor parking included. Keys April 2027.',
-        type: 'website',
-        locale: 'en_US',
-    },
-};
+export const metadata: Metadata = rootMetadata();
 
 export default function RootLayout({
     children,

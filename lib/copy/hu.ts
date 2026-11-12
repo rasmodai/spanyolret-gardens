@@ -41,6 +41,17 @@ const parkingAnswer =
     'Távirányítós kapu. Vége az utcai parkolásnak.';
 
 export const hu: Copy = {
+    /* Ár nélkül, mint az angol változatban: az ártól elválaszthatatlan a
+     * foglalási határidő, és a kettő együtt nem fér bele abba a ~160
+     * karakterbe, amit a Google megjelenít. */
+    meta: {
+        title: `Spanyolrét Gardens | Sorházak ${garden} saját kerttel | Budapest XI.`,
+        description: `Hat új építésű sorház Budapest XI. kerületében. Öt szoba, ${interior} belső tér és ${gardenFrom}–${gardenTo} m² saját kert — nem erkély.${keysIn ? ` Kulcsátadás ${keysIn}.` : ''}`,
+        ogTitle: 'Saját kert. Nem erkély. | Spanyolrét Gardens',
+        ogDescription: `Hat sorház Budapest XI. kerületében, ${gardenFrom}–${gardenTo} m² saját kerttel. Kulcsrakész átadás, teljes kertépítés és kültéri parkoló az árban.${keysIn ? ` Kulcsátadás ${keysIn}.` : ''}`,
+        ogLocale: 'hu_HU',
+    },
+
     nav: {
         ariaLabel: 'Szakasznavigáció',
         backToTop: 'Vissza a tetejére',
