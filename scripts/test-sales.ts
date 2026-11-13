@@ -11,6 +11,7 @@ import { createElement as h } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import CallReveal from '../components/sections/CallReveal';
 import CtaBand from '../components/sections/CtaBand';
+import LeadChoice from '../components/sections/LeadChoice';
 import HouseRows from '../components/sections/HouseRows';
 import { HouseSheetBody, type HouseSheetLabels } from '../components/sections/HouseSheet';
 import StickyActions from '../components/StickyActions';
@@ -121,7 +122,7 @@ for (const locale of ['en', 'hu'] as const) {
 // 3. The call button: nothing while there is no number ------------------------------
 
 console.log('call number');
-assert('callNumber is null today', projectConfig.callNumber === null);
+assert('callNumber is City Gate\'s number (decision of Rémi, 13/11)', projectConfig.callNumber === '+36 70 370 1398');
 const reveal = (phone: string | null) => renderToStaticMarkup(h(CallReveal, { phone, label: 'Call us', revealedLabel: 'tap to call', house: 'A1', className: 'x' }));
 assert('CallReveal renders nothing with a null number', reveal(null) === '');
 assert('CallReveal shows its button with a number', reveal(FAKE_PHONE).includes('Call us') && !reveal(FAKE_PHONE).includes('0000'));
@@ -136,8 +137,22 @@ for (const locale of ['en', 'hu'] as const) {
     assert(`${locale}: the mobile bar gains the call with a number`, bar(FAKE_PHONE).includes('href="tel:+36200000000"') && bar(FAKE_PHONE).includes(`>${copy.stickyBar.call}<`));
     assert(`${locale}: the mobile bar without a messaging number has no message button`, !bar(null, false).includes(`>${copy.stickyBar.message}<`));
 }
-assert('the page passes callNumber (not a literal) to the bar and the sheets', /phone=\{projectConfig\.callNumber\}/.test(read('components/LandingPage.tsx')) && /phone=\{projectConfig\.callNumber\}/.test(read('components/sections/FloorPlans.tsx')));
-assert('no phone number typed in the sales components', ![ 'components/sections/CallReveal.tsx', 'components/sections/HouseSheet.tsx', 'components/sections/HouseExplorer.tsx', 'components/sections/CtaBand.tsx', 'components/StickyActions.tsx'].some((path) => /\+36|\b06 ?\d{2}/.test(read(path))));
+assert('the page passes callNumber (not a literal) to the bar, the sheets and the form choice', /phone=\{projectConfig\.callNumber \?\? projectConfig\.contactPhone\}/.test(read('components/LandingPage.tsx')) && /phone=\{projectConfig\.callNumber\}/.test(read('components/sections/FloorPlans.tsx')) && /phone=\{projectConfig\.callNumber\} messaging=/.test(read('components/sections/LeadForm.tsx')));
+
+console.log('form choice');
+for (const locale of ['en', 'hu'] as const) {
+    const copy = locale === 'hu' ? hu : en;
+    const c = copy.form.choice;
+    const choice = (phone: string | null) => renderToStaticMarkup(h(LeadChoice, { copy: c, phone, messaging: true, lang: locale, children: h('form', { id: 'inner-form' }) }));
+    const withPhone = choice(FAKE_PHONE);
+    assert(`${locale}: the call choice is a tel: link with the number written out`, withPhone.includes('href="tel:+36200000000"') && withPhone.includes(FAKE_PHONE) && withPhone.includes(c.callTitle));
+    assert(`${locale}: the information choice controls a folded panel`, /aria-expanded="false"/.test(withPhone) && /data-open="false"/.test(withPhone) && withPhone.includes(c.infoTitle));
+    assert(`${locale}: the form stays in the HTML (no-JS, nothing lost on fold)`, withPhone.includes('id="inner-form"') && withPhone.includes('<noscript>'));
+    const without = choice(null);
+    assert(`${locale}: no number: no choice, the form is open`, !without.includes('tel:') && !without.includes(c.callTitle) && /data-open="true"/.test(without));
+    assert(`${locale}: the builder wording is the site's own`, locale === 'hu' ? /kivitelező/.test(c.callTitle + c.callWho) : /builder/.test(c.callTitle + c.callWho));
+}
+assert('no phone number typed in the sales components', ![ 'components/sections/CallReveal.tsx', 'components/sections/HouseSheet.tsx', 'components/sections/HouseExplorer.tsx', 'components/sections/CtaBand.tsx', 'components/StickyActions.tsx', 'components/sections/LeadChoice.tsx'].some((path) => /\+36|\b06 ?\d{2}/.test(read(path))));
 
 // 4. The two bands ------------------------------------------------------------------
 
@@ -180,8 +195,8 @@ assert('both pages stay noindex and use the copy tree', [read('app/thank-you/pag
 // 6. Events and dependency --------------------------------------------------------------
 
 console.log('events');
-const explorer = read('components/sections/HouseExplorer.tsx') + read('components/sections/HouseSheet.tsx') + read('components/sections/CallReveal.tsx') + read('components/sections/CtaBand.tsx') + read('components/StickyActions.tsx');
-for (const event of ['House Plan Opened', 'House Enquiry Clicked', 'Floor Plan Zoomed', 'CTA Band', 'Sticky CTA']) {
+const explorer = read('components/sections/LeadChoice.tsx') + read('components/sections/HouseExplorer.tsx') + read('components/sections/HouseSheet.tsx') + read('components/sections/CallReveal.tsx') + read('components/sections/CtaBand.tsx') + read('components/StickyActions.tsx');
+for (const event of ['House Plan Opened', 'House Enquiry Clicked', 'Floor Plan Zoomed', 'CTA Band', 'Sticky CTA', 'Form Choice']) {
     assert(`event "${event}" is sent`, explorer.includes(`track('${event}'`));
 }
 assert('the sheet is a Radix dialog (focus trap, Escape, scroll lock)', /@radix-ui\/react-dialog/.test(read('components/sections/HouseSheet.tsx')) && /"@radix-ui\/react-dialog"/.test(read('package.json')));

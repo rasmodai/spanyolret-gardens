@@ -60,7 +60,7 @@ export default function LandingPage({ locale }: { locale: Locale }) {
             <LeadForm copy={copy} locale={locale} unitOptions={houseOptions(locale)} />
             <Footer copy={copy} locale={locale} />
             <PageMotion />
-            <StickyActions copy={copy.stickyBar} messaging={messaging} phone={projectConfig.callNumber} />
+            <StickyActions copy={copy.stickyBar} messaging={messaging} phone={projectConfig.callNumber ?? projectConfig.contactPhone} />
         </main>
     );
 }

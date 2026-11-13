@@ -278,6 +278,33 @@ video {
    * It matters here because the six "Price on request" buttons in the unit list
    * are the primary conversion action on mobile — production measured them at
    * 33px. */
+  /* The two choices at the head of the contact section. */
+  .choice-card {
+    @apply flex min-h-[72px] w-full flex-col justify-center gap-1 border bg-transparent px-5 py-3 text-left text-ink;
+    border-color: var(--line-strong);
+    border-left: 3px solid var(--lawn);
+    transition: border-color 140ms ease;
+  }
+
+  .choice-card:hover,
+  .choice-card[aria-expanded='true'] {
+    border-color: var(--ink);
+    border-left-color: var(--lawn);
+  }
+
+  .choice-title {
+    @apply text-[1.0625rem] font-semibold;
+  }
+
+  .choice-detail {
+    @apply text-[0.9375rem] text-ink-soft;
+  }
+
+  .choice-number {
+    @apply font-mono font-semibold tabular-nums text-ink;
+    white-space: nowrap;
+  }
+
   .btn-quiet {
     @apply relative border-0 bg-transparent px-0 py-1 text-ink;
     border-bottom: 1px solid var(--clay);
@@ -900,5 +927,29 @@ dialog.lb::backdrop {
   [data-reveal].pre {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* The lead form folds under its two choices. Folded, it is out of the tab
+ * order (visibility); the noscript rule in LeadChoice shows it without JS. */
+.lead-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 280ms ease, visibility 0s linear 280ms;
+}
+.lead-panel[data-open='true'] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows 280ms ease, visibility 0s;
+}
+.lead-panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lead-panel,
+  .lead-panel[data-open='true'] {
+    transition: none;
   }
 }

@@ -7,7 +7,7 @@ Landing bilingue EN + HU pour les 6 maisons de Spanyolrét Gardens (Budapest XI.
 
 - Affichage : EN `216,616,000 HUF`, HU `216 616 000 Ft`, jamais sans son qualificatif (voir Prix). Sans l'offre parking, l'ancre est 220 616 000 (`anchorPrice.withoutGiftHuf`).
 - Sources : `lib/data.ts` (maisons, adresse), `lib/project-config.ts` (le reste, un commentaire de source par valeur). Valeur inconnue = `null` : la ligne ou la section disparaît, jamais de « à confirmer » visible ni de faux chiffre.
-- `callNumber` est `null` tant que Brenda n'a pas donné de numéro d'appel : aucun bouton « appeler ».
+- `callNumber` = `+36 70 370 1398`, le même numéro que City Gate (décision de Rémi du 13/11/2026). Il alimente le choix « Felhívom a kivitelezőt » de la section formulaire, le bouton Hívás de la barre mobile (`callNumber ?? contactPhone`) et le bouton d'appel de la fiche maison (maisons disponibles seulement). Mis à `null`, le choix d'appel et le bouton de la fiche disparaissent (le formulaire reste ouvert) ; la barre mobile retombe sur `contactPhone` (Brenda), comme avant le 13/11. Le numéro de Brenda (WhatsApp, pied de page) ne change pas.
 - L'offre parking expire le 1/12/2026 : `npm test` échoue exprès à partir du 2/12/2026 tant que `parkingGift.enabled` est `true`. On ne contourne pas le test, on retire l'offre (`docs/RUNBOOK.md` § 3.3).
 
 ## Décisions de Rémi (12/11/2026)
@@ -17,7 +17,7 @@ Landing bilingue EN + HU pour les 6 maisons de Spanyolrét Gardens (Budapest XI.
 - D4 Mixpanel : projet UE dédié à ce site, jeton en variable `NEXT_PUBLIC_MIXPANEL_TOKEN`, jamais en dur.
 
 ## Architecture
-- Un seul arbre de composants : `components/LandingPage.tsx` reçoit la langue et les textes ; ordre : Navbar, Hero, WhyHere (4 cartes illustrées), Breath, Gallery (carrousel + visionneuse), FloorPlans (plan de masse interactif + fiche par maison, `HouseSheet`), CtaBand, Pricing, Breath, Location, Developer, Specs (6 blocs + liste repliée), CtaBand, Process (frise), FAQ, Breath, LeadForm, Footer, StickyActions ; `components/motion/PageMotion.tsx` (apparitions, parallaxe, frise) et `HeroCounters.tsx` ne rendent rien.
+- Un seul arbre de composants : `components/LandingPage.tsx` reçoit la langue et les textes ; ordre : Navbar, Hero, WhyHere (4 cartes illustrées), Breath, Gallery (carrousel + visionneuse), FloorPlans (plan de masse interactif + fiche par maison, `HouseSheet`), CtaBand, Pricing, Breath, Location, Developer, Specs (6 blocs + liste repliée), CtaBand, Process (frise), FAQ, Breath, LeadForm (deux choix en tête, `LeadChoice` : appeler le kivitelező, ou « Csak további információt kérek » qui déplie le formulaire ; les boutons de message le déplient directement, les liens `#lead-form` arrivent sur le choix : voulu par Rémi le 13/11), Footer, StickyActions ; `components/motion/PageMotion.tsx` (apparitions, parallaxe, frise) et `HeroCounters.tsx` ne rendent rien.
 - Tout le texte est dans `lib/copy/en.ts` et `lib/copy/hu.ts` (forme dans `lib/copy/types.ts`, valeurs dérivées dans `lib/copy/shared.ts`). Un changement de texte touche toujours les deux.
 - `lib/format.ts` : seul endroit qui formate prix, surfaces, dates. `lib/project-config.ts` : faits du projet. `lib/data.ts` : maisons.
 - `lib/data.ts` ne s'importe jamais depuis un fichier `'use client'` : le navigateur reçoit `lib/houses-view.ts` (chaînes d'affichage, aucun prix).
@@ -35,3 +35,13 @@ Landing bilingue EN + HU pour les 6 maisons de Spanyolrét Gardens (Budapest XI.
 - **Design** : rayon 0, aucun `box-shadow`, un seul accent `--lawn` `#3F6B2E` (le bleu marine `#1B3B6F` est retiré), toute grandeur mesurée (m², HUF, dates) en IBM Plex Mono à chiffres tabulaires, polices avec `latin-ext` (ő, ű), jamais de classe de palette Tailwind par défaut. Les largeurs de ruban de jardin viennent de `lib/data.ts`.
 - **Avant de livrer** : `npx tsc --noEmit`, `npm test`, `npm run build`. `npm test` ne touche pas au réseau.
 - Le dossier de travail local (scripts CRM Python, apps-script, `.docx`, `Project Context/`, `google_token.pickle`) est dans `.gitignore` : ne jamais l'ajouter au dépôt.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
