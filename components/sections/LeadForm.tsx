@@ -52,7 +52,7 @@ export default function LeadForm({
                         </div>
 
                         <div className="bg-paper p-6 text-ink md:p-8" data-reveal="2">
-                            <LeadChoice copy={copy.form.choice} phone={projectConfig.callNumber ?? projectConfig.contactPhone} messaging={!!whatsappDigits} lang={locale}>
+                            <LeadChoice copy={copy.form.choice} phone={projectConfig.callNumber} messaging={!!whatsappDigits} lang={locale}>
                                 <LeadFormCore
                                     copy={copy.form}
                                     lang={locale}
