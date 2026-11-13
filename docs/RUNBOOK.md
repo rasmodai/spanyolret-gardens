@@ -49,9 +49,9 @@ The offer ends with the reservation deposits received by 1 December 2026. From 2
 3. `npm test` again. The tests that name the deadline only run while the offer is enabled.
 4. Merge. After the deploy, check that the page no longer mentions the offer, EN and HU.
 
-### 3.4 Put the call number when Brenda gives it
+### 3.4 The call number
 
-`lib/project-config.ts` → `callNumber`: the number as Brenda writes it (`'+36 …'`). Until it is set (`null`) there is no "call now" button anywhere. Once set: the house sheet shows it for available houses (never for a sold one) and the mobile bar gets a Call button. Ask Brenda which number: it may be the same as City Gate's or not. `scripts/test-copy.ts` has an assertion "no call number yet": update it. Do not guess a number.
+`lib/project-config.ts` → `callNumber`: the number as written (`'+36 …'`), today City Gate's (decision of Rémi, 13/11/2026). It feeds the first choice of the form section (a `tel:` link, "Felhívom a kivitelezőt" / "Call the builder"), the mobile bar's Call button (`callNumber ?? contactPhone`) and, for available houses only, the house sheet's call button. Set to `null`, the call choice and both buttons disappear and the form stays open. `scripts/test-copy.ts` and `scripts/test-sales.ts` assert the number: update them with it. Brenda's number (`whatsappNumber`, `contactPhone`) is separate.
 
 ### 3.5 Edit a text (EN or HU)
 

@@ -39,7 +39,7 @@ One component tree serves both languages: `components/LandingPage.tsx` receives 
 | `parkingGift` | enabled, `depositBy: '2026-12-01'`, 4 000 000 HUF | The free parking space for a deposit received by that day. `enabled: false` removes the offer everywhere and moves the anchor price. |
 | `anchorPrice` | 216 616 000 (offer on) / 220 616 000 (offer off) HUF | The only price published, always with its qualifier. Never a price per house. |
 | `parkingSpacePriceHuf` | 4 000 000 HUF | Price of an additional space (optional extras). |
-| `callNumber` | `null` | Number behind a "call now" button: in the house sheet (available houses only) and in the mobile bar. `null`: no such button. |
+| `callNumber` | City Gate's number (Rémi, 13/11) | Number behind the call choice of the form section, the house sheet's call button (available houses only) and the mobile bar's Call button. `null`: no call choice, the form stays open. |
 | `whatsappNumber` | Brenda's mobile | Number behind the WhatsApp and SMS buttons. `null`: the message form falls back to a call-back request. |
 | `contactEmail`, `contactPhone` | set | Footer contact block, each only if set. |
 | `privacyController`, `privacyPolicyDate` | S-Patrik Bau Kft. | Controller named on the privacy pages. |
