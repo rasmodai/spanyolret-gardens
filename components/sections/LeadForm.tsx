@@ -1,10 +1,13 @@
 import LeadFormCore from '@/components/LeadFormCore';
+import LeadChoice from '@/components/sections/LeadChoice';
 import type { Copy } from '@/lib/copy/types';
 import type { Locale } from '@/lib/format';
 import { projectConfig, whatsappDigits } from '@/lib/project-config';
 
-/* Book a viewing. First choice: a WhatsApp or SMS message to Brenda, already
- * written; second: a call back. See components/LeadFormCore.tsx. */
+/* Book a viewing. Two choices first (call the builder, or ask for
+ * information, which unfolds the form: components/sections/LeadChoice.tsx), then
+ * a WhatsApp or SMS message to Brenda, already written, or a call back. See
+ * components/LeadFormCore.tsx. */
 export default function LeadForm({
     copy,
     locale,
@@ -49,13 +52,15 @@ export default function LeadForm({
                         </div>
 
                         <div className="bg-paper p-6 text-ink md:p-8" data-reveal="2">
-                            <LeadFormCore
-                                copy={copy.form}
-                                lang={locale}
-                                unitOptions={unitOptions}
-                                whatsappDigits={whatsappDigits}
-                                privacyHref={projectConfig.privacyPath[locale]}
-                            />
+                            <LeadChoice copy={copy.form.choice} phone={projectConfig.callNumber ?? projectConfig.contactPhone} messaging={!!whatsappDigits} lang={locale}>
+                                <LeadFormCore
+                                    copy={copy.form}
+                                    lang={locale}
+                                    unitOptions={unitOptions}
+                                    whatsappDigits={whatsappDigits}
+                                    privacyHref={projectConfig.privacyPath[locale]}
+                                />
+                            </LeadChoice>
                         </div>
                     </div>
                 </div>

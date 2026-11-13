@@ -27,7 +27,20 @@ export interface MessageCopy {
     close: string;
 }
 
+/** The two choices that open the contact section. */
+export interface FormChoiceCopy {
+    prompt: string;
+    callTitle: string;
+    /** After the number: who answers. */
+    callWho: string;
+    infoTitle: string;
+    /** Under the information choice: with a messaging number, and without (call back). */
+    infoDetailMessaging: string;
+    infoDetailCall: string;
+}
+
 export interface FormCopy {
+    choice: FormChoiceCopy;
     unit: string;
     unitAny: string;
     /** `{id}` and `{garden}` are replaced. */

@@ -581,9 +581,9 @@ export const en: Copy = {
     leadForm: {
         eyebrow: 'Book a viewing',
         title: 'Come and stand in the garden.',
-        ledeMessaging: 'Answer a few short questions. Bring the children to the visit.',
+        ledeMessaging: 'Call the builder directly, or answer a few short questions and send us a message. Bring the children to the visit.',
         ledeNoMessaging:
-            'Bring the children. They will tell you more about 300 m² of grass than we can. One visit, and no follow-up unless you ask for it.',
+            'Call the builder, or leave your details and we call you back. Bring the children. They will tell you more about 300 m² of grass than we can. One visit, and no follow-up unless you ask for it.',
         replyText: 'Within the hour during Budapest office hours. Otherwise first thing tomorrow.',
         facts: [
             { title: 'In English', text: 'The whole purchase runs in English. No Hungarian required at any point.' },
@@ -597,6 +597,14 @@ export const en: Copy = {
     },
 
     form: {
+        choice: {
+            prompt: 'How would you like to continue?',
+            callTitle: 'Call the builder',
+            callWho: 'the builder',
+            infoTitle: 'I just want more information',
+            infoDetailMessaging: 'Answer three questions: your message opens in WhatsApp or SMS, already written.',
+            infoDetailCall: 'Leave your first name and phone number, and we call you back.',
+        },
         unit: 'Which house interests you?',
         unitAny: 'Not sure yet',
         unitOption: '{id} · garden {garden}',

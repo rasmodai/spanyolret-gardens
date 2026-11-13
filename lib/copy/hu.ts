@@ -591,9 +591,9 @@ export const hu: Copy = {
     leadForm: {
         eyebrow: 'Időpontfoglalás',
         title: 'Látogasson el a lakásokhoz',
-        ledeMessaging: 'Válaszoljon néhány rövid kérdésre. Hozza a gyerekeket a látogatásra.',
+        ledeMessaging: 'Hívja fel közvetlenül a kivitelezőt, vagy válaszoljon néhány rövid kérdésre, és küldjön üzenetet. Hozza a gyerekeket a látogatásra.',
         ledeNoMessaging:
-            'Hozza a gyerekeket. Ők többet mondanak majd 300 m² fűről, mint mi. Egy látogatás, és nincs utánkövetés, hacsak nem kéri.',
+            'Hívja fel a kivitelezőt, vagy hagyja meg az adatait, és visszahívjuk. Hozza a gyerekeket. Ők többet mondanak majd 300 m² fűről, mint mi. Egy látogatás, és nincs utánkövetés, hacsak nem kéri.',
         replyText: 'Budapesti munkaidőben egy órán belül. Azon kívül másnap reggel elsőként.',
         facts: [
             { title: 'Magyarul és angolul', text: 'A teljes vásárlási folyamat mehet angolul is, ha az kényelmesebb.' },
@@ -607,6 +607,14 @@ export const hu: Copy = {
     },
 
     form: {
+        choice: {
+            prompt: 'Hogyan folytatná?',
+            callTitle: 'Felhívom a kivitelezőt',
+            callWho: 'a kivitelező',
+            infoTitle: 'Csak további információt kérek',
+            infoDetailMessaging: 'Válaszoljon három kérdésre: az üzenet WhatsAppon vagy SMS-ben, előre megírva nyílik meg.',
+            infoDetailCall: 'Adja meg keresztnevét és telefonszámát, és visszahívjuk.',
+        },
         unit: 'Melyik lakás érdekli?',
         unitAny: 'Még nem tudom',
         unitOption: '{id} · {garden} kert',
