@@ -135,9 +135,11 @@ export const projectConfig: ProjectConfig = {
     // null removes the message form and both buttons.
     whatsappNumber: BRENDA_MOBILE,
 
-    // To fill when Brenda gives the number a buyer may call (lot 5): the same
-    // as City Gate's, or another? Null until then: no button.
-    callNumber: null,
+    // Décision de Rémi du 13/11/2026: the same number as City Gate Residences.
+    // Behind the choice in the form section, the mobile bar's Call button and
+    // the house sheet's call button. Brenda's number (WhatsApp and the footer)
+    // is unchanged.
+    callNumber: '+36 70 370 1398',
 
     privacyPath: { en: '/privacy', hu: '/hu/adatvedelem' },
 

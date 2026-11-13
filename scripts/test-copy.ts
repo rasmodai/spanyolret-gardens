@@ -123,7 +123,7 @@ assert('B1 is the smallest garden and A2 the largest of the available (the note 
 assert('address', siteAddress.full === 'Törökbálinti út, 1112 Budapest');
 assert('keys in April 2027', projectConfig.handoverDate?.year === 2027 && projectConfig.handoverDate.month === 4);
 assert('WhatsApp number', projectConfig.whatsappNumber === '+36 70 370 1479');
-assert('no call number yet', projectConfig.callNumber === null);
+assert('call number: City Gate\'s (decision of Rémi, 13/11)', projectConfig.callNumber === '+36 70 370 1398');
 assert('the controller is S-Patrik Bau Kft.', projectConfig.privacyController.name === 'S-Patrik Bau Kft.');
 assert('parking: gift of 4,000,000 HUF until 1 December 2026',
     projectConfig.parkingGift.valueHuf === 4_000_000 && projectConfig.parkingGift.depositBy === '2026-12-01' && projectConfig.parkingSpacePriceHuf === 4_000_000);
