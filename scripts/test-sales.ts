@@ -137,7 +137,7 @@ for (const locale of ['en', 'hu'] as const) {
     assert(`${locale}: the mobile bar gains the call with a number`, bar(FAKE_PHONE).includes('href="tel:+36200000000"') && bar(FAKE_PHONE).includes(`>${copy.stickyBar.call}<`));
     assert(`${locale}: the mobile bar without a messaging number has no message button`, !bar(null, false).includes(`>${copy.stickyBar.message}<`));
 }
-assert('the page passes callNumber (not a literal) to the bar, the sheets and the form choice', /phone=\{projectConfig\.callNumber \?\? projectConfig\.contactPhone\}/.test(read('components/LandingPage.tsx')) && /phone=\{projectConfig\.callNumber\}/.test(read('components/sections/FloorPlans.tsx')) && /phone=\{projectConfig\.callNumber \?\? projectConfig\.contactPhone\}/.test(read('components/sections/LeadForm.tsx')));
+assert('the page passes callNumber (not a literal) to the bar, the sheets and the form choice', /phone=\{projectConfig\.callNumber \?\? projectConfig\.contactPhone\}/.test(read('components/LandingPage.tsx')) && /phone=\{projectConfig\.callNumber\}/.test(read('components/sections/FloorPlans.tsx')) && /phone=\{projectConfig\.callNumber\} messaging=/.test(read('components/sections/LeadForm.tsx')));
 
 console.log('form choice');
 for (const locale of ['en', 'hu'] as const) {
