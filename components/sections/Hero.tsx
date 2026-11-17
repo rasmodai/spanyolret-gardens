@@ -34,7 +34,7 @@ function Figure({ value }: { value: string }) {
     );
 }
 
-export default function Hero({ copy }: { copy: Copy }) {
+export default function Hero({ copy, availability }: { copy: Copy; availability: string }) {
     const { hero, price } = copy;
 
     return (
@@ -106,6 +106,9 @@ export default function Hero({ copy }: { copy: Copy }) {
                             {hero.ctaSecondary}
                         </ScrollButton>
                     </div>
+                    <p className="hero-in caption mt-4 !text-onmedia/70" style={{ ['--d' as string]: '860ms' }}>
+                        {availability}
+                    </p>
                 </div>
             </div>
 

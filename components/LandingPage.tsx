@@ -17,7 +17,7 @@ import Specs from '@/components/sections/Specs';
 import WhyHere from '@/components/sections/WhyHere';
 import { getCopy } from '@/lib/copy';
 import type { Locale } from '@/lib/format';
-import { houseOptions, houseRows } from '@/lib/houses-view';
+import { availability, houseOptions, houseRows } from '@/lib/houses-view';
 import { projectConfig } from '@/lib/project-config';
 
 /* One tree for both languages, fed by lib/copy/en.ts and lib/copy/hu.ts, so a
@@ -42,7 +42,7 @@ export default function LandingPage({ locale }: { locale: Locale }) {
                 themeDark={nav.themeDark}
                 themeLight={nav.themeLight}
             />
-            <Hero copy={copy} />
+            <Hero copy={copy} availability={availability(locale).line} />
             <WhyHere copy={copy} />
             <Breath copy={copy} shot="midday" />
             <Gallery copy={copy} />
@@ -57,7 +57,7 @@ export default function LandingPage({ locale }: { locale: Locale }) {
             <Process copy={copy} />
             <FAQ {...copy.faq} />
             <Breath copy={copy} shot="children" />
-            <LeadForm copy={copy} locale={locale} unitOptions={houseOptions(locale)} />
+            <LeadForm copy={copy} locale={locale} unitOptions={houseOptions(locale)} availability={availability(locale).line} />
             <Footer copy={copy} locale={locale} />
             <PageMotion />
             <StickyActions copy={copy.stickyBar} messaging={messaging} phone={projectConfig.callNumber ?? projectConfig.contactPhone} />

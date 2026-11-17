@@ -5,7 +5,7 @@ import { appendLeadToSheet } from '@/lib/lead/google-sheets';
 import { sendMetaConversion } from '@/lib/lead/meta-capi';
 import { checkRateLimit } from '@/lib/lead/rate-limit';
 import { postLeadToOs } from '@/lib/lead/synphos-os';
-import { PRIORITIES, wasCaptured, type Lead } from '@/lib/lead/types';
+import { BUDGETS, PRIORITIES, wasCaptured, type Lead } from '@/lib/lead/types';
 import { utmFromUrl } from '@/lib/lead/utm';
 
 const TIMELINES = ['immediately', '3-6-months', '6-12-months', '12-plus-months'];
@@ -62,6 +62,7 @@ export async function POST(request: Request) {
     const timeline = text(body.timeline, 40);
     const preferredUnit = text(body.preferredUnit, 10);
     const priority = text(body.priority, 20);
+    const budget = text(body.budget, 20);
     const sourceUrl = text(body.sourceUrl, 500);
     const lead: Lead = {
         source: body.source === 'whatsapp' || body.source === 'sms' ? body.source : 'form',
@@ -75,6 +76,7 @@ export async function POST(request: Request) {
         timeline: TIMELINES.includes(timeline) ? timeline : '',
         preferredUnit: UNIT_IDS.includes(preferredUnit) ? preferredUnit : '',
         message: text(body.message, 2000),
+        budget: Object.hasOwn(BUDGETS, budget) ? (budget as Lead['budget']) : '',
         marketingConsent: body.marketingConsent === true,
         // The form calls it privacyConsent: the agreement to be contacted.
         contactConsent: body.privacyConsent === true,

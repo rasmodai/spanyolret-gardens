@@ -36,9 +36,9 @@ const parkingIncluded =
     (shared.giftOn ? ` (egy hely ingyenes a ${depositUntil} beérkező foglaló esetén)` : '');
 
 const parkingAnswer =
-    `Az ${twoSpaces} házhoz két, a ${oneSpace} házhoz egy kültéri parkolóhely tartozik. Egy további parkolóhely ára ${parkingPrice}. ` +
+    `Az ${twoSpaces} házhoz két, a ${oneSpace} házhoz egy kültéri parkolóhely tartozik, helyenként ${parkingPrice} értékben az árban. ` +
     (shared.giftOn ? `A ${depositUntil} beérkező foglaló esetén egy hely ingyenes. ` : '') +
-    'Távirányítós kapu. Vége az utcai parkolásnak.';
+    'Távirányítós kapu. Nem kell többé az utcán parkolnia.';
 
 export const hu: Copy = {
     /* Ár nélkül, mint az angol változatban: az ártól elválaszthatatlan a
@@ -61,7 +61,7 @@ export const hu: Copy = {
             { id: 'floor-plans', label: 'A hat kert' },
             { id: 'location', label: 'Elhelyezkedés' },
         ],
-        cta: 'Időpontot kérek',
+        cta: 'Visszahívást kérek',
         themeDark: 'Sötét',
         themeLight: 'Világos',
     },
@@ -70,15 +70,19 @@ export const hu: Copy = {
         place: keys ? `Budapest XI. · ${keys}` : 'Budapest XI.',
         titleFirst: 'Saját kert.',
         titleSecond: 'Nem erkély.',
-        lede: `Hat sorház Budapest XI. kerületében, két épületben. Öt szoba két szinten, és egy kert, ami ${gardenFrom}-től ${gardenTo} m²-ig terjed.`,
+        lede: `Hat sorház Budapest XI. kerületében, két épületben. Öt szoba két szinten, és egy ${gardenFrom} és ${gardenTo} m² közötti kert.`,
         facts: [
             { value: `${shared.houseCount}`, label: 'Sorház' },
             { value: interior, label: 'Belső tér' },
             { value: garden, label: 'Saját kert' },
             ...(keys ? [{ value: keys, label: 'Kulcsátadás' }] : []),
         ],
-        ctaPrimary: 'Időpontot kérek',
+        ctaPrimary: 'Visszahívást kérek',
         ctaSecondary: 'A hat kert',
+    },
+
+    availability: {
+        line: `{total} házból {available} szabad · {sold} elkelt${shared.giftOn ? ` · ajándék parkolóhely a ${depositUntil} beérkező foglalóhoz` : ''}`,
     },
 
     price: {
@@ -108,7 +112,7 @@ export const hu: Copy = {
             },
             {
                 shot: 'walk',
-                now: 'Húsz perc parkolóhelyet keresni',
+                now: 'Húsz perc parkolóhely-keresés',
                 title: 'Parkolás a kapu mögött, amelyet az autóból nyithat ki',
                 text: 'Megérkezik, a kapu kinyílik, beáll.',
                 meta: `Az ${twoSpaces} házhoz két, a ${oneSpace} házhoz egy kültéri parkolóhely tartozik.`,
@@ -116,7 +120,7 @@ export const hu: Copy = {
             {
                 shot: 'wine',
                 now: 'Évi 6 millió, és egy forint sem az Öné',
-                title: 'A törlesztés olyanba megy, ami az Öné',
+                title: 'A havi törlesztés a saját otthonába megy',
                 text: 'Havi 500 ezer forinttal egy ház jó részét már kifizette. Csak nem a sajátját. A budapesti piacról nem fogunk előrejelzést adni. De a pénz többé nem vész el.',
                 meta: null,
             },
@@ -197,6 +201,12 @@ export const hu: Copy = {
         columnGarden: 'Saját kert, méretarányosan',
         summary: '{interior} belső · {rooms} szoba · {terrace} terasz',
         interested: 'Érdekel',
+        price: {
+            list: 'Vételár',
+            offer: 'Akciós ár',
+            condition: shared.giftOn ? `Az akciós ár a ${depositUntil} beérkező foglalóra érvényes, és egy ajándék parkolóhelyet tartalmaz.` : '',
+        },
+        rateNote: `A vételár a lakótér (${formatPrice(shared.livingAreaRateHuf, 'hu')}/m²), a kizárólagos kerthasználat, a parkolóhely(ek), az ügyvédi díj és az ${formatPrice(shared.utilityFeeHuf, 'hu')} közmű csatlakozási díj összege. A lakótér a külső határoló falak és nyílászárók által befoglalt területet jelenti.`,
         sheet: {
             open: 'Alaprajz és adatok',
             openAria: 'Alaprajz és adatok megnyitása: {id} ház',
@@ -226,7 +236,7 @@ export const hu: Copy = {
             smallestGarden: 'Legkisebb kert',
             largestGarden: 'Legnagyobb kert',
         },
-        note: 'A B1 láthatóan a legkisebb, és ezt így is hagytuk. Ha egy sávban akkor is megbízhat, amikor az nem hízelgő, akkor az A2-nél is megbízhat benne.',
+        note: 'A B1 kertje láthatóan a legkisebb, és ezt így hagytuk: ha a sáv akkor is hű, amikor nem hízelgő, az A2-nél is megbízhat benne.',
         ribbon: {
             garden: 'kert',
             ofLargest: 'a legnagyobb {percent}%-a',
@@ -244,7 +254,7 @@ export const hu: Copy = {
             planCaption: 'méretarányosan újrarajzolva az építési engedélyezési tervről, a rajta szereplő nettó alapterületekkel',
             roomNames: {
                 entrance: 'Előszoba', shower: 'Zuhanyzó', living: 'Nappali', bedroom: 'Szoba', kitchenDining: 'Konyha-étkező',
-                pantry: 'Kamra', stairs: 'Lépcső', hallway: 'Közlekedő', wc: 'WC', wardrobe: 'Gardrób', utility: 'Háztartási',
+                pantry: 'Kamra', stairs: 'Lépcső', hallway: 'Közlekedő', wc: 'WC', wardrobe: 'Gardrób', utility: 'Háztartási helyiség',
                 bathroom: 'Fürdőszoba', terrace: 'Terasz',
             },
         },
@@ -253,7 +263,7 @@ export const hu: Copy = {
     pricing: {
         eyebrow: 'Árazás',
         title: 'Mit fedez az ár, és mit nem.',
-        lede: 'Kulcsot kap, nem szerkezetkész házat. A kertek mérete között közel kétszeres a különbség, ezért a kiválasztott ház árát közvetlenül tőlünk tudhatja meg.',
+        lede: 'Kulcsot kap, nem szerkezetkész házat. Az árak a fejlesztő 2026. októberi árlistájából valók, és házanként eltérnek.',
         includedTitle: 'Az árban',
         included: [
             'Kulcsrakész átadás (azonnal beköltözhető)',
@@ -273,7 +283,7 @@ export const hu: Copy = {
             { item: 'Napelem telepítése', price: 'Egyedi árajánlat' },
             { item: 'Kerti öntözőrendszer', price: 'Egyedi árajánlat' },
         ],
-        extrasNote: `Ezek egyike sincs benne a ${anchor}-os összegben. Azért itt soroljuk fel őket, és nem a szerződésnél, mert az utólag kiderülő tételektől érzi úgy az ember, hogy valamit ráerőltettek.`,
+        extrasNote: 'Ezek egyike sincs benne a ház árában. Azért itt soroljuk fel őket, és nem a szerződésnél, mert az utólag kiderülő tételektől érzi úgy az ember, hogy valamit ráerőltettek.',
         cta: 'Érdekel',
         scheduleNote:
             'A fizetési ütemezést és a finanszírozást a foglalási dokumentumok rögzítik. Mindkettőt végigvesszük Önnel, mielőtt bármit aláír.',
@@ -319,17 +329,17 @@ export const hu: Copy = {
         lede: `Az S-Patrik Bau ${shared.developer.since} óta épít Budapesten, és több mint ${projects} projektet adott át. Kérje el a címeket – több is autóval pár percre van Spanyolréttől, és ha megáll egy olyan épület előtt, amelyben hat éve laknak, többet tud meg, mint bármiből ezen az oldalon.`,
         architect: 'Tervező: {name}',
         stats: [
-            { value: `${shared.developer.since}`, label: 'Azóta építünk' },
+            { value: `${shared.developer.since}`, label: 'Óta építünk' },
             { value: `${projects}+`, label: 'Átadott projekt' },
             { value: `${shared.yearsBuilding}`, label: 'Éve építünk' },
         ],
         promises: [
             'A teljes műszaki leírás írásban, mielőtt bármire elköteleződne',
             'Törvény szerinti szerkezeti garancia, plusz gyártói garanciák',
-            'Minden felárral járó extra előre felsorolva, nem a szerződésnél derül ki',
+            'Minden felárral járó extra előre ismert, nem a szerződéskötésnél derül ki',
             'Rendszeres tájékoztatás az építkezés haladásáról',
             'Egy angolul beszélő kapcsolattartó, végig ugyanaz',
-            'Átadott projektjeink címei, hogy a kivitelezést maga is megnézhesse',
+            'Átadott projektjeink címei, hogy a kivitelezést Ön is megnézhesse',
         ],
     },
 
@@ -469,7 +479,7 @@ export const hu: Copy = {
                 ],
             },
         ],
-        note: 'Kérje el a teljes dokumentumot, és kérje el az öt-hat éve átadott épületeink címét is. Ha megáll az egyik előtt, többet tud meg, mint bármiből ezen az oldalon.',
+        note: 'Kérje el a teljes dokumentumot, és kérje el az öt-hat éve átadott épületeink címeit is. Ha megáll az egyik előtt, többet tud meg, mint bármiből ezen az oldalon.',
     },
 
     process: {
@@ -481,22 +491,22 @@ export const hu: Copy = {
             { title: 'Helyszíni látogatás', text: 'Nézze meg az építkezést és a környéket, képzelje el a leendő otthonát.', duration: '1 óra' },
             { title: 'Ház kiválasztása', text: 'Válasszon az elérhető házak közül. Beszéljük át a burkolati lehetőségeket.', duration: 'Az Ön tempójában' },
             { title: 'Foglalás', text: 'Foglaló befizetésével biztosítsa a házat. Részletes szerződést kap.', duration: '1–2 hét' },
-            { title: 'Adásvételi szerződés', text: 'Szerződéskötés közjegyzőnél. Végigvezetjük Önt minden lépésen.', duration: '2–4 hét' },
+            { title: 'Adásvételi szerződés', text: 'Szerződéskötés ügyvédnél. Végigvezetjük Önt minden lépésen.', duration: '2–4 hét' },
             {
                 title: keys ? `Beköltözés (${keys})` : 'Beköltözés',
                 text: 'Megkapja a kulcsokat a kulcsrakész, azonnal beköltözhető otthonához.',
                 duration: 'Átadás napja',
             },
         ],
-        reassuranceTitle: 'Külföldiként ingatlant venni Magyarországon megoldható. Hogy ez így is maradjon, az a mi dolgunk.',
+        reassuranceTitle: 'Külföldiként ingatlant venni Magyarországon megoldható feladat. Hogy valóban az legyen, az a mi dolgunk.',
         reassurance: [
             'Személyes kapcsolattartó',
             'Részletes, érthető szerződések',
-            'Javasolt ügyvédek és közjegyzők',
+            'Javasolt ügyvédek',
             'Rendszeres építési tájékoztatók',
             'Átlátható kommunikáció végig',
         ],
-        cta: 'Időpontot kérek',
+        cta: 'Visszahívást kérek',
     },
 
     faq: {
@@ -521,7 +531,7 @@ export const hu: Copy = {
                     },
                     {
                         q: 'Kell ügyvéd a vásárláshoz?',
-                        a: 'Ajánlott, de nem kötelező. Szívesen ajánlunk megbízható ügyvédeket, akik már ismerik a projektet és gördülékenyen intézik az ügyeket.',
+                        a: 'Igen: az ingatlan adásvételi szerződését Magyarországon ügyvéd ellenjegyzi. Az ügyvédi díjat az ár tartalmazza. Szívesen ajánlunk olyan ügyvédet, aki már ismeri a projektet.',
                     },
                 ],
             },
@@ -589,11 +599,11 @@ export const hu: Copy = {
     },
 
     leadForm: {
-        eyebrow: 'Időpontfoglalás',
+        eyebrow: 'Kapcsolat',
         title: 'Látogasson el a sorházakhoz',
         ledeMessaging: 'Hívja fel közvetlenül a kivitelezőt, vagy válaszoljon néhány rövid kérdésre, és küldjön üzenetet. Hozza a gyerekeket a látogatásra.',
         ledeNoMessaging:
-            'Hívja fel a kivitelezőt, vagy hagyja meg az adatait, és visszahívjuk. Hozza a gyerekeket. Ők többet mondanak majd 300 m² fűről, mint mi. Egy látogatás, és nem keressük újra, hacsak Ön nem kéri.',
+            'Hívja fel a kivitelezőt, vagy hagyja meg az adatait, és visszahívjuk. Hozza a gyerekeket. Ők többet mondanak majd a gyepről, mint mi. Egy látogatás, és nem keressük újra, hacsak Ön nem kéri.',
         replyText: 'Budapesti munkaidőben egy órán belül, egyébként másnap reggel elsőként.',
         facts: [
             { title: 'Magyarul és angolul', text: 'A teljes vásárlási folyamat mehet angolul is, ha az kényelmesebb.' },
@@ -607,14 +617,15 @@ export const hu: Copy = {
     },
 
     form: {
-        choice: {
-            prompt: 'Hogyan folytatná?',
-            callTitle: 'Felhívom a kivitelezőt',
-            callWho: 'a kivitelező',
-            infoTitle: 'Csak további információt kérek',
-            infoDetailMessaging: 'Válaszoljon három kérdésre: az üzenet WhatsAppon vagy SMS-ben, előre megírva nyílik meg.',
-            infoDetailCall: 'Adja meg keresztnevét és telefonszámát, és visszahívjuk.',
-        },
+        budget: 'Mekkora keretben gondolkodik? (nem kötelező)',
+        budgetPlaceholder: 'Válasszon',
+        budgetOptions: [
+            { value: 'under-220', label: '220 millió Ft alatt' },
+            { value: '220-230', label: '220–230 millió Ft' },
+            { value: 'over-230', label: '230 millió Ft felett' },
+            { value: 'loan', label: 'Hitellel vásárolnék' },
+        ],
+        callBuilder: 'Inkább felhívom a kivitelezőt: {phone}',
         unit: 'Melyik ház érdekli?',
         unitAny: 'Még nem tudom',
         unitOption: '{id} · {garden} kert',
@@ -633,13 +644,12 @@ export const hu: Copy = {
         email: 'E-mail (nem kötelező)',
         consent: 'Hozzájárulok, hogy az érdeklődésemmel kapcsolatban felvegyék velem a kapcsolatot.',
         privacyLink: 'Adatkezelési tájékoztató',
-        choose: 'Küldés ezzel:',
+        choose: 'Vagy írjon nekünk:',
         opening: 'Az üzenet megnyitása…',
         whatsapp: 'WhatsApp',
         sms: 'SMS',
         note: 'A válaszait is rögzítjük, hogy visszahívhassuk, ha az üzenet nem érkezne meg hozzánk.',
-        callBack: 'Inkább visszahívást kérek',
-        submit: 'Időpontot kérek',
+        submit: 'Visszahívást kérek',
         sending: 'Küldés…',
         failure: 'Hiba történt, a kérését nem sikerült elküldeni. Kérjük, próbálja újra.',
         rateLimited: 'Az internetkapcsolatáról túl sok kérés érkezett. Kérjük, egy óra múlva próbálja újra.',
@@ -662,7 +672,7 @@ export const hu: Copy = {
     footer: {
         ariaLabel: 'Lábléc',
         tagline: `Hat sorház ${garden} saját kerttel, Budapest XI. kerületében.${keysIn ? ` Kulcsátadás ${keysIn}.` : ''}`,
-        cta: 'Időpontot kérek',
+        cta: 'Visszahívást kérek',
         onThisPage: 'Az oldalon',
         links: [
             { id: 'why-here', label: 'Áttekintés' },
@@ -695,7 +705,7 @@ export const hu: Copy = {
             message: 'Üzenetet írok',
         },
     },
-    stickyBar: { ariaLabel: 'Gyors műveletek', viewing: 'Időpontot kérek', message: 'Üzenet', call: 'Hívás' },
+    stickyBar: { ariaLabel: 'Gyors műveletek', viewing: 'Visszahívást kérek', message: 'Üzenet', call: 'Hívás' },
     thankYou: {
         metaTitle: 'Köszönjük | Spanyolrét Gardens',
         title: 'Köszönjük.',

@@ -63,6 +63,11 @@ export interface ProjectConfig {
     handoverDate: YearMonth | null;
     parkingGift: ParkingGift;
     anchorPrice: AnchorPrice;
+    /** Decision of Rémi, 16/11/2026 (call with Brenda): each house's price is shown, to filter the contacts.
+     *  False returns to the single "from" price: no per-house price reaches the page or the browser. */
+    showUnitPrices: boolean;
+    /** Price of the living area per m², HUF (the price list's "LAKÓTÉR" column header). */
+    livingAreaRateHuf: number;
     /** What an additional parking space costs, HUF. */
     parkingSpacePriceHuf: number;
     developer: Developer;
@@ -105,6 +110,14 @@ export const projectConfig: ProjectConfig = {
     // counted at 4,000,000). The only price that is ever published: never a
     // price per house (DESIGN.md → Pricing Display Rule).
     anchorPrice: { withGiftHuf: 216_616_000, withoutGiftHuf: 220_616_000 },
+
+    // Decision of Rémi, 16/11/2026 (call with Brenda: "we would put the prices
+    // directly ... so we filter a lot of the people"). The figures are the
+    // developer's price list of October 2026.
+    showUnitPrices: true,
+
+    // Source: the price list, column "LAKÓTÉR (1.800.000 Ft/nm)".
+    livingAreaRateHuf: 1_800_000,
 
     // Source: the price list ("Additional parking space"), also listed as an
     // optional extra on the site.

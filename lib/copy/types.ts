@@ -27,20 +27,13 @@ export interface MessageCopy {
     close: string;
 }
 
-/** The two choices that open the contact section. */
-export interface FormChoiceCopy {
-    prompt: string;
-    callTitle: string;
-    /** After the number: who answers. */
-    callWho: string;
-    infoTitle: string;
-    /** Under the information choice: with a messaging number, and without (call back). */
-    infoDetailMessaging: string;
-    infoDetailCall: string;
-}
-
 export interface FormCopy {
-    choice: FormChoiceCopy;
+    /** The optional budget question (bands in lib/lead/types.ts BUDGETS). */
+    budget: string;
+    budgetPlaceholder: string;
+    budgetOptions: { value: string; label: string }[];
+    /** The plain call link to the builder; `{phone}` is replaced. */
+    callBuilder: string;
     unit: string;
     unitAny: string;
     /** `{id}` and `{garden}` are replaced. */
@@ -60,7 +53,6 @@ export interface FormCopy {
     whatsapp: string;
     sms: string;
     note: string;
-    callBack: string;
     submit: string;
     sending: string;
     failure: string;
@@ -141,6 +133,8 @@ export interface Copy {
         ctaPrimary: string;
         ctaSecondary: string;
     };
+    /** "{available} of {total} still available": `{available}`, `{total}` and `{sold}` are replaced. */
+    availability: { line: string };
     /** The one public price, and its qualifier: they never travel apart. */
     price: { anchor: string; qualifier: string };
     /** The "why here" section: the buyer's week now against the same week here, four illustrated cards. */
@@ -188,8 +182,12 @@ export interface Copy {
         columnGarden: string;
         /** `{interior}`, `{rooms}` and `{terrace}` are replaced. */
         summary: string;
-        /** The button on each available house that takes the visitor to the form (no price is ever shown). */
+        /** The button on each available house that takes the visitor to the form. */
         interested: string;
+        /** The price lines of a house (shown while `showUnitPrices`): list price, and the offer price with its condition. */
+        price: { list: string; offer: string; condition: string };
+        /** `{rate}` (living area, per m²) is replaced. Under the six houses. */
+        rateNote: string;
         sheet: HouseSheetCopy;
         statuses: { available: string; reserved: string; sold: string };
         highlights: Record<HighlightKey, string>;

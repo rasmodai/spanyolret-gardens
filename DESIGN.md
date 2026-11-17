@@ -326,6 +326,8 @@ Before shipping any section, ask: *would this element survive a buyer asking "ho
 
 ## Pricing Display Rule
 
+> **Superseded on 16/11/2026 (decision of Rémi, call with Brenda: show the prices to filter the contacts).** Each available house now shows its list price and its offer price, both from the developer's 2026-10 price list (`prices` in `lib/data.ts`, `showUnitPrices` in `lib/project-config.ts`; `false` brings back the single "from" price, with no per-house price in the page). Sold houses show no price. The prices reach the browser as display strings only (`lib/houses-view.ts`); `lib/data.ts` stays server-only, and `scripts/test-sales.ts` recomputes each price from the list's components. The "from" price keeps its qualifier. The rest of this section is the 12/11 rule, kept for the reasoning.
+
 Decided 2026-08-08, implemented in the 12/11/2026 revamp. `lib/data.ts` no longer holds any price, and the PRD's 195–225M range is stale.
 
 **One number appears on the site, and only one:**

@@ -86,15 +86,18 @@ async function main() {
     const unitType = source.match(/export interface Unit \{[\s\S]*?\n\}/)?.[0] ?? '';
     const unitFields = unitType.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
     assert('Unit type found', unitFields.includes('totalInternal'));
-    assert('no price field in the Unit type', !/price|huf|\bar\b|prix/i.test(unitFields), unitFields);
-    assert('no price key on any unit at runtime', data.units.every((unit) => !Object.keys(unit).some((key) => /price|huf/i.test(key))));
+    // Decision of Rémi, 16/11/2026: prices are shown. They live in one place (lib/data.ts, server-only) and reach the browser as display strings only.
+    assert('the only price fields are `prices` on the Unit type', /prices: \{ listHuf: number; offerHuf: number \} \| null/.test(unitFields) && !/\bprice\b|priceHuf/.test(unitFields));
+    assert('a sold house has no price', data.units.filter((unit) => unit.status === 'sold').every((unit) => unit.prices === null));
+    const clientFiles = ['components/LeadFormCore.tsx', 'components/sections/HouseRows.tsx', 'components/sections/HouseExplorer.tsx', 'components/sections/HouseSheet.tsx'].map((path) => readFileSync(join(__dirname, '..', path), 'utf8')).join('\n');
+    assert('no client component imports lib/data.ts', !/from '@\/lib\/data'/.test(clientFiles));
     const everything = JSON.stringify(data) + JSON.stringify(en) + JSON.stringify(hu) + JSON.stringify(privacyCopy);
     assert('no "100 %" claim', !/100 ?%/.test(everything));
     assert('no BOSCH', !/bosch/i.test(everything));
     assert('no 242 050 000 anchor', !/242[ ,. ]?050[ ,. ]?000/.test(everything));
     assert('single price anchor is the 216 616 000 one',
         en.price.anchor === 'From 216,616,000\u00a0HUF' && /216[\s\u00a0]616[\s\u00a0]000[\s\u00a0]Ft-tól/.test(hu.price.anchor));
-    assert('per-house price is not published', en.houses.interested === 'I’m interested' && hu.houses.interested === 'Érdekel');
+    assert('the house button says "interested"', en.houses.interested === 'I’m interested' && hu.houses.interested === 'Érdekel');
 
     console.log('lead route, nothing configured');
     clearEnv();

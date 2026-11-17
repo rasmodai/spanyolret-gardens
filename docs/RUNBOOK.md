@@ -7,7 +7,7 @@ For Katalin (maintenance). When this file and the code disagree, the code wins; 
 A bilingual landing page (EN at `/`, HU at `/hu`) selling 6 townhouses (A1 to B3) at Törökbálinti út, 1112 Budapest, for S-Patrik Bau Kft. Visitors leave a phone number or an e-mail, or open WhatsApp; Brenda answers them.
 
 - **Production:** https://spanyolret-gardens.vercel.app. Vercel deploys `main` on every merge.
-- **Repo:** `rasmodai/spanyolret-gardens`, **public**. Never put a secret, a sheet id, a recipient address, a token or a per-house price in a commit, a pull request or a comment.
+- **Repo:** `rasmodai/spanyolret-gardens`, **public**. Never put a secret, a sheet id, a recipient address, a token or a price that is not in the developer's price list in a commit, a pull request or a comment.
 - **Stack:** Next.js 16, React 19, Tailwind 3, TypeScript. No database.
 - **Indexing:** closed unless `ALLOW_INDEXING=true` is set on Production (section 3.6).
 
@@ -59,7 +59,7 @@ All wording is in `lib/copy/en.ts` and `lib/copy/hu.ts`; the shape is in `lib/co
 - Hungarian addresses the reader formally (Ön). `scripts/tutoiement.ts` runs inside `npm test` and fails on informal forms.
 - Figures and dates come from `lib/format.ts`, never typed: EN `216,616,000 HUF`, `117.45 m²`, `April 2027`; HU `216 616 000 Ft`, `117,45 m²`, `2027. április` (period after the year).
 - Hungarian text goes to Brenda for proofreading before it goes live.
-- Forbidden: "100 % on time" / "100 % határidőre", any brand name that is not in the technical specification (BOSCH in particular), a price per house, an invented number, a countdown, "only N left".
+- Forbidden: "100 % on time" / "100 % határidőre", any brand name that is not in the technical specification (BOSCH in particular), a price that is not in the developer's price list, an invented number, a countdown, "only N left".
 
 ### 3.6 Open the site to search engines
 

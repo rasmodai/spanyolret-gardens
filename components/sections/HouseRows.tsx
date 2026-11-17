@@ -5,14 +5,15 @@ import type { HouseRow } from '@/lib/houses-view';
 
 /* The six houses as rows on a shared left edge, smallest garden first, so the
  * six bars read as one rising column. The rows arrive as display strings
- * (lib/houses-view.ts): no price, and nothing from lib/data.ts, ever reaches
- * the browser. Each row opens the house's sheet (HouseSheet) and, while the
+ * (lib/houses-view.ts), prices included while `showUnitPrices` is on: nothing
+ * from lib/data.ts reaches the browser as data. Each row opens the house's sheet (HouseSheet) and, while the
  * house is available, takes the visitor to the form. */
 export default function HouseRows({
     houses,
     columnHouse,
     columnGarden,
     interested,
+    priceLabels,
     openLabel,
     onOpen,
     onAsk,
@@ -23,6 +24,7 @@ export default function HouseRows({
     columnHouse: string;
     columnGarden: string;
     interested: string;
+    priceLabels: { list: string; offer: string };
     /** The button that opens the sheet of the house. */
     openLabel: string;
     onOpen: (id: string) => void;
@@ -61,6 +63,19 @@ export default function HouseRows({
                     <div>
                         <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                             <span className="measure text-sm text-ink-soft">{house.summary}</span>
+                            {house.price && (
+                                <span className="measure w-full text-[0.9375rem] text-ink">
+                                    {priceLabels.list} {house.price.list}
+                                    {house.price.offer && (
+                                        <>
+                                            {' · '}
+                                            <strong className="font-medium text-lawn">
+                                                {priceLabels.offer} {house.price.offer}
+                                            </strong>
+                                        </>
+                                    )}
+                                </span>
+                            )}
                             <span className="flex flex-wrap items-baseline gap-x-6 gap-y-1">
                                 <button
                                     type="button"

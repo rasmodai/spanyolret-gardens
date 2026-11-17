@@ -38,6 +38,7 @@ export default function FloorPlans({ copy, locale, houses }: { copy: Copy; local
                         columnHouse={text.columnHouse}
                         columnGarden={text.columnGarden}
                         interested={text.interested}
+                        priceLabels={{ list: text.price.list, offer: text.price.offer }}
                         note={text.note}
                         labels={{
                             ...text.sheet,
@@ -57,6 +58,11 @@ export default function FloorPlans({ copy, locale, houses }: { copy: Copy; local
                         messaging={projectConfig.whatsappNumber !== null}
                         phone={projectConfig.callNumber}
                     />
+                    {houses.some((house) => house.price) && (
+                        <p className="mt-8 max-w-[70ch] text-sm leading-relaxed text-ink-soft">
+                            {houses.find((house) => house.price?.condition)?.price?.condition} {text.rateNote}
+                        </p>
+                    )}
                 </div>
             </div>
         </section>

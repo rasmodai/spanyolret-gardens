@@ -25,6 +25,9 @@ export const shared = {
     parkingTwo: availableWithParking(2),
     parkingOne: availableWithParking(1),
     parkingSpacePriceHuf: config.parkingSpacePriceHuf,
+    livingAreaRateHuf: config.livingAreaRateHuf,
+    /** Price list: utility connection, included in each price. */
+    utilityFeeHuf: 850_000,
     giftOn: gift.enabled,
     giftDepositBy: gift.depositBy,
     handover: config.handoverDate,

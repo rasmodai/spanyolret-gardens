@@ -21,6 +21,7 @@ export default function HouseExplorer({
     columnHouse,
     columnGarden,
     interested,
+    priceLabels,
     note,
     labels,
     sitePlan,
@@ -36,6 +37,7 @@ export default function HouseExplorer({
     columnHouse: string;
     columnGarden: string;
     interested: string;
+    priceLabels: { list: string; offer: string };
     note: string;
     labels: HouseSheetLabels;
     sitePlan: string;
@@ -135,6 +137,7 @@ export default function HouseExplorer({
                         columnHouse={columnHouse}
                         columnGarden={columnGarden}
                         interested={interested}
+                        priceLabels={priceLabels}
                         openLabel={labels.open}
                         onOpen={openSheet}
                         onAsk={ask}
