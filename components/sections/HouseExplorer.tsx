@@ -20,7 +20,7 @@ export default function HouseExplorer({
     locale,
     columnHouse,
     columnGarden,
-    priceOnRequest,
+    interested,
     note,
     labels,
     sitePlan,
@@ -35,7 +35,7 @@ export default function HouseExplorer({
     locale: 'en' | 'hu';
     columnHouse: string;
     columnGarden: string;
-    priceOnRequest: string;
+    interested: string;
     note: string;
     labels: HouseSheetLabels;
     sitePlan: string;
@@ -134,7 +134,7 @@ export default function HouseExplorer({
                         houses={houses}
                         columnHouse={columnHouse}
                         columnGarden={columnGarden}
-                        priceOnRequest={priceOnRequest}
+                        interested={interested}
                         openLabel={labels.open}
                         onOpen={openSheet}
                         onAsk={ask}

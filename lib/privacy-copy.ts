@@ -169,14 +169,14 @@ export const privacyCopy = {
             {
                 title: 'Sütik és böngészőben tárolt adatok',
                 paragraphs: [
-                    'Hozzájárulása nélkül az oldal csak két dolgot tárol a böngészőjében: a világos vagy sötét megjelenésre vonatkozó választását és a sütikkel kapcsolatos döntését. Egyiket sem küldjük el magunknak.',
+                    'Hozzájárulása nélkül az oldal csak két dolgot tárol a böngészőjében: a világos vagy sötét megjelenésre vonatkozó választását és a sütikkel kapcsolatos döntését. Egyik sem jut el hozzánk.',
                     'Csak ha a sütikről szóló sávban az „Elfogadom” gombra kattint, akkor töltődik be a Meta Pixel (például _fbp és _fbc sütik) és a Mixpanel (a böngészőben tárolt azonosító). Döntését bármikor módosíthatja minden oldal alján a „Süti-beállítások” hivatkozással.',
                     'A Google Térkép csak akkor töltődik be a Google-tól, ha elfogadta a sütiket, vagy a „Térkép megjelenítése” gombra kattintott. Ekkor a Google megkapja IP-címét és böngészőadatait, és saját sütiket helyezhet el, a saját feltételei szerint.',
                 ],
             },
         ] as PrivacySection[],
         retentionTitle: 'Meddig őrizzük meg az adatait',
-        retention: 'Érdeklődését addig őrizzük meg, amíg a Spanyolrét Gardens sorházai értékesítés alatt állnak, és legkésőbb az utolsó kapcsolatfelvételünket követő 24 hónap elteltével, vagy kérésére korábban, töröljük. Ha sorházat vásárol, a kapcsolódó dokumentumok megőrzési idejét az adásvételi szerződés és a jogszabályok határozzák meg.',
+        retention: 'Érdeklődését addig őrizzük, amíg a Spanyolrét Gardens sorházai értékesítés alatt állnak, de legkésőbb az utolsó kapcsolatfelvételünket követő 24 hónap elteltével töröljük, vagy kérésére már korábban. Ha sorházat vásárol, a kapcsolódó dokumentumok megőrzési idejét az adásvételi szerződés és a jogszabályok határozzák meg.',
         rightsTitle: 'Az Ön jogai',
         rights: [
             'hozzáférés az adataihoz és másolat kérése;',
@@ -189,7 +189,7 @@ export const privacyCopy = {
         rightsContact: 'Jogai gyakorlásához írjon az alábbi címre:',
         complaint: 'Panaszt nyújthat be a Nemzeti Adatvédelmi és Információszabadság Hatósághoz (NAIH, naih.hu), vagy bírósághoz fordulhat.',
         updated: 'Utolsó módosítás:',
-        back: 'Vissza a főoldalra',
+        back: 'Vissza a kezdőlapra',
         backHref: '/hu',
         cookieSettings: 'Süti-beállítások',
     },

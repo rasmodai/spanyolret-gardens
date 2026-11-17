@@ -37,7 +37,7 @@ export default function FloorPlans({ copy, locale, houses }: { copy: Copy; local
                         locale={locale}
                         columnHouse={text.columnHouse}
                         columnGarden={text.columnGarden}
-                        priceOnRequest={text.priceOnRequest}
+                        interested={text.interested}
                         note={text.note}
                         labels={{
                             ...text.sheet,

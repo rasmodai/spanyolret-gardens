@@ -103,7 +103,7 @@ Other codes: 403 = wrong `NEXT_PUBLIC_SITE_URL` or a bot; 400 = missing first na
 On the production URL, EN and HU:
 1. `/` and `/hu` answer 200; `lang="hu"` on `/hu`.
 2. The change you made is visible and says the same thing in both languages.
-3. The price line shows one figure with its qualifier, no price on any house, "Price on request" / "Ár kérésre" on the available houses and none on the sold ones.
+3. The price line shows one figure with its qualifier, no price on any house, "I’m interested" / "Érdekel" on the available houses and none on the sold ones.
 4. The house sheet opens (plan, no price); a sold house has no request button.
 5. The cookie banner appears on a first visit; refusing sends nothing (browser network tab: no call to Mixpanel or Meta).
 6. Indexing is as intended: closed → `X-Robots-Tag: noindex, nofollow` and a `noindex` robots meta; open → neither.

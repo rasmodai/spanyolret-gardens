@@ -12,7 +12,7 @@ export default function HouseRows({
     houses,
     columnHouse,
     columnGarden,
-    priceOnRequest,
+    interested,
     openLabel,
     onOpen,
     onAsk,
@@ -22,7 +22,7 @@ export default function HouseRows({
     houses: HouseRow[];
     columnHouse: string;
     columnGarden: string;
-    priceOnRequest: string;
+    interested: string;
     /** The button that opens the sheet of the house. */
     openLabel: string;
     onOpen: (id: string) => void;
@@ -73,7 +73,7 @@ export default function HouseRows({
                                 {/* A sold house has no request button: its sheet and plan stay open to read. */}
                                 {house.available && (
                                     <button type="button" onClick={() => onAsk(house.id)} className="btn-quiet text-[0.9375rem] text-lawn">
-                                        {priceOnRequest}
+                                        {interested}
                                     </button>
                                 )}
                             </span>
