@@ -206,7 +206,7 @@ export const hu: Copy = {
             offer: 'Akciós ár',
             condition: shared.giftOn ? `Az akciós ár a ${depositUntil} beérkező foglalóra érvényes, és egy ajándék parkolóhelyet tartalmaz.` : '',
         },
-        rateNote: `A vételár a lakótér (${formatPrice(shared.livingAreaRateHuf, 'hu')}/m²), a kizárólagos kerthasználat, a parkolóhely(ek), az ügyvédi díj és az ${formatPrice(shared.utilityFeeHuf, 'hu')} közmű csatlakozási díj összege. A lakótér a külső határoló falak és nyílászárók által befoglalt területet jelenti.`,
+        rateNote: `A vételár a lakótér (${formatPrice(shared.livingAreaRateHuf, 'hu')}/m²), a kizárólagos kerthasználat, a parkolóhely(ek), az ügyvédi díj és a ${formatPrice(shared.utilityFeeHuf, 'hu')} közmű csatlakozási díj összege. A lakótér a külső határoló falak és nyílászárók által befoglalt területet jelenti.`,
         sheet: {
             open: 'Alaprajz és adatok',
             openAria: 'Alaprajz és adatok megnyitása: {id} ház',
