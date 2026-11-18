@@ -7,7 +7,9 @@
  * - a foreign number written with + or 00: 8 to 15 digits (E.164).
  * Rejected: anything shorter, letters, or one digit repeated ("111111111").
  */
-const HU_NATIONAL = /^(?:(?:20|30|31|50|70)\d{7}|1\d{7}|[2-9]\d{7})$/;
+// A landline area code is never a mobile prefix, so "30 123456" (a mobile one
+// digit short) is not taken for a landline.
+const HU_NATIONAL = /^(?:(?:20|30|31|50|70)\d{7}|1\d{7}|(?!20|30|31|50|70)[2-9]\d{7})$/;
 
 export function isValidPhone(input: string): boolean {
     const compact = input.trim().replace(/[\s\-().\/]/g, '');
