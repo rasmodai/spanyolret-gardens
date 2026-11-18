@@ -646,6 +646,7 @@ export const hu: Copy = {
         errors: {
             firstName: 'Kérjük, adja meg a keresztnevét',
             phone: 'Kérjük, adja meg a telefonszámát',
+            phoneInvalid: 'Kérjük, érvényes telefonszámot adjon meg, például +36 30 123 45 67',
             consent: 'A kapcsolatfelvételhez szükségünk van a hozzájárulására',
         },
         message: {

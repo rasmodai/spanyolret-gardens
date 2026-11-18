@@ -7,6 +7,7 @@ import { checkRateLimit } from '@/lib/lead/rate-limit';
 import { postLeadToOs } from '@/lib/lead/synphos-os';
 import { PRIORITIES, wasCaptured, type Lead } from '@/lib/lead/types';
 import { utmFromUrl } from '@/lib/lead/utm';
+import { isValidPhone } from '@/lib/phone';
 
 const TIMELINES = ['immediately', '3-6-months', '6-12-months', '12-plus-months'];
 const UNIT_IDS = units.map((unit) => unit.id);
@@ -83,9 +84,9 @@ export async function POST(request: Request) {
         sourceUrl,
     };
 
-    // What it takes to answer: a first name, a phone or an email (an email, when
-    // given, must be valid), and the agreement to be contacted.
-    const complete = !!lead.firstName && !!(lead.phone || lead.email) && (!lead.email || EMAIL_PATTERN.test(lead.email));
+    // What it takes to answer: a first name, a phone or an email (each, when
+    // given, must be a real one), and the agreement to be contacted.
+    const complete = !!lead.firstName && !!(lead.phone || lead.email) && (!lead.phone || isValidPhone(lead.phone)) && (!lead.email || EMAIL_PATTERN.test(lead.email));
     if (!complete || !lead.contactConsent) {
         return NextResponse.json({ error: 'First name, phone or email, and consent are required' }, { status: 400 });
     }
