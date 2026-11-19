@@ -12,6 +12,7 @@ import { validPixelId } from '../lib/lead/meta-capi';
 import { wasCaptured } from '../lib/lead/types';
 import { utmFromUrl } from '../lib/lead/utm';
 import { POST } from '../app/api/lead/route';
+import { isValidPhone } from '../lib/phone';
 
 let pass = 0;
 let fail = 0;
@@ -42,7 +43,7 @@ const sheetOk = (url: string) =>
     new Response(JSON.stringify(url.includes('oauth2') ? { access_token: 't' } : { values: [] }), { status: 200 });
 
 const validBody = {
-    firstName: 'Teszt', lastName: 'Elek', email: 'teszt@example.com', phone: '+36 1',
+    firstName: 'Teszt', lastName: 'Elek', email: 'teszt@example.com', phone: '+36 1 234 5678',
     privacyConsent: true, marketingConsent: false, preferredUnit: 'A1', timeline: '3-6-months', lang: 'hu',
 };
 const post = (body: unknown, ip = '203.0.113.7', headers: Record<string, string> = {}) =>
@@ -132,6 +133,8 @@ async function main() {
     assert('bad email refused', response.status === 400);
     response = await post({ ...validBody, phone: '', email: '' });
     assert('a phone or an email is needed', response.status === 400);
+    response = await post({ ...validBody, phone: '3702164' });
+    assert('a bare number is not a phone', response.status === 400);
     response = await post({ ...validBody, firstName: '  ' });
     assert('first name required', response.status === 400);
     response = await POST(new Request('http://localhost/api/lead', { method: 'POST', body: 'not json' }));
@@ -372,6 +375,12 @@ async function main() {
     globalThis.fetch = (async () => new Response('{}', { status: 200 })) as typeof fetch;
     assert('Meta ok but no capture channel: still refused', (await post({ ...validBody, adConsent: true }, '192.0.2.54')).status === 503);
     clearEnv();
+
+    console.log('phone');
+    for (const ok of ['+36 70 406 5543', '+36703273033', '06304702042', '707344002', '31 784 3369', '0036 1 234 5678', '+36 22 123 456', '06 (30) 123-4567', '+44 20 7946 0958', '0049 151 23456789'])
+        assert(`accepts ${ok}`, isValidPhone(ok));
+    for (const bad of ['3702164', '12345', '+36 1', '+36 30 123', '0630123456789', '111111111', '+36 30 abc 4567', 'telefon', '+0 1234 5678', '+1234567', '+36 30 123456', '06 70 123456', '20 123456'])
+        assert(`rejects ${bad}`, !isValidPhone(bad));
 
     console.log('pixel id');
     assert('pixel id must be digits', validPixelId("1');alert(1)//") === null && validPixelId('123') === '123');
