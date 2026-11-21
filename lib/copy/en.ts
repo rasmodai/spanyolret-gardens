@@ -646,6 +646,7 @@ export const en: Copy = {
         errors: {
             firstName: 'Please enter your first name',
             phone: 'Please enter your phone number',
+            phoneInvalid: 'Please enter a valid phone number, for example +36 30 123 45 67',
             consent: 'We need your agreement in order to contact you',
         },
         message: {

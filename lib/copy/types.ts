@@ -57,7 +57,7 @@ export interface FormCopy {
     sending: string;
     failure: string;
     rateLimited: string;
-    errors: { firstName: string; phone: string; consent: string };
+    errors: { firstName: string; phone: string; phoneInvalid: string; consent: string };
     message: MessageCopy;
     thankYouPath: string;
 }

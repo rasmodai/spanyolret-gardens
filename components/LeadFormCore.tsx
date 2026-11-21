@@ -7,6 +7,7 @@ import { readConsent } from '@/lib/consent';
 import type { FormCopy } from '@/lib/copy/types';
 import { buildMessage, messageAppUrl, OPEN_MESSAGE_EVENT, type MessageChannel } from '@/lib/lead/message';
 import { track } from '@/lib/mixpanel';
+import { isValidPhone } from '@/lib/phone';
 
 type Channel = MessageChannel | 'form';
 
@@ -75,6 +76,7 @@ export default function LeadFormCore({
         const next: typeof errors = {};
         if (!form.firstName.trim()) next.firstName = copy.errors.firstName;
         if (!form.phone.trim()) next.phone = copy.errors.phone;
+        else if (!isValidPhone(form.phone)) next.phone = copy.errors.phoneInvalid;
         if (!form.consent) next.consent = copy.errors.consent;
         setErrors(next);
         if (Object.keys(next).length > 0) {
