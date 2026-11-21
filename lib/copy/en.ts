@@ -256,7 +256,7 @@ export const en: Copy = {
     pricing: {
         eyebrow: 'Pricing',
         title: 'What the price covers, and what it does not.',
-        lede: 'You get keys, not a shell. The gardens differ by nearly twice between units, so the figure for the one you want comes from us directly.',
+        lede: 'You get keys, not a shell. The prices come from the developer’s October 2026 price list and differ from house to house.',
         includedTitle: 'In the price',
         included: [
             'Turnkey delivery (move-in ready)',
