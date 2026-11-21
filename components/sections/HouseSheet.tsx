@@ -122,6 +122,7 @@ export function HouseSheetBody({
                         </div>
                     ))}
                 </dl>
+                {row.price?.offer && row.price.condition && <p className="caption wrap-compound mt-4">{row.price.condition}</p>}
 
                 <div className="mt-auto space-y-3 pt-6">
                     {row.available && (

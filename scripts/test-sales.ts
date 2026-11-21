@@ -81,6 +81,10 @@ for (const locale of ['en', 'hu'] as const) {
         assert(`${locale} ${unit.id}: the sheet states the list and the offer price of an available house only`, row.facts.filter((fact) => fact.label === (locale === 'hu' ? hu : en).houses.price.list || fact.label === (locale === 'hu' ? hu : en).houses.price.offer).length === priceLines, text.slice(0, 80));
         assert(`${locale} ${unit.id}: seven facts and the price lines, none empty`, row.facts.length === 7 + priceLines && row.facts.every((fact) => fact.label && fact.value));
         const byLabel = (label: string) => row.facts.find((fact) => fact.label === label)?.value ?? '';
+        if (row.price?.offer) {
+            const condition = copy.houses.price.condition;
+            assert(`${locale} ${unit.id}: the offer price never stands without its condition in the sheet`, !!condition && textOf(html).includes(textOf(condition).trim()));
+        }
         assert(`${locale} ${unit.id}: interior, floors, terrace and garden come from the data`,
             byLabel(copy.houses.sheet.facts.interior).startsWith((locale === 'hu' ? unit.totalInternal.toFixed(2).replace('.', ',') : unit.totalInternal.toFixed(2)))
             && byLabel(copy.houses.sheet.facts.garden).startsWith(locale === 'hu' ? unit.gardenArea.toFixed(2).replace('.', ',') : unit.gardenArea.toFixed(2))
