@@ -1,23 +1,29 @@
 import LeadFormCore from '@/components/LeadFormCore';
-import LeadChoice from '@/components/sections/LeadChoice';
 import type { Copy } from '@/lib/copy/types';
 import type { Locale } from '@/lib/format';
+import { fill } from '@/lib/format';
 import { projectConfig, whatsappDigits } from '@/lib/project-config';
 
-/* Book a viewing. Two choices first (call the builder, or ask for
- * information, which unfolds the form: components/sections/LeadChoice.tsx), then
- * a WhatsApp or SMS message to Brenda, already written, or a call back. See
+/* The contact section. One button, one short form (first name, phone, and a
+ * budget and a house if the visitor wants to say), like City Gate's V2 of
+ * 16/11/2026: the two-step choice added on 13/11 cut the share of visitors
+ * leaving a contact there from 7.9 % to 2.7 %. The ways in that are not the
+ * form (a message to Brenda, a call to the builder) sit under the button. See
  * components/LeadFormCore.tsx. */
 export default function LeadForm({
     copy,
     locale,
     unitOptions,
+    availability,
 }: {
     copy: Copy;
     locale: Locale;
     unitOptions: { value: string; label: string }[];
+    /** "6 houses, 4 available · A3 and B2 sold…" */
+    availability: string;
 }) {
     const { leadForm } = copy;
+    const phone = projectConfig.callNumber;
 
     return (
         <section id="lead-form" className="section-airy band-frame">
@@ -34,6 +40,7 @@ export default function LeadForm({
                             <p className="mt-5 max-w-[46ch] text-[1.0625rem] leading-relaxed text-[color:var(--on-frame-soft)]">
                                 {whatsappDigits ? leadForm.ledeMessaging : leadForm.ledeNoMessaging}
                             </p>
+                            <p className="caption mt-4 !text-[color:var(--on-frame-soft)]">{availability}</p>
 
                             <dl className="mt-9 border-t border-onmedia/20">
                                 <div className="border-b border-onmedia/15 py-4">
@@ -52,15 +59,15 @@ export default function LeadForm({
                         </div>
 
                         <div className="bg-paper p-6 text-ink md:p-8" data-reveal="2">
-                            <LeadChoice copy={copy.form.choice} phone={projectConfig.callNumber} messaging={!!whatsappDigits} lang={locale}>
-                                <LeadFormCore
-                                    copy={copy.form}
-                                    lang={locale}
-                                    unitOptions={unitOptions}
-                                    whatsappDigits={whatsappDigits}
-                                    privacyHref={projectConfig.privacyPath[locale]}
-                                />
-                            </LeadChoice>
+                            <LeadFormCore
+                                copy={copy.form}
+                                lang={locale}
+                                unitOptions={unitOptions}
+                                whatsappDigits={whatsappDigits}
+                                privacyHref={projectConfig.privacyPath[locale]}
+                                callNumber={phone}
+                                callLabel={phone ? fill(copy.form.callBuilder, { phone }) : null}
+                            />
                         </div>
                     </div>
                 </div>

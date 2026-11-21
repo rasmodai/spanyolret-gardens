@@ -51,7 +51,7 @@ export const en: Copy = {
             { id: 'floor-plans', label: 'The six gardens' },
             { id: 'location', label: 'Location' },
         ],
-        cta: 'Book a viewing',
+        cta: 'Request a call back',
         themeDark: 'Dark',
         themeLight: 'Light',
     },
@@ -67,13 +67,17 @@ export const en: Copy = {
             { value: garden, label: 'Private garden' },
             ...(keys ? [{ value: keys, label: 'Keys' }] : []),
         ],
-        ctaPrimary: 'Book a viewing',
+        ctaPrimary: 'Request a call back',
         ctaSecondary: 'See the six gardens',
     },
 
     /* The one public figure. It never appears without its qualifier: a bare
      * number invites comparison against competitors' shell prices
      * (DESIGN.md → Pricing Display Rule). */
+    availability: {
+        line: `{available} of {total} houses available · {sold} sold${shared.giftOn ? ` · free parking space with a deposit received by ${depositBy}` : ''}`,
+    },
+
     price: {
         anchor: `From ${formatPrice(shared.anchorHuf, 'en')}`,
         qualifier: priceQualifier,
@@ -189,7 +193,13 @@ export const en: Copy = {
         columnHouse: 'Unit',
         columnGarden: 'Private garden, to scale',
         summary: '{interior} inside · {rooms} rooms · {terrace} terrace',
-        priceOnRequest: 'Price on request',
+        interested: 'I’m interested',
+        price: {
+            list: 'List price',
+            offer: 'Offer price',
+            condition: shared.giftOn ? `The offer price applies to a deposit received by ${depositBy}, and includes one complimentary parking space.` : '',
+        },
+        rateNote: `The list price adds up the living area (${formatPrice(shared.livingAreaRateHuf, 'en')}/m²), the exclusive garden use, the parking space(s), the legal fee and the ${formatPrice(shared.utilityFeeHuf, 'en')} utility connection fee. The living area is measured from the external walls, windows and doors.`,
         sheet: {
             open: 'Plan and details',
             openAria: 'Open the plan and details of house {id}',
@@ -246,7 +256,7 @@ export const en: Copy = {
     pricing: {
         eyebrow: 'Pricing',
         title: 'What the price covers, and what it does not.',
-        lede: 'You get keys, not a shell. The gardens differ by nearly twice between units, so the figure for the one you want comes from us directly.',
+        lede: 'You get keys, not a shell. The prices come from the developer’s October 2026 price list and differ from house to house.',
         includedTitle: 'In the price',
         included: [
             'Turnkey delivery (move-in ready)',
@@ -268,7 +278,7 @@ export const en: Copy = {
         ],
         extrasNote:
             'Optional extras are priced separately and listed below. We put them here rather than at contract stage, because finding out later is how people end up feeling sold to.',
-        cta: 'Ask us the price',
+        cta: 'I’m interested',
         scheduleNote:
             'Payment schedule and financing are set out in the reservation documents. We will walk you through both before you commit to anything.',
     },
@@ -475,7 +485,7 @@ export const en: Copy = {
             { title: 'Visit the Site', text: 'Tour the construction site, see the neighborhood, and visualize your future home.', duration: '1 hour' },
             { title: 'Choose Your Unit', text: 'Select from available units. Discuss customization options for finishes.', duration: 'Your pace' },
             { title: 'Reserve with Deposit', text: 'Secure your unit with a reservation deposit. We provide a bilingual contract.', duration: '1-2 weeks' },
-            { title: 'Finalize Purchase', text: 'Complete the purchase agreement with the notary. We guide you through every step.', duration: '2-4 weeks' },
+            { title: 'Finalize Purchase', text: 'Sign the purchase agreement at the lawyer’s office. We guide you through every step.', duration: '2-4 weeks' },
             {
                 title: keys ? `Move In (${keys})` : 'Move In',
                 text: 'Receive your keys to a turnkey, move-in ready home.',
@@ -486,11 +496,11 @@ export const en: Copy = {
         reassurance: [
             'English-speaking dedicated contact',
             'Bilingual contracts and documentation',
-            'Recommended English-speaking lawyers and notaries',
+            'Recommended English-speaking lawyers',
             'Regular construction progress updates',
             'Transparent communication throughout',
         ],
-        cta: 'Book a viewing',
+        cta: 'Request a call back',
     },
 
     faq: {
@@ -579,11 +589,11 @@ export const en: Copy = {
     },
 
     leadForm: {
-        eyebrow: 'Book a viewing',
+        eyebrow: 'Contact',
         title: 'Come and stand in the garden.',
         ledeMessaging: 'Call the builder directly, or answer a few short questions and send us a message. Bring the children to the visit.',
         ledeNoMessaging:
-            'Call the builder, or leave your details and we call you back. Bring the children. They will tell you more about 300 m² of grass than we can. One visit, and no follow-up unless you ask for it.',
+            'Call the builder, or leave your details and we call you back. Bring the children. They will tell you more about the lawn than we can. One visit, and no follow-up unless you ask for it.',
         replyText: 'Within the hour during Budapest office hours. Otherwise first thing tomorrow.',
         facts: [
             { title: 'In English', text: 'The whole purchase runs in English. No Hungarian required at any point.' },
@@ -597,14 +607,15 @@ export const en: Copy = {
     },
 
     form: {
-        choice: {
-            prompt: 'How would you like to continue?',
-            callTitle: 'Call the builder',
-            callWho: 'the builder',
-            infoTitle: 'I just want more information',
-            infoDetailMessaging: 'Answer three questions: your message opens in WhatsApp or SMS, already written.',
-            infoDetailCall: 'Leave your first name and phone number, and we call you back.',
-        },
+        budget: 'What budget are you thinking of? (optional)',
+        budgetPlaceholder: 'Choose',
+        budgetOptions: [
+            { value: 'under-220', label: 'Under 220 M HUF' },
+            { value: '220-230', label: '220–230 M HUF' },
+            { value: 'over-230', label: 'Over 230 M HUF' },
+            { value: 'loan', label: 'I would buy with a mortgage' },
+        ],
+        callBuilder: 'I would rather call the builder: {phone}',
         unit: 'Which house interests you?',
         unitAny: 'Not sure yet',
         unitOption: '{id} · garden {garden}',
@@ -623,13 +634,12 @@ export const en: Copy = {
         email: 'Email (optional)',
         consent: 'I agree to be contacted about my enquiry.',
         privacyLink: 'Privacy policy',
-        choose: 'Send it with',
+        choose: 'Or write to us:',
         opening: 'Opening your messages…',
         whatsapp: 'WhatsApp',
         sms: 'SMS',
         note: 'Your answers are also saved, so that we can call you back if the message does not reach us.',
-        callBack: 'I would rather be called back',
-        submit: 'Book a viewing',
+        submit: 'Request a call back',
         sending: 'Sending…',
         failure: 'Something went wrong and your request was not sent. Please try again.',
         rateLimited: 'Too many requests have been sent from your connection. Please try again in an hour.',
@@ -653,7 +663,7 @@ export const en: Copy = {
     footer: {
         ariaLabel: 'Footer',
         tagline: `Six townhouses with private gardens of ${gardenFrom} to ${gardenTo} m², in Budapest’s XI. District.${keys ? ` Keys ${keys}.` : ''}`,
-        cta: 'Book a viewing',
+        cta: 'Request a call back',
         onThisPage: 'On this page',
         links: [
             { id: 'why-here', label: 'Overview' },
@@ -675,8 +685,8 @@ export const en: Copy = {
     ctaBands: {
         afterHouses: {
             title: 'Which house is yours?',
-            text: 'Ask for the price of any house, without obligation.',
-            primary: 'Ask for the price',
+            text: 'Tell us which house interests you, and we call you back, without obligation.',
+            primary: 'I’m interested',
             message: 'Write to us',
         },
         afterSpecs: {
@@ -686,7 +696,7 @@ export const en: Copy = {
             message: 'Write to us',
         },
     },
-    stickyBar: { ariaLabel: 'Quick actions', viewing: 'Book a viewing', message: 'Message', call: 'Call' },
+    stickyBar: { ariaLabel: 'Quick actions', viewing: 'Request a call back', message: 'Message', call: 'Call' },
     thankYou: {
         metaTitle: 'Thank you | Spanyolrét Gardens',
         title: 'Thank you.',

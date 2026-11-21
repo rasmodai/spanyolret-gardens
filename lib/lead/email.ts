@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import type { ChannelResult, Lead } from './types';
+import { BUDGETS, type ChannelResult, type Lead } from './types';
 
 function escapeHtml(str: string): string {
     return str
@@ -60,6 +60,11 @@ export async function sendLeadEmail(lead: Lead): Promise<ChannelResult> {
                         <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Channel</td>
                         <td style="padding: 8px 0;">${source === 'form' ? 'Call back requested' : `${source === 'sms' ? 'SMS' : 'WhatsApp'} message opened (check your phone)`}</td>
                     </tr>
+                    ${lead.budget ? `
+                    <tr>
+                        <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Budget</td>
+                        <td style="padding: 8px 0;">${BUDGETS[lead.budget]}</td>
+                    </tr>` : ''}
                     ${priority ? `
                     <tr>
                         <td style="padding: 8px 0; font-weight: 600; vertical-align: top;">Priority</td>

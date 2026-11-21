@@ -1,4 +1,4 @@
-import type { ChannelResult, Lead } from './types';
+import { BUDGETS, type ChannelResult, type Lead } from './types';
 
 /* Appends the lead to the CRM sheet, through the OAuth2 refresh-token flow.
  * Same 17 columns as the sheet template: #, Date, First Name, Last Name, Email,
@@ -85,7 +85,7 @@ export async function appendLeadToSheet(lead: Lead): Promise<ChannelResult> {
             'First contact',
             '',
             '',
-            [lead.priority && `Matters most: ${lead.priority}`, lead.message].filter(Boolean).join(' · '),
+            [lead.budget && `Budget: ${BUDGETS[lead.budget]}`, lead.priority && `Matters most: ${lead.priority}`, lead.message].filter(Boolean).join(' · '),
             lead.marketingConsent ? 'Yes' : 'No',
         ];
 

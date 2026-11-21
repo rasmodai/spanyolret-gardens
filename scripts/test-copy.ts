@@ -79,7 +79,7 @@ assert('privacy policy: Mixpanel named in both languages (providers, legal basis
 assert('FAQ: four groups each', en.faq.groups.length === 4 && hu.faq.groups.length === 4);
 assert('spec lists: same lines per category', en.specs.categories.every((category, i) => category.items.length === hu.specs.categories[i].items.length));
 
-const PLACEHOLDER_PATHS = /^(houses\.(summary|ribbon\.(ofLargest|aria)|plans\.(house|siteCaption)|sheet\.(openAria|askMessage|askCallBack|parking\.(one|other)))|developer\.architect|gallery\.ui\.enlarge|specs\.fullToggle|form\.(unitOption|message\.\w+)|footer\.(legalLine|architect))$/;
+const PLACEHOLDER_PATHS = /^(houses\.(summary|ribbon\.(ofLargest|aria)|plans\.(house|siteCaption)|sheet\.(openAria|askMessage|askCallBack|parking\.(one|other)))|availability\.line|developer\.architect|gallery\.ui\.enlarge|specs\.fullToggle|form\.(unitOption|callBuilder|message\.\w+)|footer\.(legalLine|architect))$/;
 for (const [name, copy] of [['en', en], ['hu', hu]] as const) {
     for (const [path, text] of strings(copy)) {
         if (/\{\w+\}/.test(text)) assert(`${name}: ${path} has a placeholder only where one is filled`, PLACEHOLDER_PATHS.test(path), text);
@@ -143,12 +143,12 @@ if (projectConfig.parkingGift.enabled) {
     assert('the parking line carries its deadline', en.pricing.included.some((line) => line.includes('1 December 2026')) && hu.pricing.included.some((line) => /2026\. december 1-jéig/.test(line)));
 }
 assert('parking per house (EN)', en.pricing.included.some((line) => line.includes('two spaces with A1, A2 and B1, one with B3')));
-assert('parking per house (HU)', hu.pricing.included.some((line) => line.includes('az A1, A2 és B1 mellé kettő, a B3 mellé egy')));
+assert('parking per house (HU)', hu.pricing.included.some((line) => line.includes('az A1, A2 és B1 házhoz kettő, a B3 házhoz egy')));
 assert('keys date on the page', en.hero.facts.some((fact) => fact.value === 'April 2027') && hu.hero.facts.some((fact) => fact.value === '2027. április'));
 assert('headline (EN)', en.hero.titleFirst === 'A real garden.' && en.hero.titleSecond === 'Not a balcony.');
 assert('headline (HU)', hu.hero.titleFirst === 'Saját kert.' && hu.hero.titleSecond === 'Nem erkély.');
 assert('the builder is named', en.developer.lede.includes('S-Patrik Bau') && hu.developer.lede.includes('S-Patrik Bau'));
-assert('gardens from 102 to 202 m²', en.hero.lede.includes('102 to 202 m²') && hu.hero.lede.includes('102-től 202 m²-ig'));
+assert('gardens from 102 to 202 m²', en.hero.lede.includes('102 to 202 m²') && hu.hero.lede.includes('102 és 202 m² közötti'));
 
 const everything = JSON.stringify(en) + JSON.stringify(hu);
 assert('no "100 % on time"', !/100 ?%/.test(everything.replace(/100 ?% a/g, '')));
@@ -158,11 +158,11 @@ assert('radius 0', /full:\s*'0'/.test(read('tailwind.config.ts')) && /DEFAULT:\s
 
 // 4. No price per house, anywhere the browser can see ---------------------------
 
-console.log('no price per house');
+console.log('prices: only the price list\'s figures');
 // Every figure of a million or more in the copy must be the anchor or the price of a parking space.
 const BIG_NUMBER = /\d{1,3}(?:[,.  ]\d{3}){2,}/g;
 const allowedBig = new Set(
-    [216_616_000, 220_616_000, projectConfig.parkingSpacePriceHuf].flatMap((value) => [formatPrice(value, 'en'), formatPrice(value, 'hu')].map((text) => text.replace(/\D/g, '')))
+    [216_616_000, 220_616_000, projectConfig.parkingSpacePriceHuf, projectConfig.livingAreaRateHuf, 850_000, ...units.flatMap((unit) => (unit.prices ? [unit.prices.listHuf, unit.prices.offerHuf] : []))].flatMap((value) => [formatPrice(value, 'en'), formatPrice(value, 'hu')].map((text) => text.replace(/\D/g, '')))
 );
 for (const [name, copy] of [['en', en], ['hu', hu]] as const) {
     for (const [path, text] of strings(copy)) {
@@ -173,7 +173,8 @@ for (const [name, copy] of [['en', en], ['hu', hu]] as const) {
 }
 for (const locale of ['en', 'hu'] as const) {
     const rows = JSON.stringify(houseRows(locale)) + JSON.stringify(houseOptions(locale));
-    assert(`${locale}: the house rows carry no price`, !/price|huf|\bft\b|\bár\b/i.test(rows) && !(rows.match(BIG_NUMBER)?.length));
+    const priced = houseRows(locale).filter((row) => row.price);
+    assert(`${locale}: only the four available houses carry a price, all from the data`, priced.length === 4 && priced.every((row) => row.available) && (rows.match(BIG_NUMBER) ?? []).every((match) => allowedBig.has(match.replace(/\D/g, ''))));
     assert(`${locale}: six rows, smallest garden first`, houseRows(locale).length === 6 && houseRows(locale)[0].id === 'B1');
     assert(`${locale}: only available houses in the form`, houseOptions(locale).map((option) => option.value).join() === 'A1,A2,B1,B3');
 }

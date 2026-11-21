@@ -225,7 +225,7 @@ The received wisdom — "localized text expands, leave 30% headroom" — is wron
 | English | Hungarian | Δ width |
 |---------|-----------|---------|
 | Underfloor heating | Padlófűtés | **−43%** |
-| Price on request | Ár kérésre | −37% |
+| I’m interested | Érdekel | −37% |
 | Private garden | Saját kert | −36% |
 | Book a viewing | Időpontot kérek | +7% |
 | Turnkey delivery | Kulcsrakész átadás | +15% |
@@ -285,7 +285,7 @@ Zero radius, zero shadow, 1px hairlines. This is what makes the page look unlike
 ## Component Rules
 
 - **Buttons:** One filled button per screen, and it carries `--lawn`. Everything else is a bordered ghost or a quiet underline. Padding 15px/26px, weight 600, radius 0.
-- **Every control has a 44px hit area, whatever its visible size.** `.tab-link` gets there with `min-height`; `.btn-quiet` gets there with a transparent `::after`, because growing its box would drag the underline away from the text. Verified on production, where the six "Price on request" buttons — the primary conversion action in the unit list — measured 33px on a 375px viewport. They pass WCAG 2.5.8 at that size, but the minimum is not the target: a thumb is not a mouse pointer, and this is the control that generates the leads.
+- **Every control has a 44px hit area, whatever its visible size.** `.tab-link` gets there with `min-height`; `.btn-quiet` gets there with a transparent `::after`, because growing its box would drag the underline away from the text. Verified on production, where the six "Price on request" buttons (renamed "I’m interested" on 12/11/2026) — the primary conversion action in the unit list — measured 33px on a 375px viewport. They pass WCAG 2.5.8 at that size, but the minimum is not the target: a thumb is not a mouse pointer, and this is the control that generates the leads.
 - **Inputs:** Bottom rule only, no box. `--line-strong` at rest, `--lawn` on focus. Focus is always visible — never remove the outline without replacing it.
 - **Cards:** A card is a hairline rule and a background band, not an elevated rounded surface.
 - **Images:** Square corners, no border. Full-bleed wherever the layout allows.
@@ -326,6 +326,8 @@ Before shipping any section, ask: *would this element survive a buyer asking "ho
 
 ## Pricing Display Rule
 
+> **Superseded on 16/11/2026 (decision of Rémi, call with Brenda: show the prices to filter the contacts).** Each available house now shows its list price and its offer price, both from the developer's 2026-10 price list (`prices` in `lib/data.ts`, `showUnitPrices` in `lib/project-config.ts`; `false` brings back the single "from" price, with no per-house price in the page). Sold houses show no price. The prices reach the browser as display strings only (`lib/houses-view.ts`); `lib/data.ts` stays server-only, and `scripts/test-sales.ts` recomputes each price from the list's components. The "from" price keeps its qualifier. The rest of this section is the 12/11 rule, kept for the reasoning.
+
 Decided 2026-08-08, implemented in the 12/11/2026 revamp. `lib/data.ts` no longer holds any price, and the PRD's 195–225M range is stale.
 
 **One number appears on the site, and only one:**
@@ -339,12 +341,12 @@ Decided 2026-08-08, implemented in the 12/11/2026 revamp. `lib/data.ts` no longe
 - **The qualifier names what is included. It never claims everything is.** Optional extras — a second parking space, solar, irrigation, motorised shutters, the ceiling heating-cooling upgrade — are chargeable on top, so "everything included" would be misleading. Corrected 2026-08-08.
 - **The number never appears alone**, in either locale. If a layout has no room for the qualifier, the layout is wrong, not the rule — a bare "from 216,616,000 HUF" invites a comparison against competitors' shell prices and loses it.
 - **Where the extras are listed, say plainly that they are on top.** "Optional extras are priced separately" / "A választható extrák külön díjazásúak." Never bury it in a footnote: the buyer who discovers a cost after the fact is the buyer who walks.
-- **No per-unit prices anywhere.** Not in the unit comparison, not in the floor plans, not in cards, not in tooltips. Each unit shows **Price on request** / **Ár kérésre**, which is also the CTA hook into the lead form.
+- **No per-unit prices anywhere.** Not in the unit comparison, not in the floor plans, not in cards, not in tooltips. Each available unit shows no price, only the **I’m interested** / **Érdekel** button (it read "Price on request" / "Ár kérésre" until 12/11/2026), which is the CTA hook into the lead form.
 - **This is a positioning decision, not a formatting one.** A high turnkey anchor plus price-on-request qualifies the buyer into a conversation instead of letting them self-disqualify on a number. Do not "helpfully" reintroduce a price range, a per-m² figure, or a "from 195M" line.
 
 ### Implementation consequence
 
-Per-unit prices are not in the code at all: `lib/data.ts` has no price field, and the browser only receives `lib/houses-view.ts` (display strings). Never add a `price` field to a unit, never import `lib/data.ts` from a `'use client'` file. The single anchor is `anchorPrice` in `lib/project-config.ts`; every house row and every house sheet reads "Price on request" / "Ár kérésre".
+Per-unit prices are not in the code at all: `lib/data.ts` has no price field, and the browser only receives `lib/houses-view.ts` (display strings). Never add a `price` field to a unit, never import `lib/data.ts` from a `'use client'` file. The single anchor is `anchorPrice` in `lib/project-config.ts`; no house row and no house sheet carries a price; the available ones carry the "I’m interested" / "Érdekel" button.
 
 ### Typographic treatment
 

@@ -1,6 +1,7 @@
 import { getCopy } from './copy';
 import { largestGarden, units, availableUnits } from './data';
-import { fill, formatArea, type Locale } from './format';
+import { fill, formatArea, formatPrice, type Locale } from './format';
+import { projectConfig } from './project-config';
 
 /* What the browser receives about each house: display strings and one number
  * for the garden ribbon. Server-only (it imports lib/data.ts); a 'use client'
@@ -14,9 +15,33 @@ export interface HouseRow {
     highlight: string | null;
     /** Accessible name of the row's "plan and details" button. */
     openAria: string;
-    /** The sheet's facts, already formatted, in reading order. No price among them. */
+    /** The house's price, display strings; null for a sold house or when `showUnitPrices` is off. */
+    price: { list: string; offer: string | null; condition: string | null } | null;
+    /** The sheet's facts, already formatted, in reading order. */
     facts: { label: string; value: string }[];
     ribbon: { area: string; percent: number; percentLabel: string; ariaLabel: string; gardenWord: string };
+}
+
+function priceOf(unit: (typeof units)[number], locale: Locale): HouseRow['price'] {
+    if (!projectConfig.showUnitPrices || !unit.prices) return null;
+    const offer = projectConfig.parkingGift.enabled;
+    return {
+        list: formatPrice(unit.prices.listHuf, locale),
+        offer: offer ? formatPrice(unit.prices.offerHuf, locale) : null,
+        condition: offer ? getCopy(locale).houses.price.condition : null,
+    };
+}
+
+/** "4 of 6 still available": derived from the data, never typed. */
+export function availability(locale: Locale): { available: number; total: number; sold: string[]; line: string } {
+    const copy = getCopy(locale).availability;
+    const sold = units.filter((unit) => unit.status === 'sold').map((unit) => unit.id);
+    return {
+        available: availableUnits.length,
+        total: units.length,
+        sold,
+        line: fill(copy.line, { available: availableUnits.length, total: units.length, sold: sold.join(locale === 'hu' ? ' és ' : ' and ') }),
+    };
 }
 
 /** The six houses, smallest garden first: the bars read as one rising column. */
@@ -37,9 +62,16 @@ export function houseRows(locale: Locale): HouseRow[] {
                     rooms: unit.rooms,
                     terrace: formatArea(unit.terraceArea, locale),
                 }),
+                price: priceOf(unit, locale),
                 highlight: unit.highlight ? houses.highlights[unit.highlight] : null,
                 openAria: fill(sheet.openAria, { id: unit.id }),
                 facts: [
+                    ...(priceOf(unit, locale)
+                        ? [
+                              { label: houses.price.list, value: priceOf(unit, locale)!.list },
+                              ...(priceOf(unit, locale)!.offer ? [{ label: houses.price.offer, value: priceOf(unit, locale)!.offer! }] : []),
+                          ]
+                        : []),
                     { label: sheet.facts.interior, value: formatArea(unit.totalInternal, locale) },
                     { label: sheet.facts.groundFloor, value: formatArea(unit.groundFloor, locale) },
                     { label: sheet.facts.firstFloor, value: formatArea(unit.firstFloor, locale) },

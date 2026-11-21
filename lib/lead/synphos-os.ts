@@ -1,4 +1,4 @@
-import type { ChannelResult, Lead } from './types';
+import { BUDGETS, type ChannelResult, type Lead } from './types';
 
 const TIMEOUT_MS = 5000;
 
@@ -32,7 +32,8 @@ export async function postLeadToOs(lead: Lead): Promise<ChannelResult> {
                 lang: lead.lang,
                 preferredUnit: lead.preferredUnit || undefined,
                 timeline: lead.timeline || undefined,
-                message: lead.message || undefined,
+                // Until the OS has a budget field, the budget rides in the message (same as City Gate V2).
+                message: [lead.budget && `Budget: ${BUDGETS[lead.budget]}`, lead.message].filter(Boolean).join(' · ') || undefined,
                 marketingConsent: lead.marketingConsent,
                 // The API refuses any lead without the privacy box ticked.
                 contactConsent: lead.contactConsent,

@@ -11,16 +11,16 @@ import { createElement as h } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import CallReveal from '../components/sections/CallReveal';
 import CtaBand from '../components/sections/CtaBand';
-import LeadChoice from '../components/sections/LeadChoice';
 import HouseRows from '../components/sections/HouseRows';
 import { HouseSheetBody, type HouseSheetLabels } from '../components/sections/HouseSheet';
 import StickyActions from '../components/StickyActions';
 import ThankYou from '../components/ThankYou';
 import { units } from '../lib/data';
+import { BUDGETS } from '../lib/lead/types';
 import { en } from '../lib/copy/en';
 import { hu } from '../lib/copy/hu';
 import { floorPlans } from '../lib/floorplans';
-import { houseRows } from '../lib/houses-view';
+import { availability, houseOptions, houseRows } from '../lib/houses-view';
 import { projectConfig } from '../lib/project-config';
 import { tutoiement } from './tutoiement';
 
@@ -77,9 +77,15 @@ for (const locale of ['en', 'hu'] as const) {
         const row = rows.find((candidate) => candidate.id === unit.id)!;
         const html = sheet(locale, unit.id, { drawings: true, phone: FAKE_PHONE });
         const text = textOf(html);
-        assert(`${locale} ${unit.id}: the sheet states no price`, !/price|huf|\bft\b|\bár\b|\bárat\b|millió/i.test(text.replace(/\bPrice on request\b/g, '')) && !BIG_NUMBER.test(text), text.slice(0, 80));
-        assert(`${locale} ${unit.id}: seven facts, none empty`, row.facts.length === 7 && row.facts.every((fact) => fact.label && fact.value));
+        // List price, plus the offer price while the parking gift runs; none when prices are hidden.
+        const priceLines = unit.status === 'available' && projectConfig.showUnitPrices ? (projectConfig.parkingGift.enabled ? 2 : 1) : 0;
+        assert(`${locale} ${unit.id}: the sheet states the list and the offer price of an available house only`, row.facts.filter((fact) => fact.label === (locale === 'hu' ? hu : en).houses.price.list || fact.label === (locale === 'hu' ? hu : en).houses.price.offer).length === priceLines, text.slice(0, 80));
+        assert(`${locale} ${unit.id}: seven facts and the price lines, none empty`, row.facts.length === 7 + priceLines && row.facts.every((fact) => fact.label && fact.value));
         const byLabel = (label: string) => row.facts.find((fact) => fact.label === label)?.value ?? '';
+        if (row.price?.offer) {
+            const condition = copy.houses.price.condition;
+            assert(`${locale} ${unit.id}: the offer price never stands without its condition in the sheet`, !!condition && textOf(html).includes(textOf(condition).trim()));
+        }
         assert(`${locale} ${unit.id}: interior, floors, terrace and garden come from the data`,
             byLabel(copy.houses.sheet.facts.interior).startsWith((locale === 'hu' ? unit.totalInternal.toFixed(2).replace('.', ',') : unit.totalInternal.toFixed(2)))
             && byLabel(copy.houses.sheet.facts.garden).startsWith(locale === 'hu' ? unit.gardenArea.toFixed(2).replace('.', ',') : unit.gardenArea.toFixed(2))
@@ -113,10 +119,45 @@ console.log('house rows');
 for (const locale of ['en', 'hu'] as const) {
     const copy = locale === 'hu' ? hu : en;
     const html = renderToStaticMarkup(
-        h(HouseRows, { houses: houseRows(locale), columnHouse: 'x', columnGarden: 'y', priceOnRequest: copy.houses.priceOnRequest, openLabel: copy.houses.sheet.open, onOpen: noop, onAsk: noop })
+        h(HouseRows, { houses: houseRows(locale), columnHouse: 'x', columnGarden: 'y', interested: copy.houses.interested, priceLabels: { list: copy.houses.price.list, offer: copy.houses.price.offer }, openLabel: copy.houses.sheet.open, onOpen: noop, onAsk: noop })
     );
     assert(`${locale}: six "plan and details" buttons (sold houses included)`, count(html, `>${copy.houses.sheet.open}<`) === 6);
-    assert(`${locale}: "${copy.houses.priceOnRequest}" on the four available houses only`, count(html, `>${copy.houses.priceOnRequest}<`) === 4);
+    assert(`${locale}: "${copy.houses.interested}" on the four available houses only`, count(html, `>${copy.houses.interested}<`) === 4);
+}
+
+// 2 bis. Prices, as in the developer's 2026-10 price list --------------------------------
+
+console.log('prices');
+{
+    // Components of the list (Spanyolret_Gardens_arlista_2026_10.pdf): living area x 1,800,000,
+    // parking at 4,000,000 per space, garden use per m² (35,000; B3 30,000), utility fee 850,000.
+    const parts: Record<string, { living: number; spaces: number; garden: number; rate: number }> = {
+        A1: { living: 117.45, spaces: 2, garden: 185, rate: 35000 },
+        A2: { living: 120.27, spaces: 2, garden: 202, rate: 35000 },
+        B1: { living: 117.38, spaces: 2, garden: 102, rate: 35000 },
+        B3: { living: 117.42, spaces: 1, garden: 147, rate: 30000 },
+    };
+    for (const unit of units) {
+        if (unit.status === 'sold') {
+            assert(`${unit.id}: sold, no price`, unit.prices === null);
+            continue;
+        }
+        const c = parts[unit.id];
+        const list = Math.round(c.living * projectConfig.livingAreaRateHuf) + c.spaces * 4_000_000 + c.garden * c.rate + 850_000;
+        assert(`${unit.id}: list price is the sum of the price list's components`, unit.prices?.listHuf === list, `${unit.prices?.listHuf} vs ${list}`);
+        assert(`${unit.id}: offer price is the list price minus one parking space`, unit.prices?.offerHuf === list - 4_000_000);
+        assert(`${unit.id}: the interior area is the price list's living area`, unit.totalInternal === c.living);
+    }
+    const lowest = Math.min(...units.flatMap((unit) => (unit.prices ? [unit.prices.offerHuf] : [])));
+    assert('the "from" price is the lowest offer price', lowest === projectConfig.anchorPrice.withGiftHuf);
+    const lowestList = Math.min(...units.flatMap((unit) => (unit.prices ? [unit.prices.listHuf] : [])));
+    assert('the "from" price without the gift is the lowest list price', lowestList === projectConfig.anchorPrice.withoutGiftHuf);
+    for (const locale of ['en', 'hu'] as const) {
+        const rows = houseRows(locale);
+        assert(`${locale}: four rows carry a price, the two sold houses none`, rows.filter((row) => row.price).length === 4 && rows.filter((row) => !row.price).every((row) => !row.available));
+        const av = availability(locale);
+        assert(`${locale}: "${av.line}" is computed from the data`, av.available === 4 && av.total === 6 && av.sold.join() === 'A3,B2' && av.line.includes('A3') && av.line.includes('B2'));
+    }
 }
 
 // 3. The call button: nothing while there is no number ------------------------------
@@ -137,22 +178,24 @@ for (const locale of ['en', 'hu'] as const) {
     assert(`${locale}: the mobile bar gains the call with a number`, bar(FAKE_PHONE).includes('href="tel:+36200000000"') && bar(FAKE_PHONE).includes(`>${copy.stickyBar.call}<`));
     assert(`${locale}: the mobile bar without a messaging number has no message button`, !bar(null, false).includes(`>${copy.stickyBar.message}<`));
 }
-assert('the page passes callNumber (not a literal) to the bar, the sheets and the form choice', /phone=\{projectConfig\.callNumber \?\? projectConfig\.contactPhone\}/.test(read('components/LandingPage.tsx')) && /phone=\{projectConfig\.callNumber\}/.test(read('components/sections/FloorPlans.tsx')) && /phone=\{projectConfig\.callNumber\} messaging=/.test(read('components/sections/LeadForm.tsx')));
+assert('the page passes callNumber (not a literal) to the bar, the sheets and the form choice', /phone=\{projectConfig\.callNumber \?\? projectConfig\.contactPhone\}/.test(read('components/LandingPage.tsx')) && /phone=\{projectConfig\.callNumber\}/.test(read('components/sections/FloorPlans.tsx')) );
 
-console.log('form choice');
+console.log('short form');
+{
+    // LeadFormCore needs the app router (useRouter): checked on its source.
+    const core = read('components/LeadFormCore.tsx');
+    assert('the form asks a first name, a phone, and optionally a house, a budget and an e-mail', /copy\.firstName/.test(core) && /copy\.phone/.test(core) && /copy\.budget\b/.test(core) && /copy\.unit\b/.test(core) && !/copy\.priority\b/.test(core) && !/copy\.timeline\b/.test(core));
+    assert('the form button asks for the call back (source \'form\'), WhatsApp and SMS are the quieter way in', /onSubmit=\{\(event\) => submit\(event, 'form'\)\}/.test(core) && /submit\(event, 'whatsapp'\)/.test(core) && /submit\(event, 'sms'\)/.test(core));
+    assert('the builder is a tel: link built from callNumber', /href=\{`tel:\$\{callNumber\.replace/.test(core));
+    assert('the budget goes to the API', /budget: form\.budget/.test(core));
+}
 for (const locale of ['en', 'hu'] as const) {
     const copy = locale === 'hu' ? hu : en;
-    const c = copy.form.choice;
-    const choice = (phone: string | null) => renderToStaticMarkup(h(LeadChoice, { copy: c, phone, messaging: true, lang: locale, children: h('form', { id: 'inner-form' }) }));
-    const withPhone = choice(FAKE_PHONE);
-    assert(`${locale}: the call choice is a tel: link with the number written out`, withPhone.includes('href="tel:+36200000000"') && withPhone.includes(FAKE_PHONE) && withPhone.includes(c.callTitle));
-    assert(`${locale}: the information choice controls a folded panel`, /aria-expanded="false"/.test(withPhone) && /data-open="false"/.test(withPhone) && withPhone.includes(c.infoTitle));
-    assert(`${locale}: the form stays in the HTML (no-JS, nothing lost on fold)`, withPhone.includes('id="inner-form"') && withPhone.includes('<noscript>'));
-    const without = choice(null);
-    assert(`${locale}: no number: no choice, the form is open`, !without.includes('tel:') && !without.includes(c.callTitle) && /data-open="true"/.test(without));
-    assert(`${locale}: the builder wording is the site's own`, locale === 'hu' ? /kivitelező/.test(c.callTitle + c.callWho) : /builder/.test(c.callTitle + c.callWho));
+    assert(`${locale}: four budget bands, each a known key`, copy.form.budgetOptions.map((option) => option.value).join() === Object.keys(BUDGETS).join());
+    assert(`${locale}: the builder link names the number`, copy.form.callBuilder.includes('{phone}'));
 }
-assert('no phone number typed in the sales components', ![ 'components/sections/CallReveal.tsx', 'components/sections/HouseSheet.tsx', 'components/sections/HouseExplorer.tsx', 'components/sections/CtaBand.tsx', 'components/StickyActions.tsx', 'components/sections/LeadChoice.tsx'].some((path) => /\+36|\b06 ?\d{2}/.test(read(path))));
+assert('the form section passes callNumber (not a literal)', /callNumber=\{phone\}/.test(read('components/sections/LeadForm.tsx')) && /phone = projectConfig\.callNumber/.test(read('components/sections/LeadForm.tsx')));
+assert('no phone number typed in the sales components', ![ 'components/sections/CallReveal.tsx', 'components/sections/HouseSheet.tsx', 'components/sections/HouseExplorer.tsx', 'components/sections/CtaBand.tsx', 'components/StickyActions.tsx'].some((path) => /\+36|\b06 ?\d{2}/.test(read(path))));
 
 // 4. The two bands ------------------------------------------------------------------
 
@@ -195,8 +238,8 @@ assert('both pages stay noindex and use the copy tree', [read('app/thank-you/pag
 // 6. Events and dependency --------------------------------------------------------------
 
 console.log('events');
-const explorer = read('components/sections/LeadChoice.tsx') + read('components/sections/HouseExplorer.tsx') + read('components/sections/HouseSheet.tsx') + read('components/sections/CallReveal.tsx') + read('components/sections/CtaBand.tsx') + read('components/StickyActions.tsx');
-for (const event of ['House Plan Opened', 'House Enquiry Clicked', 'Floor Plan Zoomed', 'CTA Band', 'Sticky CTA', 'Form Choice']) {
+const explorer = read('components/sections/HouseExplorer.tsx') + read('components/sections/HouseSheet.tsx') + read('components/sections/CallReveal.tsx') + read('components/sections/CtaBand.tsx') + read('components/StickyActions.tsx');
+for (const event of ['House Plan Opened', 'House Enquiry Clicked', 'Floor Plan Zoomed', 'CTA Band', 'Sticky CTA']) {
     assert(`event "${event}" is sent`, explorer.includes(`track('${event}'`));
 }
 assert('the sheet is a Radix dialog (focus trap, Escape, scroll lock)', /@radix-ui\/react-dialog/.test(read('components/sections/HouseSheet.tsx')) && /"@radix-ui\/react-dialog"/.test(read('package.json')));

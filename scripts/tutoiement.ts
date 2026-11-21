@@ -10,7 +10,7 @@ const TE_SUFFIX = /^\p{L}{3,}(?:(?:ed|ad|od|öd)(?:et|at|ot|öt|nek|nak|ban|ben|
 // The second person singular of a verb that can: "választhatsz", "megbízhatsz", "megtudsz", "beköltözöl".
 const TE_VERB = /(?:hatsz|hetsz|^megtudsz|^beköltözöl|^megbízol)$/u;
 // Words that end that way without being addressed to "te".
-const NOT_TE = new Set(['szabad', 'szabadon', 'terjed', 'negyed', 'egyed', 'szaladnak', 'munkaidőben']);
+const NOT_TE = new Set(['szabad', 'szabadon', 'terjed', 'negyed', 'egyed', 'szaladnak', 'munkaidőben', 'feladat']);
 export function tutoiement(text: string): string[] {
     const words = text.toLocaleLowerCase('hu').match(/\p{L}+/gu) ?? [];
     const hits = words.filter((word) => TE_WORDS.includes(word));

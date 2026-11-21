@@ -37,7 +37,7 @@ One component tree serves both languages: `components/LandingPage.tsx` receives 
 |---|---|---|
 | `handoverDate` | April 2027 | Keys date in the hero and the FAQ, formatted per language. `null`: no date anywhere. |
 | `parkingGift` | enabled, `depositBy: '2026-12-01'`, 4 000 000 HUF | The free parking space for a deposit received by that day. `enabled: false` removes the offer everywhere and moves the anchor price. |
-| `anchorPrice` | 216 616 000 (offer on) / 220 616 000 (offer off) HUF | The only price published, always with its qualifier. Never a price per house. |
+| `anchorPrice` | 216 616 000 (offer on) / 220 616 000 (offer off) HUF | The only price published, always with its qualifier. Per-house prices are shown since 16/11/2026 (`showUnitPrices`); see DESIGN.md → Pricing Display Rule. |
 | `parkingSpacePriceHuf` | 4 000 000 HUF | Price of an additional space (optional extras). |
 | `callNumber` | City Gate's number (Rémi, 13/11) | Number behind the call choice of the form section, the house sheet's call button (available houses only) and the mobile bar's Call button. `null`: no call choice, the form stays open. |
 | `whatsappNumber` | Brenda's mobile | Number behind the WhatsApp and SMS buttons. `null`: the message form falls back to a call-back request. |
@@ -80,4 +80,4 @@ Mixpanel (EU project, `lib/mixpanel.ts`, mounted by `components/MixpanelTracker.
 
 ## Rules in short
 
-Full version in `CLAUDE.md`. Hungarian addresses the reader formally (Ön). No price per house. No "100 % on time", no BOSCH. No fake urgency. Every fact has a written source in `lib/data.ts` or `lib/project-config.ts`; an unknown value is `null` and disappears from the page.
+Full version in `CLAUDE.md`. Hungarian addresses the reader formally (Ön). Per-house prices only from the developer's price list (`showUnitPrices`). No "100 % on time", no BOSCH. No fake urgency. Every fact has a written source in `lib/data.ts` or `lib/project-config.ts`; an unknown value is `null` and disappears from the page.

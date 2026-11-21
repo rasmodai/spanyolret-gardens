@@ -19,10 +19,11 @@ export interface Unit {
     terraceArea: number;
     gardenArea: number;
     gardenSize: 'small' | 'medium' | 'large' | 'xlarge';
-    // No price fields. Per-unit prices are never published, and anything in this
-    // shape ships in the client bundle where devtools can read it.
-    // See DESIGN.md → Pricing Display Rule.
     status: 'available' | 'reserved' | 'sold';
+    /** List price and offer price from the developer's 2026-10 price list; null for a sold house.
+     *  Server-only like the rest of this file: the browser gets display strings
+     *  (lib/houses-view.ts), and none at all when `showUnitPrices` is false. */
+    prices: { listHuf: number; offerHuf: number } | null;
     rooms: number;
     bathrooms: number;
     parkingSpaces: number;
@@ -30,7 +31,13 @@ export interface Unit {
     highlight?: HighlightKey;
 }
 
-/* Units as in the developer's 2026-10 price list, which Brenda confirmed is correct.
+/* Units as in the developer's 2026-10 price list (Spanyolret_Gardens_arlista_2026_10.pdf,
+ * attached to Brenda's e-mail of 30/10/2026 17:02), which Brenda confirmed is correct.
+ * `prices.listHuf` is the "VÉTELÁR ÖSSZESEN" column (living area × 1,800,000 +
+ * parking + garden use + the 850,000 utility connection, legal fee included),
+ * `prices.offerHuf` the "AKCIÓS ÁR" column (deposit received by 1 December
+ * 2026, one parking space free). scripts/test-sales.ts recomputes both from the
+ * components of the list.
  * The list rounds gardens (185, 202, 102, 147); the decimals come from the earlier
  * plans. A3 and B2 are sold, and the list gives no garden for them, so 260.01 and
  * 316.84 are carried over from those plans. */
@@ -46,6 +53,7 @@ export const units: Unit[] = [
         gardenArea: 185.65,
         gardenSize: 'large',
         status: 'available',
+        prices: { listHuf: 226735000, offerHuf: 222735000 },
         rooms: 5,
         bathrooms: 2,
         parkingSpaces: 2
@@ -61,6 +69,7 @@ export const units: Unit[] = [
         gardenArea: 201.79,
         gardenSize: 'large',
         status: 'available',
+        prices: { listHuf: 232406000, offerHuf: 228406000 },
         rooms: 5,
         bathrooms: 2,
         parkingSpaces: 2,
@@ -77,6 +86,7 @@ export const units: Unit[] = [
         gardenArea: 260.01,
         gardenSize: 'xlarge',
         status: 'sold',
+        prices: null,
         rooms: 5,
         bathrooms: 2,
         parkingSpaces: 1
@@ -92,6 +102,7 @@ export const units: Unit[] = [
         gardenArea: 102.12,
         gardenSize: 'small',
         status: 'available',
+        prices: { listHuf: 223704000, offerHuf: 219704000 },
         rooms: 5,
         bathrooms: 2,
         parkingSpaces: 2,
@@ -108,6 +119,7 @@ export const units: Unit[] = [
         gardenArea: 316.84,
         gardenSize: 'xlarge',
         status: 'sold',
+        prices: null,
         rooms: 5,
         bathrooms: 2,
         parkingSpaces: 1,
@@ -124,6 +136,7 @@ export const units: Unit[] = [
         gardenArea: 147.19,
         gardenSize: 'medium',
         status: 'available',
+        prices: { listHuf: 220616000, offerHuf: 216616000 },
         rooms: 5,
         bathrooms: 2,
         parkingSpaces: 1
