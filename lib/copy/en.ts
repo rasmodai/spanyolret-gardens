@@ -685,7 +685,7 @@ export const en: Copy = {
     ctaBands: {
         afterHouses: {
             title: 'Which house is yours?',
-            text: 'Ask for the price of any house, without obligation.',
+            text: 'Tell us which house interests you, and we call you back, without obligation.',
             primary: 'I’m interested',
             message: 'Write to us',
         },

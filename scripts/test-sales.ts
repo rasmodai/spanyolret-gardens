@@ -77,7 +77,8 @@ for (const locale of ['en', 'hu'] as const) {
         const row = rows.find((candidate) => candidate.id === unit.id)!;
         const html = sheet(locale, unit.id, { drawings: true, phone: FAKE_PHONE });
         const text = textOf(html);
-        const priceLines = unit.status === 'available' ? 2 : 0;
+        // List price, plus the offer price while the parking gift runs; none when prices are hidden.
+        const priceLines = unit.status === 'available' && projectConfig.showUnitPrices ? (projectConfig.parkingGift.enabled ? 2 : 1) : 0;
         assert(`${locale} ${unit.id}: the sheet states the list and the offer price of an available house only`, row.facts.filter((fact) => fact.label === (locale === 'hu' ? hu : en).houses.price.list || fact.label === (locale === 'hu' ? hu : en).houses.price.offer).length === priceLines, text.slice(0, 80));
         assert(`${locale} ${unit.id}: seven facts and the price lines, none empty`, row.facts.length === 7 + priceLines && row.facts.every((fact) => fact.label && fact.value));
         const byLabel = (label: string) => row.facts.find((fact) => fact.label === label)?.value ?? '';
