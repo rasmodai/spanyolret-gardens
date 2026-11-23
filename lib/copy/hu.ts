@@ -694,7 +694,7 @@ export const hu: Copy = {
 
     ctaBands: {
         afterHouses: {
-            title: 'Melyik ház az Öné?',
+            title: 'Melyik lakás az Öné?',
             text: 'Jelezze, melyik lakás érdekli, és visszahívjuk.',
             primary: 'Érdekel',
             message: 'Üzenetet írok',
