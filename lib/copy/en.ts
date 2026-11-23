@@ -684,7 +684,7 @@ export const en: Copy = {
 
     ctaBands: {
         afterHouses: {
-            title: 'Which house is yours?',
+            title: 'Which home is yours?',
             text: 'Tell us which home interests you, and we call you back.',
             primary: 'I’m interested',
             message: 'Write to us',
