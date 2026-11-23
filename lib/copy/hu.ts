@@ -519,7 +519,7 @@ export const hu: Copy = {
                 items: [
                     {
                         q: 'Milyen a fizetési ütemezés?',
-                        a: 'Általában: 10%-os foglaló, majd az építkezés alatt ütemezett részletek, az utolsó részlet átadáskor. A pontos feltételeket az egyeztetésen beszéljük át, és az egyéni helyzetéhez igazítjuk.',
+                        a: 'Általában: az építkezés alatt ütemezett részletek, az utolsó részlet átadáskor. A pontos feltételeket az egyeztetésen beszéljük át, és az egyéni helyzetéhez igazítjuk.',
                     },
                     {
                         q: 'Lehet hitelből vásárolni?',
@@ -561,7 +561,7 @@ export const hu: Copy = {
                 items: [
                     {
                         q: 'Milyen messze van a belváros?',
-                        a: 'Kb. 20–25 perc autóval vagy tömegközlekedéssel. A kelenföldi M4-es metróállomás busszal 6–8 perc, onnan közvetlenül a központba jut. Tér és nyugalom, mégsem messze.',
+                        a: 'Kb. 15–20 perc autóval. A kelenföldi M4-es metróállomás busszal 6–8 perc, onnan közvetlenül a központba jut. Tér és nyugalom, mégsem messze.',
                     },
                     {
                         q: 'Vannak jó iskolák a közelben?',
@@ -612,8 +612,8 @@ export const hu: Copy = {
                 text: 'Csak a Spanyolrét Gardensszel kapcsolatban keressük meg Önt. Nem adjuk tovább senkinek, és egyetlen e-mailjére töröljük az adatait.',
             },
         ],
-        replyTodayMessaging: 'Még ma válaszolunk',
-        replyTodayCall: 'Még ma felhívjuk',
+        replyTodayMessaging: '24 órán belül válaszolunk',
+        replyTodayCall: '24 órán belül visszahívjuk',
     },
 
     form: {
@@ -695,7 +695,7 @@ export const hu: Copy = {
     ctaBands: {
         afterHouses: {
             title: 'Melyik ház az Öné?',
-            text: 'Jelezze, melyik ház érdekli, és visszahívjuk, kötelezettség nélkül.',
+            text: 'Jelezze, melyik lakás érdekli, és visszahívjuk.',
             primary: 'Érdekel',
             message: 'Üzenetet írok',
         },

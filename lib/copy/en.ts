@@ -517,7 +517,7 @@ export const en: Copy = {
                     },
                     {
                         q: 'What is the payment schedule?',
-                        a: 'Typically: 10% reservation deposit, followed by stage payments during construction, with the final payment at handover. Exact terms are discussed during consultation and can be tailored to your situation.',
+                        a: 'Typically: stage payments during construction, with the final payment at handover. Exact terms are discussed during consultation and can be tailored to your situation.',
                     },
                     {
                         q: 'What happens if construction is delayed?',
@@ -551,7 +551,7 @@ export const en: Copy = {
                 items: [
                     {
                         q: 'How far is it from the city center?',
-                        a: 'Approximately 20-25 minutes by car or public transport. Kelenföld M4 Metro station is 6-8 minutes by bus, then direct to the center. You get space and quiet while staying connected.',
+                        a: 'Approximately 15-20 minutes by car. Kelenföld M4 Metro station is 6-8 minutes by bus, then direct to the center. You get space and quiet while staying connected.',
                     },
                     {
                         q: 'Are there international schools nearby?',
@@ -602,8 +602,8 @@ export const en: Copy = {
                 text: 'We contact you about Spanyolrét Gardens. We do not pass it to anyone else, and one email from you removes it.',
             },
         ],
-        replyTodayMessaging: 'A reply today',
-        replyTodayCall: 'A call today',
+        replyTodayMessaging: 'A reply within 24 hours',
+        replyTodayCall: 'A call back within 24 hours',
     },
 
     form: {
@@ -685,7 +685,7 @@ export const en: Copy = {
     ctaBands: {
         afterHouses: {
             title: 'Which house is yours?',
-            text: 'Tell us which house interests you, and we call you back, without obligation.',
+            text: 'Tell us which home interests you, and we call you back.',
             primary: 'I’m interested',
             message: 'Write to us',
         },
